@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 
 import { useAuth } from "@/hooks/use-auth";
+import { useRoles } from "@/hooks/use-role";
 import { supabase } from "@/integrations/supabase/client";
 
 const NAV = [
@@ -12,6 +13,7 @@ const NAV = [
 
 export function SiteHeader() {
   const { user, loading } = useAuth();
+  const { isAdmin } = useRoles();
   const navigate = useNavigate();
 
   async function handleSignOut() {
@@ -45,9 +47,20 @@ export function SiteHeader() {
             <div className="h-8 w-24 animate-pulse rounded-md bg-secondary" />
           ) : user ? (
             <>
-              <span className="hidden text-sm text-muted-foreground sm:inline">
-                {user.email}
-              </span>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="hidden rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+                >
+                  Admin
+                </Link>
+              )}
+              <Link
+                to="/dashboard"
+                className="hidden rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline-flex"
+              >
+                Dashboard
+              </Link>
               <button
                 onClick={handleSignOut}
                 className="inline-flex items-center rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"

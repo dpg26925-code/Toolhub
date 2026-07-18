@@ -1,5 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/site-layout";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -12,12 +15,64 @@ export const Route = createFileRoute("/blog/")({
     ],
     links: [{ rel: "canonical", href: "/blog" }],
   }),
-  component: () => (
+  component: BlogIndex,
+});
+
+function BlogIndex() {
+  const q = useQuery({
+    queryKey: ["blog-index"],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("blog_posts")
+        .select("id, slug, title, excerpt, cover_image, published_at, created_at, content")
+        .eq("published", true)
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(50);
+      return data ?? [];
+    },
+  });
+
+  return (
     <SiteLayout>
-      <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-        <h1 className="text-4xl font-bold tracking-tight">Blog coming soon</h1>
-        <p className="mt-3 text-muted-foreground">We're preparing tutorials and product updates. Check back shortly.</p>
+      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <header className="mb-10 text-center">
+          <h1 className="text-4xl font-bold tracking-tight">The ToolHub blog</h1>
+          <p className="mt-2 text-muted-foreground">Tutorials, product updates, and tips for creators & developers.</p>
+        </header>
+
+        {q.isLoading ? (
+          <div className="grid gap-6 md:grid-cols-3">
+            {[0, 1, 2].map((i) => <Skeleton key={i} className="h-64 w-full" />)}
+          </div>
+        ) : q.data?.length ? (
+          <div className="grid gap-6 md:grid-cols-3">
+            {q.data.map((p: any) => (
+              <Link
+                key={p.id}
+                to="/blog/$slug"
+                params={{ slug: p.slug }}
+                className="hover-lift group flex flex-col rounded-2xl border bg-card overflow-hidden"
+              >
+                {p.cover_image ? (
+                  <img src={p.cover_image} alt={p.title} className="h-40 w-full object-cover" />
+                ) : (
+                  <div className="h-40 w-full bg-gradient-to-br from-indigo-500 to-violet-600" />
+                )}
+                <div className="p-5 flex-1 flex flex-col">
+                  <h2 className="font-semibold text-lg group-hover:text-primary">{p.title}</h2>
+                  <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{p.excerpt}</p>
+                  <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+                    <span>{new Date(p.published_at ?? p.created_at).toLocaleDateString()}</span>
+                    <span>{Math.max(1, Math.round((p.content?.length ?? 0) / 1000))} min read</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-muted-foreground">No posts yet. Check back soon.</p>
+        )}
       </div>
     </SiteLayout>
-  ),
-});
+  );
+}
