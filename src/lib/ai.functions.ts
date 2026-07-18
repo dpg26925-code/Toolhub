@@ -19,6 +19,41 @@ async function spendCredit(supabase: SupabaseClient<Database>) {
   }
 }
 
+async function logUsage(
+  supabase: SupabaseClient<Database>,
+  userId: string,
+  toolSlug: string | undefined,
+  status: "success" | "error",
+  processingMs: number,
+) {
+  if (!toolSlug) return;
+  const { data: tool } = await supabase.from("tools").select("id").eq("slug", toolSlug).maybeSingle();
+  await supabase.from("usage_logs").insert({
+    user_id: userId,
+    tool_id: tool?.id ?? null,
+    credits_used: CREDIT_COST,
+    status,
+    processing_time_ms: processingMs,
+  });
+}
+
+async function runWithLogging<T>(
+  context: { supabase: SupabaseClient<Database>; userId: string },
+  toolSlug: string | undefined,
+  work: () => Promise<T>,
+): Promise<T> {
+  await spendCredit(context.supabase);
+  const started = Date.now();
+  try {
+    const result = await work();
+    void logUsage(context.supabase, context.userId, toolSlug, "success", Date.now() - started);
+    return result;
+  } catch (e) {
+    void logUsage(context.supabase, context.userId, toolSlug, "error", Date.now() - started);
+    throw e;
+  }
+}
+
 async function callGateway(messages: { role: string; content: string }[]) {
   const key = process.env.LOVABLE_API_KEY;
   if (!key) throw new Error("Missing LOVABLE_API_KEY");
@@ -48,19 +83,21 @@ export const summarizeText = createServerFn({ method: "POST" })
         text: z.string().min(1).max(50000),
         length: z.enum(["short", "medium", "long"]).default("medium"),
         style: z.enum(["bullet", "paragraph"]).default("paragraph"),
+        toolSlug: z.string().optional(),
       })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    await spendCredit(context.supabase);
-    const lengthMap = { short: "2-3 sentences", medium: "1 short paragraph", long: "3-4 paragraphs" };
-    const styleInstr =
-      data.style === "bullet" ? "Format as a concise bulleted list." : "Format as flowing prose.";
-    const summary = await callGateway([
-      { role: "system", content: `You summarise text. Length: ${lengthMap[data.length]}. ${styleInstr}` },
-      { role: "user", content: data.text },
-    ]);
-    return { summary };
+    return runWithLogging(context, data.toolSlug ?? "summarize", async () => {
+      const lengthMap = { short: "2-3 sentences", medium: "1 short paragraph", long: "3-4 paragraphs" };
+      const styleInstr =
+        data.style === "bullet" ? "Format as a concise bulleted list." : "Format as flowing prose.";
+      const summary = await callGateway([
+        { role: "system", content: `You summarise text. Length: ${lengthMap[data.length]}. ${styleInstr}` },
+        { role: "user", content: data.text },
+      ]);
+      return { summary };
+    });
   });
 
 export const translateText = createServerFn({ method: "POST" })
@@ -70,19 +107,21 @@ export const translateText = createServerFn({ method: "POST" })
       .object({
         text: z.string().min(1).max(20000),
         target: z.enum(["English", "Vietnamese", "Spanish", "Indonesian"]),
+        toolSlug: z.string().optional(),
       })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    await spendCredit(context.supabase);
-    const translated = await callGateway([
-      {
-        role: "system",
-        content: `You are a professional translator. Translate the user's text into ${data.target}. Reply with only the translation, no notes.`,
-      },
-      { role: "user", content: data.text },
-    ]);
-    return { translated };
+    return runWithLogging(context, data.toolSlug ?? "translate", async () => {
+      const translated = await callGateway([
+        {
+          role: "system",
+          content: `You are a professional translator. Translate the user's text into ${data.target}. Reply with only the translation, no notes.`,
+        },
+        { role: "user", content: data.text },
+      ]);
+      return { translated };
+    });
   });
 
 export const rewriteText = createServerFn({ method: "POST" })
@@ -93,19 +132,21 @@ export const rewriteText = createServerFn({ method: "POST" })
         text: z.string().min(1).max(20000),
         tone: z.enum(["formal", "casual", "professional"]).default("professional"),
         length: z.enum(["shorter", "same", "longer"]).default("same"),
+        toolSlug: z.string().optional(),
       })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    await spendCredit(context.supabase);
-    const rewritten = await callGateway([
-      {
-        role: "system",
-        content: `Rewrite the user's text in a ${data.tone} tone, making it ${data.length === "same" ? "roughly the same length" : data.length}. Reply with only the rewritten text.`,
-      },
-      { role: "user", content: data.text },
-    ]);
-    return { rewritten };
+    return runWithLogging(context, data.toolSlug ?? "rewrite", async () => {
+      const rewritten = await callGateway([
+        {
+          role: "system",
+          content: `Rewrite the user's text in a ${data.tone} tone, making it ${data.length === "same" ? "roughly the same length" : data.length}. Reply with only the rewritten text.`,
+        },
+        { role: "user", content: data.text },
+      ]);
+      return { rewritten };
+    });
   });
 
 export const chatWithPdf = createServerFn({ method: "POST" })
@@ -119,20 +160,22 @@ export const chatWithPdf = createServerFn({ method: "POST" })
           .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string() }))
           .max(20)
           .default([]),
+        toolSlug: z.string().optional(),
       })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    await spendCredit(context.supabase);
-    const answer = await callGateway([
-      {
-        role: "system",
-        content:
-          "You answer questions strictly using the provided PDF text. If the answer isn't in the document, say so. Be concise.\n\n--- PDF CONTENT ---\n" +
-          data.pdfText.slice(0, 180000),
-      },
-      ...data.history,
-      { role: "user", content: data.question },
-    ]);
-    return { answer };
+    return runWithLogging(context, data.toolSlug ?? "chat-pdf", async () => {
+      const answer = await callGateway([
+        {
+          role: "system",
+          content:
+            "You answer questions strictly using the provided PDF text. If the answer isn't in the document, say so. Be concise.\n\n--- PDF CONTENT ---\n" +
+            data.pdfText.slice(0, 180000),
+        },
+        ...data.history,
+        { role: "user", content: data.question },
+      ]);
+      return { answer };
+    });
   });
