@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
 import { getCategory, toolsInCategory } from "@/lib/tools-data";
+import type { Tool } from "@/lib/tools-data";
 
 export const Route = createFileRoute("/categories/$slug")({
   loader: ({ params }) => {
@@ -58,7 +59,7 @@ function CategoryPage() {
           </p>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {tools.map((t) => (<ToolCard key={t.slug} tool={t} />))}
+            {tools.map((t: Tool) => (<ToolCard key={t.slug} tool={t} />))}
           </div>
         )}
       </div>
