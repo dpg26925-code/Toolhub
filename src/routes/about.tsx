@@ -4,11 +4,13 @@ import { SiteLayout } from "@/components/site-layout";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — ToolHub AI" },
+      { title: "About — Why We Built ToolHub AI | ToolHub AI" },
       { name: "description", content: "Why we're building ToolHub AI — a fast, private, well-designed workspace for online tools." },
-      { property: "og:title", content: "About — ToolHub AI" },
+      { property: "og:title", content: "About — Why We Built ToolHub AI | ToolHub AI" },
       { property: "og:description", content: "Why we're building ToolHub AI." },
+      { property: "og:url", content: "/about" },
     ],
+    links: [{ rel: "canonical", href: "/about" }],
   }),
   component: AboutPage,
 });
