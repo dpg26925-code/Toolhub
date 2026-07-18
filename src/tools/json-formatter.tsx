@@ -16,9 +16,30 @@ export default function JsonFormatterTool() {
       setOutput(JSON.stringify(parsed, null, space));
       setError(null);
     } catch (e) {
-      setError((e as Error).message);
+      const msg = (e as Error).message;
+      // Try to locate line/column from the error position.
+      const match = /position\s+(\d+)/i.exec(msg);
+      if (match) {
+        const pos = Number(match[1]);
+        const upto = input.slice(0, pos);
+        const line = upto.split("\n").length;
+        const col = pos - upto.lastIndexOf("\n");
+        setError(`${msg} (line ${line}, column ${col})`);
+      } else {
+        setError(msg);
+      }
       setOutput("");
     }
+  };
+
+  const download = () => {
+    const blob = new Blob([output], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "formatted.json";
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -39,8 +60,13 @@ export default function JsonFormatterTool() {
         <Button onClick={() => format(indent)}>Beautify</Button>
         <Button variant="secondary" onClick={() => format(0)}>Minify</Button>
         <Button variant="ghost" onClick={() => { navigator.clipboard.writeText(output); toast.success("Copied"); }} disabled={!output}>Copy</Button>
+        <Button variant="ghost" onClick={download} disabled={!output}>Download .json</Button>
       </div>
-      {error && <p className="text-sm text-destructive">Invalid JSON: {error}</p>}
+      {error && (
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+          <span className="font-medium">Invalid JSON:</span> {error}
+        </div>
+      )}
     </div>
   );
 }
