@@ -32,6 +32,7 @@ import { Route as AuthSignupRouteImport } from './routes/auth.signup'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminToolsRouteImport } from './routes/admin.tools'
 
 const TermsRoute = TermsRouteImport.update({
@@ -149,6 +150,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminToolsRoute = AdminToolsRouteImport.update({
   id: '/admin/tools',
   path: '/admin/tools',
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/tools': typeof AdminToolsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/tools': typeof AdminToolsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/tools': typeof AdminToolsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/tools'
+    | '/admin/users'
     | '/auth/callback'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/tools'
+    | '/admin/users'
     | '/auth/callback'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -298,6 +309,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/tools'
+    | '/admin/users'
     | '/auth/callback'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -325,6 +337,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   AdminToolsRoute: typeof AdminToolsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -505,6 +518,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/tools': {
       id: '/admin/tools'
       path: '/admin/tools'
@@ -525,6 +545,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   AdminToolsRoute: AdminToolsRoute,
+  AdminUsersRoute: AdminUsersRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
