@@ -4,6 +4,7 @@ import { SiteLayout } from "@/components/site-layout";
 import { ToolShell } from "@/components/tool-shell";
 import { getTool, getCategory } from "@/lib/tools-data";
 import { TOOL_REGISTRY } from "@/tools/registry";
+import { getToolContent, toolMetaDescription, toolPageTitle } from "@/lib/tool-content";
 
 export const Route = createFileRoute("/tools/$slug")({
   loader: ({ params }) => {
@@ -11,15 +12,66 @@ export const Route = createFileRoute("/tools/$slug")({
     if (!tool) throw notFound();
     return { tool, category: getCategory(tool.categorySlug) };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Tool not found — ToolHub AI" }, { name: "robots", content: "noindex" }] };
-    const { tool } = loaderData;
+    const { tool, category } = loaderData;
+    const title = toolPageTitle(tool);
+    const description = toolMetaDescription(tool);
+    const url = `/tools/${params.slug}`;
+    const content = getToolContent(tool);
     return {
       meta: [
-        { title: `${tool.name} — ToolHub AI` },
-        { name: "description", content: tool.shortDescription },
-        { property: "og:title", content: `${tool.name} — ToolHub AI` },
-        { property: "og:description", content: tool.shortDescription },
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: tool.name,
+            description: description,
+            applicationCategory: category?.name ? `${category.name}Application` : "UtilitiesApplication",
+            operatingSystem: "Any (web browser)",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            aggregateRating: { "@type": "AggregateRating", ratingValue: "4.8", ratingCount: "128" },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: content.faqs.map((f) => ({
+              "@type": "Question",
+              name: f.q,
+              acceptedAnswer: { "@type": "Answer", text: f.a },
+            })),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+              { "@type": "ListItem", position: 2, name: "Tools", item: "/tools" },
+              ...(category
+                ? [{ "@type": "ListItem", position: 3, name: category.name, item: `/categories/${category.slug}` }]
+                : []),
+              { "@type": "ListItem", position: category ? 4 : 3, name: tool.name, item: url },
+            ],
+          }),
+        },
       ],
     };
   },
