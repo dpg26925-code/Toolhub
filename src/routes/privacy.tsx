@@ -5,9 +5,9 @@ export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
       { title: "Privacy Policy — Nexatools" },
-      { name: "description", content: "How Nexatools handles your data and privacy." },
+      { name: "description", content: "How Nexatools collects, stores, and protects your data — cookies, analytics, account information, client-side processing, and your privacy rights." },
       { property: "og:title", content: "Privacy Policy — Nexatools" },
-      { property: "og:description", content: "How Nexatools handles your data and privacy." },
+      { property: "og:description", content: "Learn how Nexatools handles cookies, analytics, account data, client-side tool processing, and your rights over the information we store." },
     ],
   }),
   component: () => (
