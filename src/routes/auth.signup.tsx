@@ -67,7 +67,13 @@ function SignupPage() {
           Almost there — check <strong>{email}</strong> for a confirmation link.
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4">
+          <GoogleSignInButton label="Sign up with Google" />
+          <div className="relative py-2 text-center text-xs uppercase text-muted-foreground">
+            <span className="relative bg-background px-2">or</span>
+            <span className="absolute inset-x-0 top-1/2 -z-0 border-t border-border" />
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
           <Field label="Full name" type="text" autoComplete="name" value={fullName} onChange={setFullName} />
           <Field label="Email" type="email" autoComplete="email" value={email} onChange={setEmail} required />
           <Field
@@ -93,7 +99,8 @@ function SignupPage() {
             <Link to="/terms" className="underline hover:text-foreground">Terms</Link> and{" "}
             <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
           </p>
-        </form>
+          </form>
+        </div>
       )}
     </AuthLayout>
   );
