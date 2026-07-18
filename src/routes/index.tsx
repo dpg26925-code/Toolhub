@@ -60,12 +60,12 @@ function Index() {
       <section className="relative">
         <div className="mx-auto max-w-3xl px-4 pb-16 pt-20 text-center sm:px-6 sm:pt-28">
           <div className="animate-fade-in-up">
-            <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-accent">
+            <span className="inline-flex items-center rounded-full bg-brand/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-brand">
               {TOOLS.length}+ Professional Utilities
             </span>
             <h1 className="mt-6 text-5xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl">
               Streamline your workflow with{" "}
-              <span className="text-accent">Nexatools</span>
+              <span className="text-brand">Nexatools</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
               A curated collection of free, high-performance web tools for developers, designers, and creators.
@@ -73,7 +73,7 @@ function Index() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link
                 to="/tools"
-                className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-accent"
+                className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-brand"
               >
                 Explore Tools
               </Link>
@@ -128,7 +128,7 @@ function Index() {
             { k: "99.9%", v: "Uptime" },
           ].map((s) => (
             <div key={s.v}>
-              <dt className="text-3xl font-bold text-accent sm:text-4xl">{s.k}</dt>
+              <dt className="text-3xl font-bold text-brand sm:text-4xl">{s.k}</dt>
               <dd className="mt-1 text-sm text-primary-foreground/70">{s.v}</dd>
             </div>
           ))}
@@ -141,13 +141,13 @@ function Index() {
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Browse by category</h2>
             <p className="mt-2 text-muted-foreground">Pick a workflow and jump straight in.</p>
           </div>
-          <Link to="/tools" className="text-sm font-semibold text-accent hover:underline">View all →</Link>
+          <Link to="/tools" className="text-sm font-semibold text-brand hover:underline">View all →</Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {CATEGORIES.map((c) => (
-            <Link key={c.slug} to="/categories/$slug" params={{ slug: c.slug }} className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg">
+            <Link key={c.slug} to="/categories/$slug" params={{ slug: c.slug }} className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg">
               <div className="text-3xl">{c.icon}</div>
-              <h3 className="mt-4 text-lg font-semibold group-hover:text-accent">{c.name}</h3>
+              <h3 className="mt-4 text-lg font-semibold group-hover:text-brand">{c.name}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{c.description}</p>
             </Link>
           ))}
@@ -161,7 +161,7 @@ function Index() {
             Create a free account and get 10 credits to try our Pro AI tools — no card required.
           </p>
           <div className="mt-6">
-            <Link to="/auth/signup" className="inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition hover:opacity-90">
+            <Link to="/auth/signup" className="inline-flex items-center rounded-lg bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground transition hover:opacity-90">
               Get Started — No Credit Card
             </Link>
           </div>
