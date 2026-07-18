@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 
 import { AuthLayout } from "@/components/auth-layout";
 import { supabase } from "@/integrations/supabase/client";
+import { GoogleSignInButton } from "@/components/google-signin-button";
 
 export const Route = createFileRoute("/auth/signup")({
   head: () => ({
