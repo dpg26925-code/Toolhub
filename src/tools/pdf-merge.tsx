@@ -27,7 +27,8 @@ export default function PdfMergeTool() {
         const pages = await out.copyPages(src, src.getPageIndices());
         pages.forEach((p) => out.addPage(p));
       }
-      const blob = new Blob([await out.save()], { type: "application/pdf" });
+      const bytes = await out.save();
+      const blob = new Blob([bytes as BlobPart], { type: "application/pdf" });
       setUrl(URL.createObjectURL(blob));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to merge PDFs");
