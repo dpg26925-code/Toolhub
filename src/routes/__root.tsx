@@ -81,10 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Free and Pro online tools for PDF, image, AI, and developer workflows. Fast, private, and built for global creators." },
       { name: "author", content: "ToolHub AI" },
       { property: "og:title", content: "ToolHub AI — The Ultimate AI-Powered Online Tool Platform" },
-      { property: "og:description", content: "Free and Pro online tools for PDF, image, AI, and developer workflows." },
+      { property: "og:description", content: "Free and Pro online tools for PDF, image, AI, and developer workflows. Fast, private, and built for global creators." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@toolhubai" },
+      { name: "twitter:title", content: "ToolHub AI — The Ultimate AI-Powered Online Tool Platform" },
+      { name: "twitter:description", content: "Free and Pro online tools for PDF, image, AI, and developer workflows. Fast, private, and built for global creators." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a198ac02-ce61-4c6a-a2d7-fe148c74bb06" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/a198ac02-ce61-4c6a-a2d7-fe148c74bb06" },
     ],
     links: [
       {
