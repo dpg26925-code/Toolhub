@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 
 import { AuthLayout } from "@/components/auth-layout";
 import { supabase } from "@/integrations/supabase/client";
+import { GoogleSignInButton } from "@/components/google-signin-button";
 
 export const Route = createFileRoute("/auth/login")({
   head: () => ({
@@ -73,7 +74,13 @@ function LoginPage() {
           Check your inbox — we sent a sign-in link to <strong>{email}</strong>.
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4">
+          <GoogleSignInButton label="Sign in with Google" />
+          <div className="relative py-2 text-center text-xs uppercase text-muted-foreground">
+            <span className="relative bg-background px-2">or</span>
+            <span className="absolute inset-x-0 top-1/2 -z-0 border-t border-border" />
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
           <Field
             label="Email"
             type="email"
@@ -117,7 +124,8 @@ function LoginPage() {
           >
             Email me a magic link
           </button>
-        </form>
+          </form>
+        </div>
       )}
     </AuthLayout>
   );
