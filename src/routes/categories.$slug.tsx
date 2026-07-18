@@ -10,16 +10,20 @@ export const Route = createFileRoute("/categories/$slug")({
     if (!category) throw notFound();
     return { category, tools: toolsInCategory(params.slug) };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Category not found — ToolHub AI" }, { name: "robots", content: "noindex" }] };
     const { category } = loaderData;
+    const title = `${category.name} Tools — Free Online ${category.name} Utilities | ToolHub AI`;
+    const url = `/categories/${params.slug}`;
     return {
       meta: [
-        { title: `${category.name} tools — ToolHub AI` },
+        { title },
         { name: "description", content: category.description },
-        { property: "og:title", content: `${category.name} tools — ToolHub AI` },
+        { property: "og:title", content: title },
         { property: "og:description", content: category.description },
+        { property: "og:url", content: url },
       ],
+      links: [{ rel: "canonical", href: url }],
     };
   },
   component: CategoryPage,
