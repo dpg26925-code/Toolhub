@@ -21,6 +21,7 @@ import { Route as ToolsIndexRouteImport } from './routes/tools.index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
+import { Route as DashboardHistoryRouteImport } from './routes/dashboard.history'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
@@ -87,6 +88,11 @@ const ToolsSlugRoute = ToolsSlugRouteImport.update({
   path: '/tools/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
+  id: '/dashboard/history',
+  path: '/dashboard/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
   id: '/categories/$slug',
   path: '/categories/$slug',
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/dashboard/history': typeof DashboardHistoryRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/dashboard/history': typeof DashboardHistoryRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/blog': typeof BlogIndexRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/dashboard/history': typeof DashboardHistoryRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -187,6 +196,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/categories/$slug'
+    | '/dashboard/history'
     | '/tools/$slug'
     | '/blog/'
     | '/dashboard/'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/categories/$slug'
+    | '/dashboard/history'
     | '/tools/$slug'
     | '/blog'
     | '/dashboard'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/categories/$slug'
+    | '/dashboard/history'
     | '/tools/$slug'
     | '/blog/'
     | '/dashboard/'
@@ -245,6 +257,7 @@ export interface RootRouteChildren {
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
   CategoriesSlugRoute: typeof CategoriesSlugRoute
+  DashboardHistoryRoute: typeof DashboardHistoryRoute
   ToolsSlugRoute: typeof ToolsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/history': {
+      id: '/dashboard/history'
+      path: '/dashboard/history'
+      fullPath: '/dashboard/history'
+      preLoaderRoute: typeof DashboardHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/categories/$slug': {
       id: '/categories/$slug'
       path: '/categories/$slug'
@@ -389,6 +409,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
   CategoriesSlugRoute: CategoriesSlugRoute,
+  DashboardHistoryRoute: DashboardHistoryRoute,
   ToolsSlugRoute: ToolsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
