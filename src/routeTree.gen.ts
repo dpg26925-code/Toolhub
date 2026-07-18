@@ -28,6 +28,7 @@ import { Route as DashboardHistoryRouteImport } from './routes/dashboard.history
 import { Route as DashboardFavoritesRouteImport } from './routes/dashboard.favorites'
 import { Route as DashboardApiKeysRouteImport } from './routes/dashboard.api-keys'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
@@ -133,6 +134,11 @@ const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
   path: '/categories/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthSignupRoute = AuthSignupRouteImport.update({
   id: '/auth/signup',
   path: '/auth/signup',
@@ -197,6 +203,7 @@ export interface FileRoutesByFullPath {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
@@ -227,6 +234,7 @@ export interface FileRoutesByTo {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
@@ -258,6 +266,7 @@ export interface FileRoutesById {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
@@ -290,6 +299,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/blog/$slug'
     | '/categories/$slug'
     | '/dashboard/api-keys'
     | '/dashboard/favorites'
@@ -320,6 +330,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/blog/$slug'
     | '/categories/$slug'
     | '/dashboard/api-keys'
     | '/dashboard/favorites'
@@ -350,6 +361,7 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/blog/$slug'
     | '/categories/$slug'
     | '/dashboard/api-keys'
     | '/dashboard/favorites'
@@ -381,6 +393,7 @@ export interface RootRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSignupRoute: typeof AuthSignupRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   CategoriesSlugRoute: typeof CategoriesSlugRoute
   DashboardApiKeysRoute: typeof DashboardApiKeysRoute
   DashboardFavoritesRoute: typeof DashboardFavoritesRoute
@@ -529,6 +542,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/signup': {
       id: '/auth/signup'
       path: '/auth/signup'
@@ -613,6 +633,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
+  BlogSlugRoute: BlogSlugRoute,
   CategoriesSlugRoute: CategoriesSlugRoute,
   DashboardApiKeysRoute: DashboardApiKeysRoute,
   DashboardFavoritesRoute: DashboardFavoritesRoute,
