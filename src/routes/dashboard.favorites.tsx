@@ -4,7 +4,7 @@ import { DashboardShell } from "@/components/dashboard-shell";
 import { ToolCard } from "@/components/tool-card";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { getTool, CATEGORIES } from "@/lib/tools-data";
+import { getTool } from "@/lib/tools-data";
 
 export const Route = createFileRoute("/dashboard/favorites")({
   head: () => ({ meta: [{ title: "Favorites — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
@@ -29,10 +29,7 @@ function FavoritesPage() {
     <DashboardShell title="Favorites">
       {tools.length ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {tools.map((t) => {
-            const cat = CATEGORIES.find((c) => c.slug === t!.categorySlug);
-            return <ToolCard key={t!.slug} tool={t!} categoryName={cat?.name} />;
-          })}
+          {tools.map((t) => <ToolCard key={t!.slug} tool={t!} />)}
         </div>
       ) : (
         <p className="text-sm text-muted-foreground">
