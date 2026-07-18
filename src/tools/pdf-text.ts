@@ -1,6 +1,5 @@
 // Shared PDF text extractor using pdfjs-dist (browser only).
 import * as pdfjs from "pdfjs-dist";
-// @ts-expect-error pdfjs ships worker as a URL asset
 import workerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
