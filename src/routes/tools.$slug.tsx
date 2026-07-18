@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
+import { ToolShell } from "@/components/tool-shell";
 import { getTool, getCategory } from "@/lib/tools-data";
+import { TOOL_REGISTRY } from "@/tools/registry";
 
 export const Route = createFileRoute("/tools/$slug")({
   loader: ({ params }) => {
@@ -20,7 +23,7 @@ export const Route = createFileRoute("/tools/$slug")({
       ],
     };
   },
-  component: ToolPagePlaceholder,
+  component: ToolPage,
   notFoundComponent: () => (
     <SiteLayout>
       <div className="mx-auto max-w-2xl px-4 py-24 text-center">
@@ -38,29 +41,24 @@ export const Route = createFileRoute("/tools/$slug")({
   ),
 });
 
-function ToolPagePlaceholder() {
+function ToolPage() {
   const { tool, category } = Route.useLoaderData();
+  const Component = TOOL_REGISTRY[tool.slug];
+
   return (
-    <SiteLayout>
-      <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-        <Link to="/tools" className="text-sm text-muted-foreground hover:text-primary">← Back to tools</Link>
-        <div className="mt-4 flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-lg font-semibold text-accent-foreground">
-            {tool.icon}
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{tool.name}</h1>
-            <p className="text-sm text-muted-foreground">{category?.name}</p>
-          </div>
-        </div>
-        <p className="mt-4 text-muted-foreground">{tool.shortDescription}</p>
-        <div className="mt-10 rounded-2xl border border-dashed border-border bg-card p-10 text-center shadow-soft">
-          <p className="text-sm font-semibold text-primary">Tool interface coming in Phase 3</p>
+    <ToolShell tool={tool} category={category}>
+      {Component ? (
+        <Suspense fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
+          <Component />
+        </Suspense>
+      ) : (
+        <div className="rounded-xl border border-dashed border-border p-10 text-center">
+          <p className="text-sm font-semibold text-primary">Coming soon</p>
           <p className="mt-2 text-sm text-muted-foreground">
-            The reusable ToolShell (input · preview · output) and this tool's handler will ship in the next phase.
+            This tool is on the roadmap and will be available shortly.
           </p>
         </div>
-      </div>
-    </SiteLayout>
+      )}
+    </ToolShell>
   );
 }
