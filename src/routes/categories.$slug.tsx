@@ -3,6 +3,7 @@ import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
 import { getCategory, toolsInCategory } from "@/lib/tools-data";
 import type { Tool } from "@/lib/tools-data";
+import { abs } from "@/lib/site";
 
 export const Route = createFileRoute("/categories/$slug")({
   loader: ({ params }) => {
@@ -14,7 +15,7 @@ export const Route = createFileRoute("/categories/$slug")({
     if (!loaderData) return { meta: [{ title: "Category not found — ToolHub AI" }, { name: "robots", content: "noindex" }] };
     const { category } = loaderData;
     const title = `${category.name} Tools — Free Online ${category.name} Utilities | ToolHub AI`;
-    const url = `/categories/${params.slug}`;
+    const url = abs(`/categories/${params.slug}`);
     return {
       meta: [
         { title },
