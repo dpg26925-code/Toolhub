@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { toolsData } from "@/lib/tools-data";
+import { TOOLS } from "@/lib/tools-data";
 
 export const Route = createFileRoute("/dashboard/")({
   head: () => ({ meta: [{ title: "Dashboard — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
@@ -128,7 +128,7 @@ function DashboardHome() {
         <Card>
           <CardHeader><CardTitle>Quick stats</CardTitle></CardHeader>
           <CardContent className="grid grid-cols-3 gap-4 text-center">
-            <Stat label="Tools available" value={toolsData.length} />
+            <Stat label="Tools available" value={TOOLS.length} />
             <Stat label="Credits" value={credits} />
             <Stat label="Plan" value={plan.toUpperCase()} />
           </CardContent>
