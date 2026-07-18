@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { abs } from "@/lib/site";
 import { useMemo, useState } from "react";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
@@ -11,9 +12,9 @@ export const Route = createFileRoute("/tools/")({
       { name: "description", content: "Browse every tool available on ToolHub AI — PDF, image, AI and developer utilities." },
       { property: "og:title", content: "All Tools — 30+ Free Online Tools | ToolHub AI" },
       { property: "og:description", content: "Browse every tool available on ToolHub AI." },
-      { property: "og:url", content: "/tools" },
+      { property: "og:url", content: abs("/tools") },
     ],
-    links: [{ rel: "canonical", href: "/tools" }],
+    links: [{ rel: "canonical", href: abs("/tools") }],
   }),
   component: ToolsIndex,
 });

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { abs } from "@/lib/site";
 import { SiteLayout } from "@/components/site-layout";
 
 export const Route = createFileRoute("/pricing")({
@@ -8,9 +9,9 @@ export const Route = createFileRoute("/pricing")({
       { name: "description", content: "Simple pricing for ToolHub AI. Start free, upgrade to Pro for more credits and AI tools." },
       { property: "og:title", content: "Pricing — Free & Pro Plans | ToolHub AI" },
       { property: "og:description", content: "Start free. Upgrade to Pro when you need more." },
-      { property: "og:url", content: "/pricing" },
+      { property: "og:url", content: abs("/pricing") },
     ],
-    links: [{ rel: "canonical", href: "/pricing" }],
+    links: [{ rel: "canonical", href: abs("/pricing") }],
   }),
   component: PricingPage,
 });

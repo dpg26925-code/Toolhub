@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Twitter, Linkedin, Link2 } from "lucide-react";
 import { toast } from "sonner";
 
-const BASE = "https://sweet-vibes-only.lovable.app";
+import { SITE_URL } from "@/lib/site";
+const BASE = SITE_URL;
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => ({

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { abs } from "@/lib/site";
 import { SiteLayout } from "@/components/site-layout";
 
 const ITEMS = [
@@ -16,9 +17,9 @@ export const Route = createFileRoute("/faq")({
       { name: "description", content: "Answers to common questions about ToolHub AI — plans, credits, privacy and API access." },
       { property: "og:title", content: "FAQ — Frequently Asked Questions | ToolHub AI" },
       { property: "og:description", content: "Common questions about ToolHub AI." },
-      { property: "og:url", content: "/faq" },
+      { property: "og:url", content: abs("/faq") },
     ],
-    links: [{ rel: "canonical", href: "/faq" }],
+    links: [{ rel: "canonical", href: abs("/faq") }],
     scripts: [
       {
         type: "application/ld+json",

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { abs } from "@/lib/site";
 import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/site-layout";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,9 +12,9 @@ export const Route = createFileRoute("/blog/")({
       { name: "description", content: "Product updates, tips and tutorials from the ToolHub AI team." },
       { property: "og:title", content: "Blog — Product Updates, Tips & Tutorials | ToolHub AI" },
       { property: "og:description", content: "Product updates, tips and tutorials." },
-      { property: "og:url", content: "/blog" },
+      { property: "og:url", content: abs("/blog") },
     ],
-    links: [{ rel: "canonical", href: "/blog" }],
+    links: [{ rel: "canonical", href: abs("/blog") }],
   }),
   component: BlogIndex,
 });

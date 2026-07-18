@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
 import { CATEGORIES, TOOLS, featuredTools } from "@/lib/tools-data";
+import { SITE_URL, abs } from "@/lib/site";
 
 const TITLE = "ToolHub AI — 30+ Free Online Tools Powered by AI";
 const DESCRIPTION =
@@ -15,11 +16,11 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: SITE_URL },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: SITE_URL }],
     scripts: [
       {
         type: "application/ld+json",
@@ -27,7 +28,7 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "ToolHub AI",
-          url: "/",
+          url: SITE_URL,
           description:
             "ToolHub AI is a multi-tool SaaS platform offering 30+ free online tools for PDF, image, AI and developer workflows.",
           slogan: "30+ Free Online Tools Powered by AI",
@@ -39,10 +40,10 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "ToolHub AI",
-          url: "/",
+          url: SITE_URL,
           potentialAction: {
             "@type": "SearchAction",
-            target: "/tools?q={search_term_string}",
+            target: abs("/tools?q={search_term_string}"),
             "query-input": "required name=search_term_string",
           },
         }),
