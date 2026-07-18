@@ -23,10 +23,17 @@ function defaultLongDescription(tool: Tool): string {
   const runtime = tool.clientSide
     ? "runs entirely in your browser — your files and text never leave your device"
     : "is powered by our secure server infrastructure";
+  const categoryContext: Record<string, string> = {
+    pdf: `Common workflows include preparing contracts before emailing them to clients, reorganising scanned reports and getting PDFs down to a size that customer portals actually accept.`,
+    image: `Photographers, marketers and product teams reach for this tool when they need a quick, format-consistent asset for a website, ad campaign or social post — without opening Photoshop.`,
+    ai: `The underlying model is tuned for practical output: summaries you can send to a colleague, translations that read naturally and rewrites that preserve the meaning of the original text.`,
+    developer: `It's the utility developers keep pinned in a tab — reach for it between commits, while reviewing an API response or when a teammate pastes something into Slack that needs decoding.`,
+  };
+  const useCase = categoryContext[tool.categorySlug] ?? `Teams across engineering, marketing and operations rely on ${tool.name} for one-off conversions and repeatable, script-friendly workflows.`;
   return [
     `The ${tool.name} is a free online utility that helps you ${tool.shortDescription.toLowerCase().replace(/\.$/, "")}. It ${runtime}, so you get instant results without installing software or creating an account.`,
-    `Built for creators, developers and everyday professionals, this tool is part of the Nexatools platform — a growing library of 30+ purpose-built utilities. Whether you're preparing files for a client, cleaning up data before analysis or just need a quick one-off conversion, the ${tool.name} handles the heavy lifting so you can stay focused on the work that matters.`,
-    `Everything is designed around three principles: speed, privacy and simplicity. Load the page, drop in your input and get a shareable result in seconds. There are no upsells, no watermarks and no confusing settings — just the tool you came for. Advanced users can unlock higher limits, batch processing and API access with a free Nexatools account.`,
+    useCase,
+    `${tool.name} is part of the Nexatools platform — a growing library of 30+ purpose-built utilities. Sign in for a free account to save history, mark favorites and get higher daily limits; upgrade to Pro when you need API access, batch processing and no ads.`,
   ].join("\n\n");
 }
 
