@@ -1,18 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 
-export const Route = createFileRoute("/faq")({
-  head: () => ({
-    meta: [
-      { title: "FAQ — ToolHub AI" },
-      { name: "description", content: "Answers to common questions about ToolHub AI — plans, credits, privacy and API access." },
-      { property: "og:title", content: "FAQ — ToolHub AI" },
-      { property: "og:description", content: "Common questions about ToolHub AI." },
-    ],
-  }),
-  component: FaqPage,
-});
-
 const ITEMS = [
   { q: "Is ToolHub AI free?", a: "Yes. All client-side utilities are free, and you get 10 credits on signup to try Pro AI tools." },
   { q: "What are credits?", a: "Credits are consumed by AI and heavy server-side tools. Each tool's page shows its cost." },
@@ -20,6 +8,34 @@ const ITEMS = [
   { q: "Can I use ToolHub AI via API?", a: "Yes. Pro plans include API access. Generate keys from your dashboard." },
   { q: "How do I cancel?", a: "Cancel anytime from the Subscription page in your dashboard." },
 ];
+
+export const Route = createFileRoute("/faq")({
+  head: () => ({
+    meta: [
+      { title: "FAQ — Frequently Asked Questions | ToolHub AI" },
+      { name: "description", content: "Answers to common questions about ToolHub AI — plans, credits, privacy and API access." },
+      { property: "og:title", content: "FAQ — Frequently Asked Questions | ToolHub AI" },
+      { property: "og:description", content: "Common questions about ToolHub AI." },
+      { property: "og:url", content: "/faq" },
+    ],
+    links: [{ rel: "canonical", href: "/faq" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: ITEMS.map((i) => ({
+            "@type": "Question",
+            name: i.q,
+            acceptedAnswer: { "@type": "Answer", text: i.a },
+          })),
+        }),
+      },
+    ],
+  }),
+  component: FaqPage,
+});
 
 function FaqPage() {
   return (
