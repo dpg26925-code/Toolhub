@@ -38,7 +38,7 @@ function PricingPage() {
               {p.highlight && (
                 <span className="mb-3 inline-flex w-fit rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">Most popular</span>
               )}
-              <h3 className="text-xl font-semibold">{p.name}</h3>
+              <h2 className="text-xl font-semibold">{p.name}</h2>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-bold">{p.price}</span>
                 <span className="text-sm text-muted-foreground">{p.period}</span>

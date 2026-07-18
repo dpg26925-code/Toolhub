@@ -1,0 +1,27 @@
+# Nexatools
+
+> Nexatools is a multi-tool SaaS platform with 30+ free online utilities for developers, marketers, and everyday users — PDF editing, image processing, AI writing, and text/data conversion.
+
+Most tools run entirely in your browser (no upload). AI-powered tools require a free account and use a credit system.
+
+## Pages
+
+- [Home](/): Overview of Nexatools and featured tools.
+- [All tools](/tools): Searchable directory of every tool.
+- [Pricing](/pricing): Free and Pro plans, credit allowances.
+- [About](/about): Who we are and what we build.
+- [FAQ](/faq): Common questions about tools, credits, and privacy.
+- [Blog](/blog): Tutorials, guides, and product updates.
+
+## Tool categories
+
+- [PDF tools](/categories/pdf): Merge, split, compress, convert, and OCR PDFs.
+- [Image tools](/categories/image): Resize, compress, convert, and remove backgrounds.
+- [AI tools](/categories/ai): Summarize, translate, rewrite, and chat with documents.
+- [Text tools](/categories/text): Word count, case conversion, lorem ipsum, and more.
+- [Developer tools](/categories/developer): JSON, Base64, JWT, regex, hashes, and converters.
+
+## Optional
+
+- [Terms of Service](/terms): Terms governing use of the platform.
+- [Privacy Policy](/privacy): How Nexatools handles your data.

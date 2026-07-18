@@ -1,69 +1,101 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { marked } from "marked";
 import { SiteLayout } from "@/components/site-layout";
-import { supabase } from "@/integrations/supabase/client";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Twitter, Linkedin, Link2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { SITE_URL } from "@/lib/site";
+import { getPublishedBlogPost, type PublicBlogPost } from "@/lib/blog.functions";
 const BASE = SITE_URL;
 
+const postQueryOptions = (slug: string) =>
+  queryOptions({
+    queryKey: ["blog-post", slug],
+    queryFn: async () => {
+      const row = await getPublishedBlogPost({ data: { slug } });
+      if (!row) throw notFound();
+      return row as PublicBlogPost;
+    },
+  });
+
+function truncate(text: string, max = 155) {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  return clean.slice(0, max - 1).trimEnd() + "…";
+}
+
 export const Route = createFileRoute("/blog/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `Blog — Nexatools` },
+  loader: ({ context, params }) => context.queryClient.ensureQueryData(postQueryOptions(params.slug)),
+  head: ({ params, loaderData }) => {
+    const post = loaderData as PublicBlogPost | undefined;
+    const url = `${BASE}/blog/${params.slug}`;
+    const title = post?.meta_title || post?.title || "Blog — Nexatools";
+    const rawDesc = post?.meta_description || post?.excerpt || (post?.content ? truncate(post.content) : "");
+    const description = rawDesc && rawDesc.length >= 50 ? rawDesc : (rawDesc ? `${rawDesc} — read the full article on the Nexatools blog.` : "Read the latest guides, tutorials, and product updates from the Nexatools team.");
+    const meta: Array<Record<string, string>> = [
+      { title },
+      { name: "description", content: description },
       { property: "og:type", content: "article" },
-      { property: "og:url", content: `${BASE}/blog/${params.slug}` },
-    ],
-    links: [{ rel: "canonical", href: `${BASE}/blog/${params.slug}` }],
-  }),
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:url", content: url },
+      { name: "twitter:card", content: post?.cover_image ? "summary_large_image" : "summary" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+    ];
+    if (post?.cover_image) {
+      meta.push({ property: "og:image", content: post.cover_image });
+      meta.push({ name: "twitter:image", content: post.cover_image });
+    }
+    const scripts = post
+      ? [{
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: post.title,
+            description,
+            image: post.cover_image ? [post.cover_image] : undefined,
+            datePublished: post.published_at ?? post.created_at,
+            dateModified: post.updated_at,
+            mainEntityOfPage: { "@type": "WebPage", "@id": url },
+            author: { "@type": "Organization", name: "Nexatools" },
+            publisher: { "@type": "Organization", name: "Nexatools", url: BASE },
+          }),
+        }]
+      : undefined;
+    return {
+      meta,
+      links: [{ rel: "canonical", href: url }],
+      ...(scripts ? { scripts } : {}),
+    };
+  },
+  errorComponent: () => (
+    <SiteLayout>
+      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">Something went wrong</h1>
+        <p className="mt-2 text-muted-foreground">We couldn't load this article.</p>
+        <Button asChild className="mt-6"><Link to="/blog">Back to blog</Link></Button>
+      </div>
+    </SiteLayout>
+  ),
+  notFoundComponent: () => (
+    <SiteLayout>
+      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">Post not found</h1>
+        <p className="mt-2 text-muted-foreground">This article doesn't exist or hasn't been published.</p>
+        <Button asChild className="mt-6"><Link to="/blog">Back to blog</Link></Button>
+      </div>
+    </SiteLayout>
+  ),
   component: BlogPost,
 });
 
 function BlogPost() {
   const { slug } = Route.useParams();
-  const q = useQuery({
-    queryKey: ["blog-post", slug],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .eq("slug", slug)
-        .eq("published", true)
-        .maybeSingle();
-      if (error) throw error;
-      if (!data) throw notFound();
-      return data;
-    },
-  });
-
-  if (q.isLoading) {
-    return (
-      <SiteLayout>
-        <div className="mx-auto max-w-3xl px-4 py-16 space-y-4">
-          <Skeleton className="h-10 w-3/4" />
-          <Skeleton className="h-64 w-full" />
-        </div>
-      </SiteLayout>
-    );
-  }
-
-  if (!q.data) {
-    return (
-      <SiteLayout>
-        <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold">Post not found</h1>
-          <p className="mt-2 text-muted-foreground">This article doesn't exist or hasn't been published.</p>
-          <Button asChild className="mt-6"><Link to="/blog">Back to blog</Link></Button>
-        </div>
-      </SiteLayout>
-    );
-  }
-
-  const post = q.data;
+  const { data: post } = useSuspenseQuery(postQueryOptions(slug));
   const html = marked.parse(post.content ?? "", { async: false }) as string;
   const url = `${BASE}/blog/${post.slug}`;
 
