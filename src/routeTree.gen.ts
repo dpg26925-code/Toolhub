@@ -22,6 +22,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard.history'
+import { Route as DashboardFavoritesRouteImport } from './routes/dashboard.favorites'
 import { Route as DashboardApiKeysRouteImport } from './routes/dashboard.api-keys'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
@@ -94,6 +95,11 @@ const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
   path: '/dashboard/history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardFavoritesRoute = DashboardFavoritesRouteImport.update({
+  id: '/dashboard/favorites',
+  path: '/dashboard/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardApiKeysRoute = DashboardApiKeysRouteImport.update({
   id: '/dashboard/api-keys',
   path: '/dashboard/api-keys',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AuthSignupRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
+  '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/auth/signup': typeof AuthSignupRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
+  '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/auth/signup': typeof AuthSignupRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
+  '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/tools/$slug': typeof ToolsSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/categories/$slug'
     | '/dashboard/api-keys'
+    | '/dashboard/favorites'
     | '/dashboard/history'
     | '/tools/$slug'
     | '/blog/'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/categories/$slug'
     | '/dashboard/api-keys'
+    | '/dashboard/favorites'
     | '/dashboard/history'
     | '/tools/$slug'
     | '/blog'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/categories/$slug'
     | '/dashboard/api-keys'
+    | '/dashboard/favorites'
     | '/dashboard/history'
     | '/tools/$slug'
     | '/blog/'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   AuthSignupRoute: typeof AuthSignupRoute
   CategoriesSlugRoute: typeof CategoriesSlugRoute
   DashboardApiKeysRoute: typeof DashboardApiKeysRoute
+  DashboardFavoritesRoute: typeof DashboardFavoritesRoute
   DashboardHistoryRoute: typeof DashboardHistoryRoute
   ToolsSlugRoute: typeof ToolsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/favorites': {
+      id: '/dashboard/favorites'
+      path: '/dashboard/favorites'
+      fullPath: '/dashboard/favorites'
+      preLoaderRoute: typeof DashboardFavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/api-keys': {
       id: '/dashboard/api-keys'
       path: '/dashboard/api-keys'
@@ -430,6 +450,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthSignupRoute: AuthSignupRoute,
   CategoriesSlugRoute: CategoriesSlugRoute,
   DashboardApiKeysRoute: DashboardApiKeysRoute,
+  DashboardFavoritesRoute: DashboardFavoritesRoute,
   DashboardHistoryRoute: DashboardHistoryRoute,
   ToolsSlugRoute: ToolsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
