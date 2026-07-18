@@ -5,6 +5,7 @@ import { ToolShell } from "@/components/tool-shell";
 import { getTool, getCategory } from "@/lib/tools-data";
 import { TOOL_REGISTRY } from "@/tools/registry";
 import { getToolContent, toolMetaDescription, toolPageTitle } from "@/lib/tool-content";
+import { abs } from "@/lib/site";
 
 export const Route = createFileRoute("/tools/$slug")({
   loader: ({ params }) => {
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/tools/$slug")({
     const { tool, category } = loaderData;
     const title = toolPageTitle(tool);
     const description = toolMetaDescription(tool);
-    const url = `/tools/${params.slug}`;
+    const url = abs(`/tools/${params.slug}`);
     const content = getToolContent(tool);
     return {
       meta: [
