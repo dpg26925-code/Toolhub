@@ -4,11 +4,13 @@ import { SiteLayout } from "@/components/site-layout";
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog — ToolHub AI" },
+      { title: "Blog — Product Updates, Tips & Tutorials | ToolHub AI" },
       { name: "description", content: "Product updates, tips and tutorials from the ToolHub AI team." },
-      { property: "og:title", content: "Blog — ToolHub AI" },
+      { property: "og:title", content: "Blog — Product Updates, Tips & Tutorials | ToolHub AI" },
       { property: "og:description", content: "Product updates, tips and tutorials." },
+      { property: "og:url", content: "/blog" },
     ],
+    links: [{ rel: "canonical", href: "/blog" }],
   }),
   component: () => (
     <SiteLayout>

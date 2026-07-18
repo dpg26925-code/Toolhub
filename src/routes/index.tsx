@@ -3,7 +3,52 @@ import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
 import { CATEGORIES, TOOLS, featuredTools } from "@/lib/tools-data";
 
+const TITLE = "ToolHub AI — 30+ Free Online Tools Powered by AI";
+const DESCRIPTION =
+  "Compress PDFs, remove backgrounds, summarize text and 27 more free online tools. No downloads, no sign-ups required.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "ToolHub AI",
+          url: "/",
+          description:
+            "ToolHub AI is a multi-tool SaaS platform offering 30+ free online tools for PDF, image, AI and developer workflows.",
+          slogan: "30+ Free Online Tools Powered by AI",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "ToolHub AI",
+          url: "/",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "/tools?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        }),
+      },
+    ],
+  }),
   component: Index,
 });
 
@@ -24,33 +69,71 @@ function Index() {
               {TOOLS.length}+ tools · AI-powered · Free to start
             </span>
             <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl">
-              The ultimate <span className="bg-gradient-brand bg-clip-text text-transparent">AI-powered</span> online tool platform
+              30+ Free Online Tools <span className="bg-gradient-brand bg-clip-text text-transparent">Powered by AI</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-              Compress PDFs, edit images, transform text and speed up your dev workflow — all in one clean, fast workspace built for global creators.
+              Compress PDFs, remove backgrounds, summarize text — no downloads, no sign-ups required.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <Link to="/tools" className="inline-flex items-center rounded-lg bg-gradient-brand px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition hover:opacity-95">
-                Explore all tools
+                Explore Tools
               </Link>
               <Link to="/pricing" className="inline-flex items-center rounded-lg border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition hover:bg-secondary">
                 See pricing
               </Link>
             </div>
+            <p className="mt-6 text-xs text-muted-foreground">
+              Trusted by 10,000+ users · No software installation · Free to start
+            </p>
           </div>
-          <dl className="mx-auto mt-16 grid max-w-3xl grid-cols-3 gap-6 text-center">
-            {[
-              { k: "30+", v: "Tools shipping" },
-              { k: "4", v: "Categories" },
-              { k: "100%", v: "Client-side privacy" },
-            ].map((s) => (
-              <div key={s.v} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-                <dt className="text-2xl font-bold text-foreground sm:text-3xl">{s.k}</dt>
-                <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.v}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
+      </section>
+
+      <section aria-labelledby="featured-tools" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="mb-8">
+          <h2 id="featured-tools" className="text-2xl font-bold tracking-tight sm:text-3xl">Featured tools</h2>
+          <p className="mt-2 text-muted-foreground">Our most-loved tools — pick one and go.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {featured.slice(0, 8).map((t) => (<ToolCard key={t.slug} tool={t} />))}
+        </div>
+      </section>
+
+      <section aria-labelledby="how-it-works" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div className="mb-10 text-center">
+          <h2 id="how-it-works" className="text-2xl font-bold tracking-tight sm:text-3xl">How it works</h2>
+          <p className="mt-2 text-muted-foreground">Three steps, no learning curve.</p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            { n: 1, t: "Choose a tool", d: "Browse 30+ tools by category or search by name." },
+            { n: 2, t: "Upload or paste content", d: "Drop in a file, paste text or tweak the options." },
+            { n: 3, t: "Get result instantly", d: "Download, copy or share your result in seconds." },
+          ].map((s) => (
+            <div key={s.n} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-brand text-sm font-bold text-primary-foreground">{s.n}</div>
+              <h3 className="mt-4 text-lg font-semibold">{s.t}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="stats" className="bg-secondary/40 py-14">
+        <h2 id="stats" className="sr-only">Platform stats</h2>
+        <dl className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-4 text-center sm:grid-cols-4 sm:px-6">
+          {[
+            { k: "100K+", v: "Users" },
+            { k: "500K+", v: "Tools used" },
+            { k: `${TOOLS.length}+`, v: "Tools available" },
+            { k: "99.9%", v: "Uptime" },
+          ].map((s) => (
+            <div key={s.v}>
+              <dt className="text-3xl font-bold text-foreground sm:text-4xl">{s.k}</dt>
+              <dd className="mt-1 text-sm text-muted-foreground">{s.v}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
@@ -72,25 +155,15 @@ function Index() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Featured tools</h2>
-          <p className="mt-2 text-muted-foreground">Handpicked tools that pair speed with delight.</p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {featured.map((t) => (<ToolCard key={t.slug} tool={t} />))}
-        </div>
-      </section>
-
       <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
         <div className="overflow-hidden rounded-3xl bg-gradient-brand p-10 text-center text-primary-foreground shadow-lift">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Ready to work faster?</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Start using ToolHub AI for free</h2>
           <p className="mx-auto mt-3 max-w-xl text-primary-foreground/90">
             Create a free account and get 10 credits to try our Pro AI tools — no card required.
           </p>
           <div className="mt-6">
             <Link to="/auth/signup" className="inline-flex items-center rounded-lg bg-white px-6 py-3 text-sm font-semibold text-primary shadow-soft transition hover:bg-white/90">
-              Create free account
+              Get Started — No Credit Card
             </Link>
           </div>
         </div>

@@ -7,11 +7,13 @@ import { CATEGORIES, TOOLS } from "@/lib/tools-data";
 export const Route = createFileRoute("/tools/")({
   head: () => ({
     meta: [
-      { title: "All tools — ToolHub AI" },
+      { title: "All Tools — 30+ Free Online Tools | ToolHub AI" },
       { name: "description", content: "Browse every tool available on ToolHub AI — PDF, image, AI and developer utilities." },
-      { property: "og:title", content: "All tools — ToolHub AI" },
+      { property: "og:title", content: "All Tools — 30+ Free Online Tools | ToolHub AI" },
       { property: "og:description", content: "Browse every tool available on ToolHub AI." },
+      { property: "og:url", content: "/tools" },
     ],
+    links: [{ rel: "canonical", href: "/tools" }],
   }),
   component: ToolsIndex,
 });

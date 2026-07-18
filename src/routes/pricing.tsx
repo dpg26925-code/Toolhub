@@ -4,11 +4,13 @@ import { SiteLayout } from "@/components/site-layout";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — ToolHub AI" },
+      { title: "Pricing — Free & Pro Plans | ToolHub AI" },
       { name: "description", content: "Simple pricing for ToolHub AI. Start free, upgrade to Pro for more credits and AI tools." },
-      { property: "og:title", content: "Pricing — ToolHub AI" },
+      { property: "og:title", content: "Pricing — Free & Pro Plans | ToolHub AI" },
       { property: "og:description", content: "Start free. Upgrade to Pro when you need more." },
+      { property: "og:url", content: "/pricing" },
     ],
+    links: [{ rel: "canonical", href: "/pricing" }],
   }),
   component: PricingPage,
 });
