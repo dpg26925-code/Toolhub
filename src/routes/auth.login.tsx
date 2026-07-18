@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth/login")({
   head: () => ({
     meta: [
-      { title: "Sign in — ToolHub AI" },
-      { name: "description", content: "Sign in to your ToolHub AI account to access tools, credits, and API keys." },
+      { title: "Sign in — Nexatools" },
+      { name: "description", content: "Sign in to your Nexatools account to access tools, credits, and API keys." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -58,7 +58,7 @@ function LoginPage() {
   return (
     <AuthLayout
       title="Welcome back"
-      subtitle="Sign in to continue to ToolHub AI."
+      subtitle="Sign in to continue to Nexatools."
       footer={
         <>
           Don't have an account?{" "}

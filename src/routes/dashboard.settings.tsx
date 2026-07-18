@@ -11,7 +11,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/settings")({
-  head: () => ({ meta: [{ title: "Settings — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Settings — Nexatools" }, { name: "robots", content: "noindex" }] }),
   component: SettingsPage,
 });
 

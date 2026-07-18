@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/")({
-  head: () => ({ meta: [{ title: "Admin — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin — Nexatools" }, { name: "robots", content: "noindex" }] }),
   component: AdminHome,
 });
 

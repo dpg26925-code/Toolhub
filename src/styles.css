@@ -63,7 +63,7 @@
 
 :root {
   --radius: 0.875rem;
-  /* ToolHub AI — indigo/violet on slate */
+  /* Nexatools — indigo/violet on slate */
   --background: oklch(0.985 0.005 250);        /* #f8fafc-ish */
   --foreground: oklch(0.21 0.03 265);          /* slate-900 */
   --card: oklch(1 0 0);

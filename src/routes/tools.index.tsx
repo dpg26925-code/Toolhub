@@ -8,10 +8,10 @@ import { CATEGORIES, TOOLS } from "@/lib/tools-data";
 export const Route = createFileRoute("/tools/")({
   head: () => ({
     meta: [
-      { title: "All Tools — 30+ Free Online Tools | ToolHub AI" },
-      { name: "description", content: "Browse every tool available on ToolHub AI — PDF, image, AI and developer utilities." },
-      { property: "og:title", content: "All Tools — 30+ Free Online Tools | ToolHub AI" },
-      { property: "og:description", content: "Browse every tool available on ToolHub AI." },
+      { title: "All Tools — 30+ Free Online Tools | Nexatools" },
+      { name: "description", content: "Browse every tool available on Nexatools — PDF, image, AI and developer utilities." },
+      { property: "og:title", content: "All Tools — 30+ Free Online Tools | Nexatools" },
+      { property: "og:description", content: "Browse every tool available on Nexatools." },
       { property: "og:url", content: abs("/tools") },
     ],
     links: [{ rel: "canonical", href: abs("/tools") }],

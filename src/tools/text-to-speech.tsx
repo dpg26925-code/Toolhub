@@ -13,7 +13,7 @@ import {
 import { toast } from "sonner";
 
 export default function TextToSpeechTool() {
-  const [text, setText] = useState("Hello! Welcome to ToolHub AI.");
+  const [text, setText] = useState("Hello! Welcome to Nexatools.");
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [voiceURI, setVoiceURI] = useState<string>("");
   const [rate, setRate] = useState(1);

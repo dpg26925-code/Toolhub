@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth/forgot-password")({
   head: () => ({
     meta: [
-      { title: "Reset your password — ToolHub AI" },
-      { name: "description", content: "Send yourself a password reset link for ToolHub AI." },
+      { title: "Reset your password — Nexatools" },
+      { name: "description", content: "Send yourself a password reset link for Nexatools." },
       { name: "robots", content: "noindex" },
     ],
   }),

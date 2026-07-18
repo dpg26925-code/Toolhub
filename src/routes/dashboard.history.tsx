@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/dashboard/history")({
-  head: () => ({ meta: [{ title: "History — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "History — Nexatools" }, { name: "robots", content: "noindex" }] }),
   component: HistoryPage,
 });
 

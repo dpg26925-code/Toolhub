@@ -4,7 +4,7 @@ import { ToolCard } from "@/components/tool-card";
 import { CATEGORIES, TOOLS, featuredTools } from "@/lib/tools-data";
 import { SITE_URL, abs } from "@/lib/site";
 
-const TITLE = "ToolHub AI — 30+ Free Online Tools Powered by AI";
+const TITLE = "Nexatools — 30+ Free Online Tools Powered by AI";
 const DESCRIPTION =
   "Compress PDFs, remove backgrounds, summarize text and 27 more free online tools. No downloads, no sign-ups required.";
 
@@ -27,10 +27,10 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "ToolHub AI",
+          name: "Nexatools",
           url: SITE_URL,
           description:
-            "ToolHub AI is a multi-tool SaaS platform offering 30+ free online tools for PDF, image, AI and developer workflows.",
+            "Nexatools is a multi-tool SaaS platform offering 30+ free online tools for PDF, image, AI and developer workflows.",
           slogan: "30+ Free Online Tools Powered by AI",
         }),
       },
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "ToolHub AI",
+          name: "Nexatools",
           url: SITE_URL,
           potentialAction: {
             "@type": "SearchAction",
@@ -158,7 +158,7 @@ function Index() {
 
       <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
         <div className="overflow-hidden rounded-3xl bg-gradient-brand p-10 text-center text-primary-foreground shadow-lift">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Start using ToolHub AI for free</h2>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Start using Nexatools for free</h2>
           <p className="mx-auto mt-3 max-w-xl text-primary-foreground/90">
             Create a free account and get 10 credits to try our Pro AI tools — no card required.
           </p>

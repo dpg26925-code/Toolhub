@@ -8,7 +8,7 @@ export const Route = createFileRoute("/reset-password")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Set a new password — ToolHub AI" },
+      { title: "Set a new password — Nexatools" },
       { name: "robots", content: "noindex" },
     ],
   }),

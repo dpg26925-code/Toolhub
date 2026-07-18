@@ -4,10 +4,10 @@ import { SiteLayout } from "@/components/site-layout";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — ToolHub AI" },
-      { name: "description", content: "How ToolHub AI handles your data and privacy." },
-      { property: "og:title", content: "Privacy Policy — ToolHub AI" },
-      { property: "og:description", content: "How ToolHub AI handles your data and privacy." },
+      { title: "Privacy Policy — Nexatools" },
+      { name: "description", content: "How Nexatools handles your data and privacy." },
+      { property: "og:title", content: "Privacy Policy — Nexatools" },
+      { property: "og:description", content: "How Nexatools handles your data and privacy." },
     ],
   }),
   component: () => (
