@@ -1,6 +1,14 @@
 import { lazy, ComponentType, LazyExoticComponent } from "react";
 
 export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
+  "json-formatter": lazy(() => import("./json-formatter")),
+  "base64": lazy(() => import("./base64")),
+  "url-encoder": lazy(() => import("./url-encoder")),
+  "jwt-decoder": lazy(() => import("./jwt-decoder")),
+  "regex-tester": lazy(() => import("./regex-tester")),
+  "password-generator": lazy(() => import("./password-generator")),
+  "hash-generator": lazy(() => import("./hash-generator")),
+  "color-converter": lazy(() => import("./color-converter")),
   "word-counter": lazy(() => import("./word-counter")),
   "case-converter": lazy(() => import("./case-converter")),
   "lorem-ipsum": lazy(() => import("./lorem-ipsum")),
