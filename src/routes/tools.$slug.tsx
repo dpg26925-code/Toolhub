@@ -43,7 +43,6 @@ export const Route = createFileRoute("/tools/$slug")({
             applicationCategory: category?.name ? `${category.name}Application` : "UtilitiesApplication",
             operatingSystem: "Any (web browser)",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            aggregateRating: { "@type": "AggregateRating", ratingValue: "4.8", ratingCount: "128" },
           }),
         },
         {
