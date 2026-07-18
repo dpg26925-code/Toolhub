@@ -504,6 +504,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_credits: { Args: { _amount: number }; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
