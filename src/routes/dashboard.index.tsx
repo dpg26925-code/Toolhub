@@ -9,7 +9,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { TOOLS } from "@/lib/tools-data";
 
 export const Route = createFileRoute("/dashboard/")({
-  head: () => ({ meta: [{ title: "Dashboard — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Nexatools" }, { name: "robots", content: "noindex" }] }),
   component: DashboardHome,
 });
 

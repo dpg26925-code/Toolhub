@@ -60,7 +60,7 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
       <div className="min-h-screen flex w-full">
         <Sidebar collapsible="icon" className="border-r border-slate-800 bg-slate-950 text-slate-100">
           <SidebarHeader className="border-b border-slate-800 px-4 py-3">
-            <Link to="/" className="font-bold text-lg text-white">ToolHub Admin</Link>
+            <Link to="/" className="font-bold text-lg text-white">Nexatools Admin</Link>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>

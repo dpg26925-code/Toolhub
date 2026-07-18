@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { getTool } from "@/lib/tools-data";
 
 export const Route = createFileRoute("/dashboard/favorites")({
-  head: () => ({ meta: [{ title: "Favorites — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Favorites — Nexatools" }, { name: "robots", content: "noindex" }] }),
   component: FavoritesPage,
 });
 

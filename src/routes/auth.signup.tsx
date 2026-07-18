@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth/signup")({
   head: () => ({
     meta: [
-      { title: "Create an account — ToolHub AI" },
-      { name: "description", content: "Sign up for a free ToolHub AI account and get 10 credits to start using every tool." },
+      { title: "Create an account — Nexatools" },
+      { name: "description", content: "Sign up for a free Nexatools account and get 10 credits to start using every tool." },
       { name: "robots", content: "noindex" },
     ],
   }),

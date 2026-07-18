@@ -14,7 +14,7 @@ export const Route = createFileRoute("/tools/$slug")({
     return { tool, category: getCategory(tool.categorySlug) };
   },
   head: ({ loaderData, params }) => {
-    if (!loaderData) return { meta: [{ title: "Tool not found — ToolHub AI" }, { name: "robots", content: "noindex" }] };
+    if (!loaderData) return { meta: [{ title: "Tool not found — Nexatools" }, { name: "robots", content: "noindex" }] };
     const { tool, category } = loaderData;
     const title = toolPageTitle(tool);
     const description = toolMetaDescription(tool);

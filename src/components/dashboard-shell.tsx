@@ -59,7 +59,7 @@ export function DashboardShell({ children, title }: { children: ReactNode; title
       <div className="min-h-screen flex w-full bg-slate-50">
         <Sidebar collapsible="icon">
           <SidebarHeader className="border-b px-4 py-3">
-            <Link to="/" className="font-bold text-lg">ToolHub AI</Link>
+            <Link to="/" className="font-bold text-lg">Nexatools</Link>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>

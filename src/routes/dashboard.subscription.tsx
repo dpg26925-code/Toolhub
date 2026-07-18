@@ -9,7 +9,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Check } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/subscription")({
-  head: () => ({ meta: [{ title: "Subscription — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Subscription — Nexatools" }, { name: "robots", content: "noindex" }] }),
   component: SubPage,
 });
 

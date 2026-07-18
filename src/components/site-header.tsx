@@ -28,7 +28,7 @@ export function SiteHeader() {
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-brand text-primary-foreground shadow-soft">
             ▲
           </span>
-          <span>ToolHub<span className="text-primary"> AI</span></span>
+          <span>Nexatools<span className="text-primary"> AI</span></span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex">
           {NAV.map((item) => (

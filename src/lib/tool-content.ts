@@ -25,8 +25,8 @@ function defaultLongDescription(tool: Tool): string {
     : "is powered by our secure server infrastructure";
   return [
     `The ${tool.name} is a free online utility that helps you ${tool.shortDescription.toLowerCase().replace(/\.$/, "")}. It ${runtime}, so you get instant results without installing software or creating an account.`,
-    `Built for creators, developers and everyday professionals, this tool is part of the ToolHub AI platform — a growing library of 30+ purpose-built utilities. Whether you're preparing files for a client, cleaning up data before analysis or just need a quick one-off conversion, the ${tool.name} handles the heavy lifting so you can stay focused on the work that matters.`,
-    `Everything is designed around three principles: speed, privacy and simplicity. Load the page, drop in your input and get a shareable result in seconds. There are no upsells, no watermarks and no confusing settings — just the tool you came for. Advanced users can unlock higher limits, batch processing and API access with a free ToolHub AI account.`,
+    `Built for creators, developers and everyday professionals, this tool is part of the Nexatools platform — a growing library of 30+ purpose-built utilities. Whether you're preparing files for a client, cleaning up data before analysis or just need a quick one-off conversion, the ${tool.name} handles the heavy lifting so you can stay focused on the work that matters.`,
+    `Everything is designed around three principles: speed, privacy and simplicity. Load the page, drop in your input and get a shareable result in seconds. There are no upsells, no watermarks and no confusing settings — just the tool you came for. Advanced users can unlock higher limits, batch processing and API access with a free Nexatools account.`,
   ].join("\n\n");
 }
 
@@ -44,7 +44,7 @@ function defaultFaqs(tool: Tool): Faq[] {
     { q: `Do you store my files or data?`, a: tool.clientSide
       ? `No. This tool runs entirely in your browser, so nothing is ever uploaded to our servers.`
       : `Files are processed on our servers and deleted immediately after your session ends. We never share or sell your data.` },
-    { q: `Can I use the ${tool.name} on mobile?`, a: `Yes. Every ToolHub AI tool works on desktop, tablet and mobile browsers — no app install needed.` },
+    { q: `Can I use the ${tool.name} on mobile?`, a: `Yes. Every Nexatools tool works on desktop, tablet and mobile browsers — no app install needed.` },
   ];
 }
 
@@ -103,7 +103,7 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
     ],
   },
   "json-formatter": {
-    longDescription: "JSON Formatter is a fast, browser-based utility for developers who spend their day reading and writing JSON. Paste any JSON payload — API responses, config files, log entries — and get an instantly formatted, syntax-highlighted output with the ability to pretty-print, minify or validate the structure.\n\nEvery developer's toolkit needs a reliable JSON formatter, and this one runs 100% client-side so you can safely paste sensitive API responses without worrying about them being logged or sent anywhere. It's also fast enough to handle payloads several megabytes in size without stalling the page.\n\nCombine this with the other developer tools on ToolHub AI — JWT Decoder for inspecting auth tokens, Base64 for encoded fields, Regex Tester for pattern matching and CSV to JSON for data conversion — and you have a full browser-based debugging workbench without ever leaving the tab.",
+    longDescription: "JSON Formatter is a fast, browser-based utility for developers who spend their day reading and writing JSON. Paste any JSON payload — API responses, config files, log entries — and get an instantly formatted, syntax-highlighted output with the ability to pretty-print, minify or validate the structure.\n\nEvery developer's toolkit needs a reliable JSON formatter, and this one runs 100% client-side so you can safely paste sensitive API responses without worrying about them being logged or sent anywhere. It's also fast enough to handle payloads several megabytes in size without stalling the page.\n\nCombine this with the other developer tools on Nexatools — JWT Decoder for inspecting auth tokens, Base64 for encoded fields, Regex Tester for pattern matching and CSV to JSON for data conversion — and you have a full browser-based debugging workbench without ever leaving the tab.",
     howToUse: [
       "Paste your raw JSON into the input box.",
       "Click Format to pretty-print, or Minify to collapse to a single line.",
@@ -129,7 +129,7 @@ export function getToolContent(tool: Tool): ToolContent {
 
 export function toolPageTitle(tool: Tool): string {
   const label = CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool";
-  return `${tool.name} — Free Online ${label} | ToolHub AI`;
+  return `${tool.name} — Free Online ${label} | Nexatools`;
 }
 
 export function toolMetaDescription(tool: Tool): string {

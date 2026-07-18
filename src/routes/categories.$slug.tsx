@@ -12,9 +12,9 @@ export const Route = createFileRoute("/categories/$slug")({
     return { category, tools: toolsInCategory(params.slug) };
   },
   head: ({ loaderData, params }) => {
-    if (!loaderData) return { meta: [{ title: "Category not found — ToolHub AI" }, { name: "robots", content: "noindex" }] };
+    if (!loaderData) return { meta: [{ title: "Category not found — Nexatools" }, { name: "robots", content: "noindex" }] };
     const { category } = loaderData;
-    const title = `${category.name} Tools — Free Online ${category.name} Utilities | ToolHub AI`;
+    const title = `${category.name} Tools — Free Online ${category.name} Utilities | Nexatools`;
     const url = abs(`/categories/${params.slug}`);
     return {
       meta: [

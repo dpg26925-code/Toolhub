@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { Trash2, Copy } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/api-keys")({
-  head: () => ({ meta: [{ title: "API Keys — ToolHub AI" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "API Keys — Nexatools" }, { name: "robots", content: "noindex" }] }),
   component: ApiKeysPage,
 });
 

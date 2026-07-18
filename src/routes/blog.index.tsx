@@ -8,9 +8,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog — Product Updates, Tips & Tutorials | ToolHub AI" },
-      { name: "description", content: "Product updates, tips and tutorials from the ToolHub AI team." },
-      { property: "og:title", content: "Blog — Product Updates, Tips & Tutorials | ToolHub AI" },
+      { title: "Blog — Product Updates, Tips & Tutorials | Nexatools" },
+      { name: "description", content: "Product updates, tips and tutorials from the Nexatools team." },
+      { property: "og:title", content: "Blog — Product Updates, Tips & Tutorials | Nexatools" },
       { property: "og:description", content: "Product updates, tips and tutorials." },
       { property: "og:url", content: abs("/blog") },
     ],
@@ -37,7 +37,7 @@ function BlogIndex() {
     <SiteLayout>
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <header className="mb-10 text-center">
-          <h1 className="text-4xl font-bold tracking-tight">The ToolHub blog</h1>
+          <h1 className="text-4xl font-bold tracking-tight">The Nexatools blog</h1>
           <p className="mt-2 text-muted-foreground">Tutorials, product updates, and tips for creators & developers.</p>
         </header>
 

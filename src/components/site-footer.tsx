@@ -7,7 +7,7 @@ export function SiteFooter() {
         <div>
           <div className="flex items-center gap-2 font-bold text-lg">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-brand text-primary-foreground">▲</span>
-            ToolHub AI
+            Nexatools
           </div>
           <p className="mt-3 text-sm text-muted-foreground">
             The ultimate AI-powered online tool platform for creators, developers and teams.
@@ -28,7 +28,7 @@ export function SiteFooter() {
         ]} />
       </div>
       <div className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} ToolHub AI. All rights reserved.
+        © {new Date().getFullYear()} Nexatools. All rights reserved.
       </div>
     </footer>
   );

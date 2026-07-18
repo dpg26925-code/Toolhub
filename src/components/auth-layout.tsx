@@ -20,7 +20,7 @@ export function AuthLayout({
             ▲
           </span>
           <span>
-            ToolHub<span className="text-primary"> AI</span>
+            Nexatools<span className="text-primary"> AI</span>
           </span>
         </Link>
         <div className="rounded-2xl border border-border/60 bg-background p-8 shadow-soft">

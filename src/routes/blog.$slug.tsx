@@ -14,7 +14,7 @@ const BASE = SITE_URL;
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => ({
     meta: [
-      { title: `Blog — ToolHub AI` },
+      { title: `Blog — Nexatools` },
       { property: "og:type", content: "article" },
       { property: "og:url", content: `${BASE}/blog/${params.slug}` },
     ],
