@@ -18,4 +18,9 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "translate": lazy(() => import("./translate")),
   "rewrite": lazy(() => import("./rewrite")),
   "chat-pdf": lazy(() => import("./chat-pdf")),
+  "csv-to-json": lazy(() => import("./csv-to-json")),
+  "json-to-csv": lazy(() => import("./json-to-csv")),
+  "uuid-generator": lazy(() => import("./uuid-generator")),
+  "html-entities": lazy(() => import("./html-entities")),
+  "timestamp-converter": lazy(() => import("./timestamp-converter")),
 };
