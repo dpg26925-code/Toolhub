@@ -34,6 +34,7 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-pas
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminToolsRouteImport } from './routes/admin.tools'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminBlogRouteImport } from './routes/admin.blog'
 
 const TermsRoute = TermsRouteImport.update({
@@ -161,6 +162,11 @@ const AdminToolsRoute = AdminToolsRouteImport.update({
   path: '/admin/tools',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/admin/categories',
+  path: '/admin/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminBlogRoute = AdminBlogRouteImport.update({
   id: '/admin/blog',
   path: '/admin/blog',
@@ -177,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/tools': typeof AdminToolsRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -205,6 +212,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/tools': typeof AdminToolsRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -234,6 +242,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin/blog': typeof AdminBlogRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/tools': typeof AdminToolsRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -264,6 +273,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/blog'
+    | '/admin/categories'
     | '/admin/tools'
     | '/admin/users'
     | '/auth/callback'
@@ -292,6 +302,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/blog'
+    | '/admin/categories'
     | '/admin/tools'
     | '/admin/users'
     | '/auth/callback'
@@ -320,6 +331,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/admin/blog'
+    | '/admin/categories'
     | '/admin/tools'
     | '/admin/users'
     | '/auth/callback'
@@ -349,6 +361,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   AdminBlogRoute: typeof AdminBlogRoute
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminToolsRoute: typeof AdminToolsRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
@@ -545,6 +558,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/admin/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/blog': {
       id: '/admin/blog'
       path: '/admin/blog'
@@ -565,6 +585,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   AdminBlogRoute: AdminBlogRoute,
+  AdminCategoriesRoute: AdminCategoriesRoute,
   AdminToolsRoute: AdminToolsRoute,
   AdminUsersRoute: AdminUsersRoute,
   AuthCallbackRoute: AuthCallbackRoute,
