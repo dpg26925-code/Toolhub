@@ -1,8 +1,23 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const MODEL = "google/gemini-2.5-flash";
+const CREDIT_COST = 1;
+
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
+
+async function spendCredit(supabase: SupabaseClient<Database>) {
+  const { error } = await supabase.rpc("consume_credits", { _amount: CREDIT_COST });
+  if (error) {
+    if (error.message.includes("insufficient_credits")) {
+      throw new Error("You have no credits left. Upgrade or wait for your daily refill.");
+    }
+    throw new Error(`Unable to charge credits: ${error.message}`);
+  }
+}
 
 async function callGateway(messages: { role: string; content: string }[]) {
   const key = process.env.LOVABLE_API_KEY;
@@ -26,6 +41,7 @@ async function callGateway(messages: { role: string; content: string }[]) {
 }
 
 export const summarizeText = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -35,7 +51,8 @@ export const summarizeText = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await spendCredit(context.supabase);
     const lengthMap = { short: "2-3 sentences", medium: "1 short paragraph", long: "3-4 paragraphs" };
     const styleInstr =
       data.style === "bullet" ? "Format as a concise bulleted list." : "Format as flowing prose.";
@@ -47,6 +64,7 @@ export const summarizeText = createServerFn({ method: "POST" })
   });
 
 export const translateText = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -55,7 +73,8 @@ export const translateText = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await spendCredit(context.supabase);
     const translated = await callGateway([
       {
         role: "system",
@@ -67,6 +86,7 @@ export const translateText = createServerFn({ method: "POST" })
   });
 
 export const rewriteText = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -76,7 +96,8 @@ export const rewriteText = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await spendCredit(context.supabase);
     const rewritten = await callGateway([
       {
         role: "system",
@@ -88,6 +109,7 @@ export const rewriteText = createServerFn({ method: "POST" })
   });
 
 export const chatWithPdf = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -100,7 +122,8 @@ export const chatWithPdf = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    await spendCredit(context.supabase);
     const answer = await callGateway([
       {
         role: "system",
