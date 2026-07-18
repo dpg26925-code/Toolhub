@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { CATEGORIES, TOOLS } from "@/lib/tools-data";
+import { SITE_URL } from "@/lib/site";
 
-const BASE_URL = "";
+const BASE_URL = SITE_URL;
 
 interface Entry { path: string; changefreq: string; priority: string }
 
