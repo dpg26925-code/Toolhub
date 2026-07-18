@@ -6,9 +6,9 @@ const GATEWAY = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const MODEL = "google/gemini-2.5-flash";
 const CREDIT_COST = 1;
 
-async function spendCredit(
-  supabase: { rpc: (fn: string, args: Record<string, unknown>) => Promise<{ error: { message: string } | null }> },
-) {
+type RpcClient = { rpc: (fn: "consume_credits", args: { _amount: number }) => Promise<{ error: { message: string } | null }> };
+
+async function spendCredit(supabase: RpcClient) {
   const { error } = await supabase.rpc("consume_credits", { _amount: CREDIT_COST });
   if (error) {
     if (error.message.includes("insufficient_credits")) {
