@@ -160,7 +160,7 @@ function BlogPost() {
         </div>
 
         <div
-          className="prose prose-slate max-w-none mt-8 prose-headings:font-bold prose-a:text-primary"
+          className="mt-8 max-w-none text-base leading-7 text-foreground [&_a]:font-medium [&_a]:text-primary [&_a]:underline-offset-4 [&_a:hover]:underline [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_h2]:mb-3 [&_h2]:mt-9 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mb-2 [&_h3]:mt-7 [&_h3]:text-xl [&_h3]:font-semibold [&_li]:mb-2 [&_p]:mb-5 [&_strong]:font-semibold [&_ul]:mb-6 [&_ul]:ml-6 [&_ul]:list-disc"
           dangerouslySetInnerHTML={{ __html: html }}
         />
 
