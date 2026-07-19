@@ -29,7 +29,7 @@ export default function VideoToGifTool() {
         "-loop", "0", "out.gif",
       ]);
       const data = await ff.readFile("out.gif");
-      const blob = new Blob([data as Uint8Array], { type: "image/gif" });
+      const blob = new Blob([data as unknown as BlobPart], { type: "image/gif" });
       setUrl(URL.createObjectURL(blob));
       setSize(blob.size);
     } catch (e) {

@@ -28,7 +28,7 @@ export default function VideoTrimmerTool() {
         "-c", "copy", out,
       ]);
       const data = await ff.readFile(out);
-      const blob = new Blob([data as Uint8Array], { type: file.type || "video/mp4" });
+      const blob = new Blob([data as unknown as BlobPart], { type: file.type || "video/mp4" });
       setUrl(URL.createObjectURL(blob));
       setSize(blob.size);
     } catch (e) {

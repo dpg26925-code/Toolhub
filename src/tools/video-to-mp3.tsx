@@ -22,7 +22,7 @@ export default function VideoToMp3Tool() {
       await ff.writeFile("in", await readFileAsUint8(file));
       await ff.exec(["-i", "in", "-vn", "-c:a", "libmp3lame", "-b:a", bitrate, "out.mp3"]);
       const data = await ff.readFile("out.mp3");
-      const blob = new Blob([data as Uint8Array], { type: "audio/mpeg" });
+      const blob = new Blob([data as unknown as BlobPart], { type: "audio/mpeg" });
       setUrl(URL.createObjectURL(blob));
       setSize(blob.size);
     } catch (e) {

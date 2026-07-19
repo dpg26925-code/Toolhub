@@ -29,7 +29,7 @@ export default function AudioExtractorTool() {
       await ff.exec(args);
       const data = await ff.readFile(`out.${format}`);
       const mime = format === "mp3" ? "audio/mpeg" : format === "wav" ? "audio/wav" : "audio/aac";
-      const blob = new Blob([data as Uint8Array], { type: mime });
+      const blob = new Blob([data as unknown as BlobPart], { type: mime });
       setUrl(URL.createObjectURL(blob));
       setSize(blob.size);
     } catch (e) {
