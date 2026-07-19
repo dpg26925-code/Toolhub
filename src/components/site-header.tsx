@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { useRoles } from "@/hooks/use-role";
 import { supabase } from "@/integrations/supabase/client";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const NAV = [
   { to: "/tools", label: "Tools" },
@@ -43,6 +44,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           {loading ? (
             <div className="h-8 w-24 animate-pulse rounded-md bg-secondary" />
           ) : user ? (
