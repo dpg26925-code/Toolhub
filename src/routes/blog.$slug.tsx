@@ -5,8 +5,7 @@ import { Twitter, Linkedin, Link2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { SITE_URL } from "@/lib/site";
-import { getPublishedBlogPost, type PublicBlogPost } from "@/lib/blog.functions";
-import type { StaticBlogPost } from "@/generated/blog-index";
+import { getStaticBlogPost, type StaticBlogPost } from "@/generated/blog-index";
 const BASE = SITE_URL;
 
 function markdownToHtml(markdown: string) {
@@ -69,10 +68,10 @@ function truncate(text: string, max = 155) {
 }
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: async ({ params }) => {
-    const post = (await getPublishedBlogPost({ data: { slug: params.slug } })) as PublicBlogPost | null;
+  loader: ({ params }) => {
+    const post = getStaticBlogPost(params.slug);
     if (!post) throw notFound();
-    return post as StaticBlogPost;
+    return post;
   },
   errorComponent: ({ error }) => (
     <SiteLayout>
