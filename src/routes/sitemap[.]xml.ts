@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { CATEGORIES, TOOLS } from "@/lib/tools-data";
 import { SITE_URL } from "@/lib/site";
-import { listPublishedBlogSlugs } from "@/lib/blog.functions";
+import { listStaticBlogSlugs } from "@/generated/blog-index";
 
 const BASE_URL = SITE_URL;
 
@@ -12,18 +12,12 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        let blogEntries: Entry[] = [];
-        try {
-          const posts = await listPublishedBlogSlugs();
-          blogEntries = posts.map((p) => ({
-            path: `/blog/${p.slug}`,
-            changefreq: "monthly",
-            priority: "0.6",
-            lastmod: p.updated_at ? new Date(p.updated_at).toISOString() : undefined,
-          }));
-        } catch {
-          blogEntries = [];
-        }
+        const blogEntries: Entry[] = listStaticBlogSlugs().map((p) => ({
+          path: `/blog/${p.slug}`,
+          changefreq: "monthly",
+          priority: "0.6",
+          lastmod: p.updated_at ? new Date(p.updated_at).toISOString() : undefined,
+        }));
         const entries: Entry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/tools", changefreq: "weekly", priority: "0.9" },
