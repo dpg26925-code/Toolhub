@@ -604,6 +604,72 @@ export const TOOLS: Tool[] = [
   },
 ];
 
+const YT: Tool[] = [
+  {
+    slug: "yt-thumbnail",
+    name: "YouTube Thumbnail Downloader",
+    shortDescription: "Grab a YouTube video's thumbnail in every available resolution.",
+    categorySlug: "youtube",
+    icon: "🖼️",
+    isFeatured: true,
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "yt-embed",
+    name: "YouTube Embed Code Generator",
+    shortDescription: "Build an iframe embed with autoplay, loop, controls and start-time options.",
+    categorySlug: "youtube",
+    icon: "</>",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "yt-timestamp",
+    name: "YouTube Timestamp Link",
+    shortDescription: "Generate a deep link that jumps to a specific moment in a YouTube video.",
+    categorySlug: "youtube",
+    icon: "⏱️",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "yt-chapters",
+    name: "YouTube Chapter Generator",
+    shortDescription: "Format timestamps into a valid YouTube chapters description block.",
+    categorySlug: "youtube",
+    icon: "📑",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "yt-hashtags",
+    name: "YouTube Hashtag Generator",
+    shortDescription: "Extract keyword-based hashtags from a video title and description.",
+    categorySlug: "youtube",
+    icon: "#",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "yt-title-formatter",
+    name: "YouTube Title & Description Formatter",
+    shortDescription: "Turn a rough idea into a title-cased SEO title, tags and description template.",
+    categorySlug: "youtube",
+    icon: "✍️",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+];
+
+TOOLS.push(...YT);
+
 export const getCategory = (slug: string) => CATEGORIES.find((c) => c.slug === slug);
 export const getTool = (slug: string) => TOOLS.find((t) => t.slug === slug);
 export const toolsInCategory = (slug: string) => TOOLS.filter((t) => t.categorySlug === slug);
