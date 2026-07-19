@@ -1,8 +1,5 @@
-// Auto-consumed static blog index. The JSON is regenerated at build time by
-// scripts/build-blog-index.mjs (see the `prebuild` npm script). Editing the
-// JSON directly is fine for local dev, but a fresh build will overwrite it.
-import data from "./blog-posts.json";
-
+// Static blog index. The companion module `blog-posts.ts` is regenerated at
+// build time by scripts/build-blog-index.mjs (see the `prebuild` npm script).
 export type StaticBlogPost = {
   slug: string;
   title: string;
@@ -16,14 +13,13 @@ export type StaticBlogPost = {
   updated_at: string;
 };
 
-const posts = ((data as { posts?: StaticBlogPost[] })?.posts ?? []) as StaticBlogPost[];
-
-export const STATIC_BLOG_POSTS: StaticBlogPost[] = posts;
+import { STATIC_BLOG_POSTS } from "./blog-posts";
+export { STATIC_BLOG_POSTS } from "./blog-posts";
 
 export function getStaticBlogPost(slug: string): StaticBlogPost | null {
-  return posts.find((p) => p.slug === slug) ?? null;
+  return STATIC_BLOG_POSTS.find((p) => p.slug === slug) ?? null;
 }
 
 export function listStaticBlogSlugs(): Array<{ slug: string; updated_at: string }> {
-  return posts.map((p) => ({ slug: p.slug, updated_at: p.updated_at }));
+  return STATIC_BLOG_POSTS.map((p) => ({ slug: p.slug, updated_at: p.updated_at }));
 }
