@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { abs } from "@/lib/site";
 import { SiteLayout } from "@/components/site-layout";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -17,12 +18,18 @@ export const Route = createFileRoute("/pricing")({
 });
 
 const PLANS = [
-  { name: "Free", price: "$0", period: "forever", features: ["10 credits on signup", "All client-side tools", "3 guest runs per browser", "Community support"], cta: { to: "/auth/signup", label: "Get started" }, highlight: false },
-  { name: "Pro", price: "$20", period: "/month", features: ["500 credits per month", "All AI tools included", "API access with rate limits", "Priority email support", "Save favorites & history"], cta: { to: "/auth/signup", label: "Start Pro" }, highlight: true },
-  { name: "Enterprise", price: "Custom", period: "", features: ["Volume credits & SLA", "SSO / SAML", "Dedicated infra options", "Custom tools & integrations"], cta: { to: "/about", label: "Contact us" }, highlight: false },
+  { name: "Free", price: "$0", period: "forever", features: ["10 credits on signup", "All client-side tools", "3 guest runs per browser", "Community support"], ctaLabel: "Get started", kind: "free" as const, highlight: false },
+  { name: "Pro", price: "$20", period: "/month", features: ["500 credits per month", "All AI tools included", "API access with rate limits", "Priority email support", "Save favorites & history"], ctaLabel: "Start Pro", kind: "pro" as const, highlight: true },
+  { name: "Enterprise", price: "Custom", period: "", features: ["Volume credits & SLA", "SSO / SAML", "Dedicated infra options", "Custom tools & integrations"], ctaLabel: "Contact us", kind: "enterprise" as const, highlight: false },
 ] as const;
 
 function PricingPage() {
+  const { user } = useAuth();
+  const ctaFor = (kind: "free" | "pro" | "enterprise") => {
+    if (kind === "enterprise") return "/about";
+    if (kind === "pro") return user ? "/dashboard/subscription" : "/auth/signup";
+    return user ? "/dashboard" : "/auth/signup";
+  };
   return (
     <SiteLayout>
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
@@ -48,8 +55,8 @@ function PricingPage() {
                   <li key={f} className="flex gap-2"><span className="text-primary">✓</span><span className="text-muted-foreground">{f}</span></li>
                 ))}
               </ul>
-              <Link to={p.cta.to} className={`mt-8 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition ${p.highlight ? "bg-gradient-brand text-primary-foreground hover:opacity-95" : "border border-border bg-card hover:bg-secondary"}`}>
-                {p.cta.label}
+              <Link to={ctaFor(p.kind)} className={`mt-8 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition ${p.highlight ? "bg-gradient-brand text-primary-foreground hover:opacity-95" : "border border-border bg-card hover:bg-secondary"}`}>
+                {p.ctaLabel}
               </Link>
             </div>
           ))}
