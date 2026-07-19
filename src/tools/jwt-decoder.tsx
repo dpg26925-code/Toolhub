@@ -50,6 +50,10 @@ export default function JwtDecoderTool() {
               </div>
             )}
           </div>
+          <div className="md:col-span-2">
+            <h3 className="mb-2 text-sm font-semibold">Signature</h3>
+            <pre className="overflow-auto rounded-xl border border-border bg-background p-4 text-xs break-all whitespace-pre-wrap">{decoded.signature || "(none)"}</pre>
+          </div>
         </div>
       )}
       <p className="text-xs text-muted-foreground">Signature is decoded but not verified — verification requires the signing secret.</p>

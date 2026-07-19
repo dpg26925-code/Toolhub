@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { md5 } from "js-md5";
 
-const ALGOS = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"] as const;
+const ALGOS = ["MD5", "SHA-1", "SHA-256", "SHA-384", "SHA-512"] as const;
 
 async function hash(algo: string, text: string) {
+  if (algo === "MD5") return md5(text);
   const buf = new TextEncoder().encode(text);
   const digest = await crypto.subtle.digest(algo, buf);
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -42,7 +44,7 @@ export default function HashGeneratorTool() {
           </div>
         ))}
       </div>
-      <p className="text-xs text-muted-foreground">MD5 is not supported in browsers via SubtleCrypto because it's cryptographically broken.</p>
+      <p className="text-xs text-muted-foreground">MD5 is included for legacy checksums only — it's cryptographically broken. Prefer SHA-256+ for security.</p>
     </div>
   );
 }

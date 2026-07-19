@@ -41,6 +41,12 @@ export default function Base64Tool() {
         <Button onClick={() => run("encode")}>Encode</Button>
         <Button variant="secondary" onClick={() => run("decode")}>Decode</Button>
         <Button variant="ghost" onClick={() => { navigator.clipboard.writeText(output); toast.success("Copied"); }} disabled={!output}>Copy</Button>
+        <Button variant="ghost" disabled={!output} onClick={() => {
+          const blob = new Blob([output], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a"); a.href = url; a.download = "base64.txt"; a.click();
+          URL.revokeObjectURL(url);
+        }}>Download</Button>
       </div>
       {err && <p className="text-sm text-destructive">Error: {err}</p>}
     </div>
