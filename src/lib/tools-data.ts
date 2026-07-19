@@ -28,6 +28,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "ai", name: "AI", description: "AI-powered writing, summarising and generation tools.", icon: "✨" },
   { slug: "developer", name: "Developer", description: "Everyday utilities for developers — formatters, encoders, testers.", icon: "🧑‍💻" },
   { slug: "trader", name: "Trader", description: "Forex position size, risk/reward, pip, margin, pivot, Fibonacci, RSI, MACD, Bollinger and backtesting — all in-browser.", icon: "📉" },
+  { slug: "accounting", name: "Accounting", description: "Invoices, receipts, VAT, payroll, ROI, depreciation, mortgages and business calculators — 100% in-browser.", icon: "🧾" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -814,3 +815,27 @@ export const getCategory = (slug: string) => CATEGORIES.find((c) => c.slug === s
 export const getTool = (slug: string) => TOOLS.find((t) => t.slug === slug);
 export const toolsInCategory = (slug: string) => TOOLS.filter((t) => t.categorySlug === slug);
 export const featuredTools = () => TOOLS.filter((t) => t.isFeatured);
+const ACCOUNTING: Tool[] = [
+  { slug: "invoice-generator", name: "Invoice Generator", shortDescription: "Create and download professional PDF invoices with tax, discount and custom currency.", categorySlug: "accounting", icon: "🧾", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "receipt-generator", name: "Receipt Generator", shortDescription: "Design and print thermal-style PDF receipts for any sale — merchant, items, payment.", categorySlug: "accounting", icon: "🧻", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "vat-calculator", name: "VAT / Sales Tax Calculator", shortDescription: "Add VAT, GST or sales tax to any subtotal with country presets.", categorySlug: "accounting", icon: "％", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "vat-reverse-calculator", name: "VAT Reverse Calculator", shortDescription: "Extract the net amount and tax from a total that already includes VAT.", categorySlug: "accounting", icon: "⇐％", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "discount-calculator", name: "Discount Calculator", shortDescription: "Compute final price, savings and effective discount for stacked promotions.", categorySlug: "accounting", icon: "🏷", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "sales-margin-calculator", name: "Sales Margin Calculator", shortDescription: "Turn cost and price into margin, markup and profit — or reverse-engineer price from a target margin.", categorySlug: "accounting", icon: "📊", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "markup-calculator", name: "Markup Calculator", shortDescription: "Price products from cost + markup %, or work backwards from a target profit.", categorySlug: "accounting", icon: "＋％", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "business-break-even", name: "Business Break-even Calculator", shortDescription: "Break-even units, revenue and contribution margin with a live cost/revenue chart.", categorySlug: "accounting", icon: "⚖️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "salary-to-hourly", name: "Salary → Hourly Converter", shortDescription: "Convert annual salary to hourly, daily, weekly and monthly rates.", categorySlug: "accounting", icon: "💼", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "hourly-to-salary", name: "Hourly → Salary Converter", shortDescription: "Turn any hourly rate into annual, monthly and weekly salary — or reverse from a target.", categorySlug: "accounting", icon: "⏱💰", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "payroll-tax-calculator", name: "Payroll Tax Calculator", shortDescription: "Progressive tax breakdown, net salary and effective rate — US, UK and Vietnam brackets.", categorySlug: "accounting", icon: "💵", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "overtime-calculator", name: "Overtime Pay Calculator", shortDescription: "Regular + overtime pay at 1.5x, 2x or any custom multiplier.", categorySlug: "accounting", icon: "⏰", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "roi-calculator", name: "ROI Calculator", shortDescription: "ROI, annualised return and net profit for any investment or campaign.", categorySlug: "accounting", icon: "📈", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "npv-calculator", name: "NPV / IRR Calculator", shortDescription: "Discount a series of cash flows, get NPV, approximate IRR and accept/reject signal.", categorySlug: "accounting", icon: "🧮", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "depreciation-calculator", name: "Depreciation Calculator", shortDescription: "Year-by-year schedule using straight-line, double-declining or sum-of-years methods.", categorySlug: "accounting", icon: "📉", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "loan-amortization", name: "Loan Amortization Schedule", shortDescription: "Full month-by-month table with extra payment impact and CSV download.", categorySlug: "accounting", icon: "📅", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "loan-calculator", name: "Loan Calculator", shortDescription: "Monthly payment, total interest and principal/interest split for any loan.", categorySlug: "accounting", icon: "🏦", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "mortgage-calculator", name: "Mortgage Calculator", shortDescription: "Full PITI + HOA monthly payment with tax, insurance and payment breakdown.", categorySlug: "accounting", icon: "🏠", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "startup-cost-calculator", name: "Startup Cost Calculator", shortDescription: "Total startup budget, cost-by-category breakdown and 6-month cash reserve.", categorySlug: "accounting", icon: "🚀", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "profit-margin-calculator", name: "Profit Margin Calculator", shortDescription: "Gross, operating and net margin from revenue, COGS and expenses — with industry benchmarks.", categorySlug: "accounting", icon: "💹", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...ACCOUNTING);
