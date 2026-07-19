@@ -56,4 +56,7 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "image-rotate-flip": lazy(() => import("./image-rotate-flip")),
   "image-remove-exif": lazy(() => import("./image-remove-exif")),
   "image-to-base64": lazy(() => import("./image-to-base64")),
+  "pdf-rotate": lazy(() => import("./pdf-rotate")),
+  "pdf-delete-pages": lazy(() => import("./pdf-delete-pages")),
+  "pdf-to-images": lazy(() => import("./pdf-to-images")),
 };
