@@ -1,6 +1,10 @@
 import { lazy, ComponentType, LazyExoticComponent } from "react";
 
-export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = {
+// Skip building the registry (and its dynamic-import graph) during SSR so the
+// Cloudflare Worker bundle doesn't ship pdfjs/pdf-lib/xlsx/docx/onnxruntime/
+// imgly/tesseract/ffmpeg chunks it never executes — tool components are always
+// rendered inside <ClientOnly> in src/routes/tools.$slug.tsx.
+export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = import.meta.env.SSR ? {} : {
   "json-formatter": lazy(() => import("./json-formatter")),
   "base64": lazy(() => import("./base64")),
   "url-encoder": lazy(() => import("./url-encoder")),
