@@ -27,6 +27,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "converter", name: "Converters", description: "Convert between file formats: images, data, spreadsheets, markdown.", icon: "⇄" },
   { slug: "ai", name: "AI", description: "AI-powered writing, summarising and generation tools.", icon: "✨" },
   { slug: "developer", name: "Developer", description: "Everyday utilities for developers — formatters, encoders, testers.", icon: "🧑‍💻" },
+  { slug: "trader", name: "Trader", description: "Forex position size, risk/reward, pip, margin, pivot, Fibonacci, RSI, MACD, Bollinger and backtesting — all in-browser.", icon: "📉" },
 ];
 
 export const TOOLS: Tool[] = [
