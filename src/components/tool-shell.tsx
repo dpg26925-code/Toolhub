@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import type { Tool, ToolCategory } from "@/lib/tools-data";
 import { getToolContent } from "@/lib/tool-content";
+import { ToolActions } from "@/components/tool-actions";
 
 export function ToolShell({
   tool,
@@ -41,7 +42,7 @@ export function ToolShell({
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent text-lg font-semibold text-accent-foreground">
             {tool.icon}
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-3xl font-bold tracking-tight">{tool.name}</h1>
             {category && (
               <Link
@@ -53,6 +54,7 @@ export function ToolShell({
               </Link>
             )}
           </div>
+          <ToolActions slug={tool.slug} />
         </header>
         <p className="mt-3 max-w-2xl text-muted-foreground">{tool.shortDescription}</p>
 
