@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useRoles } from "@/hooks/use-role";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ToolSearch } from "@/components/tool-search";
 
 const NAV = [
   { to: "/tools", label: "Tools" },
@@ -43,6 +44,9 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <div className="hidden flex-1 max-w-sm px-4 lg:block">
+          <ToolSearch />
+        </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {loading ? (
