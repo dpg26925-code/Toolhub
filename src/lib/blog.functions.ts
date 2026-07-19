@@ -19,8 +19,11 @@ export type PublicBlogPost = {
 export const getPublishedBlogPost = createServerFn({ method: "GET" })
   .inputValidator((d: unknown) => z.object({ slug: z.string().min(1).max(200) }).parse(d))
   .handler(async ({ data }): Promise<PublicBlogPost | null> => {
-    const key = process.env.SUPABASE_PUBLISHABLE_KEY!;
-    const supabase = createClient<Database>(process.env.SUPABASE_URL!, key, {
+    const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+    const key = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+    if (!url || !key) throw new Error("Blog service is not configured");
+
+    const supabase = createClient<Database>(url, key, {
       auth: { persistSession: false, autoRefreshToken: false, storage: undefined },
       global: {
         fetch: (input, init) => {

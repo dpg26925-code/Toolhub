@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { abs } from "@/lib/site";
 import { SiteLayout } from "@/components/site-layout";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const ITEMS = [
   { q: "Is Nexatools free?", a: "Yes. All client-side utilities are free, and you get 10 credits on signup to try Pro AI tools." },
@@ -50,20 +51,41 @@ export const Route = createFileRoute("/faq")({
 function FaqPage() {
   return (
     <SiteLayout>
-      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-        <h1 className="text-4xl font-bold tracking-tight">Frequently asked questions</h1>
-        <div className="mt-10 divide-y divide-border rounded-2xl border border-border bg-card shadow-soft">
-          {ITEMS.map((item) => (
-            <details key={item.q} className="group px-6 py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between text-base font-semibold">
-                {item.q}
-                <span className="ml-4 text-muted-foreground transition group-open:rotate-45">+</span>
-              </summary>
-              <p className="mt-3 text-sm text-muted-foreground">{item.a}</p>
-            </details>
-          ))}
-        </div>
-      </div>
+      <main className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+        <header className="max-w-3xl">
+          <h1 className="text-4xl font-bold tracking-tight">Frequently asked questions</h1>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Clear answers about Nexatools plans, credits, privacy, billing, files, and API access.
+          </p>
+        </header>
+
+        <section aria-label="FAQ answers" className="mt-10 grid gap-8 lg:grid-cols-[16rem_1fr]">
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 rounded-xl border border-border bg-card p-5 text-sm shadow-soft">
+              <p className="font-semibold text-foreground">Topics</p>
+              <ul className="mt-4 space-y-2 text-muted-foreground">
+                <li>Plans & credits</li>
+                <li>Privacy & files</li>
+                <li>API access</li>
+                <li>Billing & refunds</li>
+              </ul>
+            </div>
+          </aside>
+
+          <Accordion type="multiple" defaultValue={ITEMS.slice(0, 6).map((item) => item.q)} className="rounded-xl border border-border bg-card px-5 shadow-soft">
+            {ITEMS.map((item) => (
+              <AccordionItem key={item.q} value={item.q}>
+                <AccordionTrigger className="text-base font-semibold hover:no-underline">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm leading-6 text-muted-foreground">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+      </main>
     </SiteLayout>
   );
 }

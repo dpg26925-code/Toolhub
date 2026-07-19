@@ -1,6 +1,5 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { marked } from "marked";
 import { SiteLayout } from "@/components/site-layout";
 import { Button } from "@/components/ui/button";
 import { Twitter, Linkedin, Link2 } from "lucide-react";
@@ -9,6 +8,59 @@ import { toast } from "sonner";
 import { SITE_URL } from "@/lib/site";
 import { getPublishedBlogPost, type PublicBlogPost } from "@/lib/blog.functions";
 const BASE = SITE_URL;
+
+function markdownToHtml(markdown: string) {
+  const escapeHtml = (value: string) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  const inline = (value: string) =>
+    escapeHtml(value)
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]+|mailto:[^\s)]+)\)/g, '<a href="$2">$1</a>')
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>");
+
+  const lines = markdown.split(/\r?\n/);
+  const html: string[] = [];
+  let list: string[] = [];
+
+  const flushList = () => {
+    if (!list.length) return;
+    html.push(`<ul>${list.map((item) => `<li>${inline(item)}</li>`).join("")}</ul>`);
+    list = [];
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      flushList();
+      continue;
+    }
+    if (trimmed.startsWith("### ")) {
+      flushList();
+      html.push(`<h3>${inline(trimmed.slice(4))}</h3>`);
+    } else if (trimmed.startsWith("## ")) {
+      flushList();
+      html.push(`<h2>${inline(trimmed.slice(3))}</h2>`);
+    } else if (trimmed.startsWith("# ")) {
+      flushList();
+      html.push(`<h2>${inline(trimmed.slice(2))}</h2>`);
+    } else if (/^-\s+/.test(trimmed)) {
+      list.push(trimmed.replace(/^-\s+/, ""));
+    } else if (/^\d+\.\s+/.test(trimmed)) {
+      list.push(trimmed.replace(/^\d+\.\s+/, ""));
+    } else {
+      flushList();
+      html.push(`<p>${inline(trimmed)}</p>`);
+    }
+  }
+  flushList();
+  return html.join("\n");
+}
 
 const postQueryOptions = (slug: string) =>
   queryOptions({
@@ -72,15 +124,7 @@ export const Route = createFileRoute("/blog/$slug")({
       ...(scripts ? { scripts } : {}),
     };
   },
-  errorComponent: () => (
-    <SiteLayout>
-      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">Something went wrong</h1>
-        <p className="mt-2 text-muted-foreground">We couldn't load this article.</p>
-        <Button asChild className="mt-6"><Link to="/blog">Back to blog</Link></Button>
-      </div>
-    </SiteLayout>
-  ),
+  errorComponent: BlogPostError,
   notFoundComponent: () => (
     <SiteLayout>
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
@@ -96,7 +140,7 @@ export const Route = createFileRoute("/blog/$slug")({
 function BlogPost() {
   const { slug } = Route.useParams();
   const { data: post } = useSuspenseQuery(postQueryOptions(slug));
-  const html = marked.parse(post.content ?? "", { async: false }) as string;
+  const html = markdownToHtml(post.content ?? "");
   const url = `${BASE}/blog/${post.slug}`;
 
   return (
@@ -116,7 +160,7 @@ function BlogPost() {
         </div>
 
         <div
-          className="prose prose-slate max-w-none mt-8 prose-headings:font-bold prose-a:text-primary"
+          className="mt-8 max-w-none text-base leading-7 text-foreground [&_a]:font-medium [&_a]:text-primary [&_a]:underline-offset-4 [&_a:hover]:underline [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_h2]:mb-3 [&_h2]:mt-9 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mb-2 [&_h3]:mt-7 [&_h3]:text-xl [&_h3]:font-semibold [&_li]:mb-2 [&_p]:mb-5 [&_strong]:font-semibold [&_ul]:mb-6 [&_ul]:ml-6 [&_ul]:list-disc"
           dangerouslySetInnerHTML={{ __html: html }}
         />
 
@@ -137,6 +181,29 @@ function BlogPost() {
           </Button>
         </div>
       </article>
+    </SiteLayout>
+  );
+}
+
+function BlogPostError({ reset }: { error: Error; reset: () => void }) {
+  const router = useRouter();
+  return (
+    <SiteLayout>
+      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">Article temporarily unavailable</h1>
+        <p className="mt-2 text-muted-foreground">We couldn't load this article right now.</p>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <Button
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+          >
+            Try again
+          </Button>
+          <Button asChild variant="outline"><Link to="/blog">Back to blog</Link></Button>
+        </div>
+      </div>
     </SiteLayout>
   );
 }
