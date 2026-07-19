@@ -2,7 +2,7 @@
 // Regenerated on every build via the `prebuild` npm script.
 import type { StaticBlogPost } from "./blog-index";
 
-export const GENERATED_AT = "2026-07-19T09:03:32.203Z";
+export const GENERATED_AT = "2026-07-19T14:41:02.803Z";
 export const STATIC_BLOG_POSTS: StaticBlogPost[] = [
   {
     "slug": "welcome-to-nexatools",
