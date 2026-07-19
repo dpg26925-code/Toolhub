@@ -48,24 +48,4 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "xml-json": lazy(() => import("./xml-json")),
   "toml-json": lazy(() => import("./toml-json")),
   "excel-to-csv": lazy(() => import("./excel-to-csv")),
-  // Video
-  "video-to-gif": lazy(() => import("./video-to-gif")),
-  "video-trimmer": lazy(() => import("./video-trimmer")),
-  "video-compressor": lazy(() => import("./video-compressor")),
-  "audio-extractor": lazy(() => import("./audio-extractor")),
-  "video-to-mp3": lazy(() => import("./video-to-mp3")),
-  // Writing (AI)
-  "grammar-checker": lazy(() => import("./grammar-checker")),
-  "paragraph-generator": lazy(() => import("./paragraph-generator")),
-  "email-writer": lazy(() => import("./email-writer")),
-  "blog-title-generator": lazy(() => import("./blog-title-generator")),
-  "content-expander": lazy(() => import("./content-expander")),
-  "tone-changer": lazy(() => import("./tone-changer")),
-  // Converters
-  "image-converter": lazy(() => import("./image-converter")),
-  "markdown-to-html": lazy(() => import("./markdown-to-html")),
-  "yaml-json": lazy(() => import("./yaml-json")),
-  "xml-json": lazy(() => import("./xml-json")),
-  "toml-json": lazy(() => import("./toml-json")),
-  "excel-to-csv": lazy(() => import("./excel-to-csv")),
 };
