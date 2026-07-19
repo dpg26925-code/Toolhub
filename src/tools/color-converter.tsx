@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 function hexToRgb(hex: string) {
   const m = hex.replace("#", "").match(/^([0-9a-f]{3}|[0-9a-f]{6})$/i);
@@ -30,6 +32,24 @@ function rgbToHsl(r: number, g: number, b: number) {
   return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
 }
 
+function rgbToHsv(r: number, g: number, b: number) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const d = max - min;
+  let h = 0;
+  const s = max === 0 ? 0 : d / max;
+  const v = max;
+  if (d !== 0) {
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h *= 60;
+  }
+  return { h: Math.round(h), s: Math.round(s * 100), v: Math.round(v * 100) };
+}
+
 export default function ColorConverterTool() {
   const [hex, setHex] = useState("#6366f1");
   const parsed = useMemo(() => hexToRgb(hex), [hex]);
@@ -46,16 +66,21 @@ export default function ColorConverterTool() {
         <div className="space-y-3">
           {(() => {
             const hsl = rgbToHsl(parsed.r, parsed.g, parsed.b);
+            const hsv = rgbToHsv(parsed.r, parsed.g, parsed.b);
             const rows: [string, string][] = [
               ["HEX", rgbToHex(parsed.r, parsed.g, parsed.b).toUpperCase()],
               ["RGB", `rgb(${parsed.r}, ${parsed.g}, ${parsed.b})`],
               ["HSL", `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`],
+              ["HSV", `hsv(${hsv.h}, ${hsv.s}%, ${hsv.v}%)`],
               ["CSS var", `--color: ${rgbToHex(parsed.r, parsed.g, parsed.b)};`],
             ];
             return rows.map(([label, value]) => (
               <div key={label} className="flex items-center justify-between rounded-xl border border-border bg-background p-3">
                 <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</span>
-                <span className="font-mono text-sm">{value}</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-sm">{value}</span>
+                  <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(value); toast.success("Copied"); }}>Copy</Button>
+                </div>
               </div>
             ));
           })()}
