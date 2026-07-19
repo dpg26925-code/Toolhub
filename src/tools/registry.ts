@@ -66,4 +66,12 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "yt-chapters": lazy(() => import("./yt-chapters")),
   "yt-hashtags": lazy(() => import("./yt-hashtags")),
   "yt-title-formatter": lazy(() => import("./yt-title-formatter")),
+  "utm-builder": lazy(() => import("./utm-builder")),
+  "disclosure-generator": lazy(() => import("./disclosure-generator")),
+  "commission-calculator": lazy(() => import("./commission-calculator")),
+  "link-expander": lazy(() => import("./link-expander")),
+  "campaign-url-builder": lazy(() => import("./campaign-url-builder")),
+  "affiliate-income-calculator": lazy(() => import("./affiliate-income-calculator")),
+  "hashtag-generator": lazy(() => import("./hashtag-generator")),
+  "affiliate-link-checker": lazy(() => import("./affiliate-link-checker")),
 };

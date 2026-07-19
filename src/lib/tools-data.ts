@@ -22,6 +22,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "image", name: "Image", description: "Resize, convert, compress and enhance images.", icon: "🖼️" },
   { slug: "video", name: "Video", description: "Trim, compress, convert video and extract audio — all in-browser.", icon: "🎬" },
   { slug: "youtube", name: "YouTube", description: "Free YouTube helpers: thumbnails, embeds, chapters, hashtags — 100% in-browser.", icon: "▶️" },
+  { slug: "affiliate", name: "Affiliate", description: "UTM builders, disclosures, commission calculators and link tools for affiliate marketers.", icon: "🔗" },
   { slug: "converter", name: "Converters", description: "Convert between file formats: images, data, spreadsheets, markdown.", icon: "⇄" },
   { slug: "ai", name: "AI", description: "AI-powered writing, summarising and generation tools.", icon: "✨" },
   { slug: "developer", name: "Developer", description: "Everyday utilities for developers — formatters, encoders, testers.", icon: "🧑‍💻" },
@@ -669,6 +670,93 @@ const YT: Tool[] = [
 ];
 
 TOOLS.push(...YT);
+
+const AFFILIATE: Tool[] = [
+  {
+    slug: "utm-builder",
+    name: "UTM Builder",
+    shortDescription: "Build tracked campaign URLs with UTM parameters and a downloadable QR code.",
+    categorySlug: "affiliate",
+    icon: "🔗",
+    isFeatured: true,
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "disclosure-generator",
+    name: "Affiliate Disclosure Generator",
+    shortDescription: "Generate FTC-compliant affiliate disclosures for blog, YouTube, Instagram, TikTok and more.",
+    categorySlug: "affiliate",
+    icon: "📄",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "commission-calculator",
+    name: "Commission Calculator",
+    shortDescription: "Calculate affiliate commissions, effective rates and bonus payouts.",
+    categorySlug: "affiliate",
+    icon: "💰",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "link-expander",
+    name: "Link Expander",
+    shortDescription: "Expand shortened links and see the full redirect chain and final destination.",
+    categorySlug: "affiliate",
+    icon: "🔎",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "campaign-url-builder",
+    name: "Campaign URL Builder",
+    shortDescription: "Build ready-to-share campaign URLs per platform (Facebook, Google, TikTok, email) with QR code.",
+    categorySlug: "affiliate",
+    icon: "🎯",
+    isFeatured: true,
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "affiliate-income-calculator",
+    name: "Affiliate Income Calculator",
+    shortDescription: "Project monthly and yearly affiliate income from traffic, conversion rate and commission.",
+    categorySlug: "affiliate",
+    icon: "📈",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "hashtag-generator",
+    name: "Hashtag Generator",
+    shortDescription: "Extract relevant hashtags from any text — sized for Instagram, Twitter/X and LinkedIn.",
+    categorySlug: "affiliate",
+    icon: "#",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
+    slug: "affiliate-link-checker",
+    name: "Affiliate Link Checker",
+    shortDescription: "Batch-check affiliate URLs for broken, redirected or active status and export as CSV.",
+    categorySlug: "affiliate",
+    icon: "✅",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+];
+
+TOOLS.push(...AFFILIATE);
 
 export const getCategory = (slug: string) => CATEGORIES.find((c) => c.slug === slug);
 export const getTool = (slug: string) => TOOLS.find((t) => t.slug === slug);
