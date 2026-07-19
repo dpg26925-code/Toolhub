@@ -6,7 +6,6 @@ export default function RemoveBackgroundTool() {
   const [file, setFile] = useState<File | null>(null);
   const [original, setOriginal] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);
-  const [slider, setSlider] = useState(50);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,48 +31,71 @@ export default function RemoveBackgroundTool() {
     }
   };
 
+  const reset = () => {
+    setFile(null);
+    setOriginal(null);
+    setResult(null);
+    setError(null);
+  };
+
+  const checker = {
+    backgroundImage:
+      "repeating-conic-gradient(hsl(var(--muted)) 0% 25%, transparent 0% 50%) 50% / 20px 20px",
+  };
+
   return (
     <div className="space-y-4">
       <Input type="file" accept="image/*" onChange={(e) => onFile(e.target.files?.[0] ?? null)} />
       <p className="text-xs text-muted-foreground">
         Runs a neural network entirely in your browser — the first run downloads the model (~40 MB) and may take a moment.
       </p>
-      <Button onClick={run} disabled={!file || busy}>
-        {busy ? "Removing background…" : "Remove background"}
-      </Button>
-      {original && result && (
-        <div className="space-y-3">
-          <div
-            className="relative w-full overflow-hidden rounded-xl border border-border"
-            style={{
-              backgroundImage:
-                "repeating-conic-gradient(hsl(var(--muted)) 0% 25%, transparent 0% 50%) 50% / 20px 20px",
-            }}
-          >
-            <img src={original} alt="original" className="block w-full" />
-            <div className="absolute inset-0 overflow-hidden" style={{ width: `${slider}%` }}>
-              <img
-                src={result}
-                alt="result"
-                className="block h-full max-w-none"
-                style={{ width: `${(100 / Math.max(slider, 1)) * 100}%` }}
-              />
+      <div className="flex flex-wrap gap-2">
+        <Button onClick={run} disabled={!file || busy}>
+          {busy ? "Removing background…" : "Remove background"}
+        </Button>
+        {(file || result) && (
+          <Button variant="outline" onClick={reset} disabled={busy}>
+            Try another image
+          </Button>
+        )}
+      </div>
+      {original && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <figure className="space-y-2">
+            <figcaption className="text-xs font-medium text-muted-foreground">Original</figcaption>
+            <div className="overflow-hidden rounded-xl border border-border">
+              <img src={original} alt="original" className="block w-full" />
             </div>
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={slider}
-            onChange={(e) => setSlider(parseInt(e.target.value, 10))}
-            className="w-full"
-          />
-          <Button asChild variant="outline">
-            <a href={result} download="no-background.png">Download PNG</a>
+          </figure>
+          <figure className="space-y-2">
+            <figcaption className="text-xs font-medium text-muted-foreground">
+              {result ? "Background removed" : busy ? "Processing…" : "Result will appear here"}
+            </figcaption>
+            <div className="overflow-hidden rounded-xl border border-border" style={checker}>
+              {result ? (
+                <img src={result} alt="result" className="block w-full" />
+              ) : (
+                <div className="flex aspect-square items-center justify-center text-xs text-muted-foreground">
+                  {busy ? "Removing background…" : "—"}
+                </div>
+              )}
+            </div>
+          </figure>
+        </div>
+      )}
+      {result && (
+        <Button asChild variant="outline">
+          <a href={result} download="no-background.png">Download PNG</a>
+        </Button>
+      )}
+      {error && (
+        <div className="space-y-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3">
+          <p className="text-sm text-destructive">{error}</p>
+          <Button size="sm" variant="outline" onClick={run} disabled={!file || busy}>
+            Retry
           </Button>
         </div>
       )}
-      {error && <p className="text-sm text-destructive">{error}</p>}
     </div>
   );
 }
