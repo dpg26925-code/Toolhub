@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
 const GATEWAY = "https://openrouter.ai/api/v1/chat/completions";
-const DEFAULT_MODEL = "google/gemini-2.0-flash-exp:free";
+const DEFAULT_MODEL = "openrouter/free";
 const CREDIT_COST = 1;
 const GUEST_COOKIE = "nexatools_ai_guest_uses";
 const GUEST_LIMIT = 3;
@@ -139,9 +139,17 @@ async function callGateway(messages: { role: string; content: string }[]) {
   });
   if (!res.ok) {
     const text = await res.text();
+    let providerMessage = text;
+    try {
+      const parsed = JSON.parse(text) as { error?: { message?: string } };
+      providerMessage = parsed.error?.message ?? text;
+    } catch {
+      providerMessage = text;
+    }
     if (res.status === 429) throw new Error("Rate limit — please try again in a moment.");
     if (res.status === 402) throw new Error("OpenRouter credits exhausted. Top up at openrouter.ai/credits.");
-    throw new Error(`AI request failed (${res.status}): ${text.slice(0, 200)}`);
+    if (res.status === 404) throw new Error("Selected AI model is unavailable. Please try again in a moment.");
+    throw new Error(`AI request failed (${res.status}): ${providerMessage.slice(0, 180)}`);
   }
   const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
   return json.choices?.[0]?.message?.content ?? "";
