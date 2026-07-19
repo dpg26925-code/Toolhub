@@ -790,6 +790,26 @@ const TIKTOK: Tool[] = [
 
 TOOLS.push(...TIKTOK);
 
+const TRADER: Tool[] = [
+  { slug: "position-size-calculator", name: "Position Size Calculator", shortDescription: "Compute exact lot size from balance, risk % and stop-loss distance across major FX pairs.", categorySlug: "trader", icon: "📏", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "risk-reward-calculator", name: "Risk / Reward Calculator", shortDescription: "Visualise R:R ratio, profit, loss and break-even win rate for any trade setup.", categorySlug: "trader", icon: "⚖️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pip-calculator", name: "Pip Calculator", shortDescription: "Pip value and total P/L for any pair, lot size and price movement.", categorySlug: "trader", icon: "💹", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "margin-calculator", name: "Margin Calculator", shortDescription: "Required margin, free margin and margin level for any pair and leverage.", categorySlug: "trader", icon: "🏦", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "sl-tp-calculator", name: "SL / TP Calculator", shortDescription: "Derive stop-loss, take-profit and lot size from entry, risk amount and R:R.", categorySlug: "trader", icon: "🎯", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "fibonacci-calculator", name: "Fibonacci Retracement", shortDescription: "23.6%, 38.2%, 50%, 61.8%, 78.6% retracement and 127.2/161.8/261.8% extensions.", categorySlug: "trader", icon: "🌀", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pivot-point-calculator", name: "Pivot Point Calculator", shortDescription: "Classic, Woodie and Camarilla pivot points with R1-R3 / S1-S3 levels.", categorySlug: "trader", icon: "📍", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "rsi-calculator", name: "RSI Calculator", shortDescription: "Compute Relative Strength Index with overbought / oversold signals and chart.", categorySlug: "trader", icon: "📈", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "macd-calculator", name: "MACD Calculator", shortDescription: "MACD line, signal and histogram from a price series with visual chart.", categorySlug: "trader", icon: "📊", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "bollinger-bands", name: "Bollinger Bands Calculator", shortDescription: "Upper, middle and lower bands with %B and bandwidth on a price chart.", categorySlug: "trader", icon: "🎚", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "compound-interest-calculator", name: "Trader Compound Interest", shortDescription: "Model account growth with monthly deposits and reinvested returns.", categorySlug: "trader", icon: "🌱", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "profit-calculator", name: "Trading Profit Calculator", shortDescription: "Net P/L, pips and ROI from buy/sell prices, lot size and commission.", categorySlug: "trader", icon: "💰", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "break-even-calculator", name: "Break-even Calculator", shortDescription: "How far price must move to cover spread and commission on any position.", categorySlug: "trader", icon: "⚖", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "lot-size-optimizer", name: "Lot Size Optimizer", shortDescription: "Compare optimal lot sizes across 0.5%, 1%, 2%, 3% risk levels side by side.", categorySlug: "trader", icon: "🧭", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "strategy-backtester", name: "Strategy Backtester", shortDescription: "Backtest MA crossover or RSI reversal strategies with win rate, profit factor and drawdown.", categorySlug: "trader", icon: "🧪", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...TRADER);
+
 export const getCategory = (slug: string) => CATEGORIES.find((c) => c.slug === slug);
 export const getTool = (slug: string) => TOOLS.find((t) => t.slug === slug);
 export const toolsInCategory = (slug: string) => TOOLS.filter((t) => t.categorySlug === slug);
