@@ -21,6 +21,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "pdf", name: "PDF", description: "Compress, convert, merge, split and edit PDF files.", icon: "📄" },
   { slug: "image", name: "Image", description: "Resize, convert, compress and enhance images.", icon: "🖼️" },
   { slug: "video", name: "Video", description: "Trim, compress, convert video and extract audio — all in-browser.", icon: "🎬" },
+  { slug: "youtube", name: "YouTube", description: "Free YouTube helpers: thumbnails, embeds, chapters, hashtags — 100% in-browser.", icon: "▶️" },
   { slug: "converter", name: "Converters", description: "Convert between file formats: images, data, spreadsheets, markdown.", icon: "⇄" },
   { slug: "ai", name: "AI", description: "AI-powered writing, summarising and generation tools.", icon: "✨" },
   { slug: "developer", name: "Developer", description: "Everyday utilities for developers — formatters, encoders, testers.", icon: "🧑‍💻" },
