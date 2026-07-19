@@ -60,4 +60,10 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "pdf-delete-pages": lazy(() => import("./pdf-delete-pages")),
   "pdf-to-images": lazy(() => import("./pdf-to-images")),
   "pdf-ocr": lazy(() => import("./pdf-ocr")),
+  "yt-thumbnail": lazy(() => import("./yt-thumbnail")),
+  "yt-embed": lazy(() => import("./yt-embed")),
+  "yt-timestamp": lazy(() => import("./yt-timestamp")),
+  "yt-chapters": lazy(() => import("./yt-chapters")),
+  "yt-hashtags": lazy(() => import("./yt-hashtags")),
+  "yt-title-formatter": lazy(() => import("./yt-title-formatter")),
 };
