@@ -524,6 +524,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      refill_free_credits: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
