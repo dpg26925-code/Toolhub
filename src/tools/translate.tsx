@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { translateText } from "@/lib/ai.functions";
+import { callAi } from "@/lib/ai-client";
 
 const LANGS = ["English", "Vietnamese", "Spanish", "Indonesian"] as const;
 type Lang = (typeof LANGS)[number];
 
 export default function TranslateTool() {
-  const call = useServerFn(translateText);
   const [text, setText] = useState("");
   const [target, setTarget] = useState<Lang>("Vietnamese");
   const [out, setOut] = useState("");
@@ -20,8 +18,8 @@ export default function TranslateTool() {
   const run = async () => {
     setBusy(true); setError(null);
     try {
-      const r = await call({ data: { text, target } });
-      setOut(r.translated);
+      const content = await callAi({ action: "translate", text, target });
+      setOut(content);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed");
     } finally { setBusy(false); }
