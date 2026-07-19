@@ -5,7 +5,8 @@ import { Twitter, Linkedin, Link2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { SITE_URL } from "@/lib/site";
-import { getStaticBlogPost, type StaticBlogPost } from "@/generated/blog-index";
+import { getPublishedBlogPost, type PublicBlogPost } from "@/lib/blog.functions";
+import type { StaticBlogPost } from "@/generated/blog-index";
 const BASE = SITE_URL;
 
 function markdownToHtml(markdown: string) {
@@ -68,11 +69,20 @@ function truncate(text: string, max = 155) {
 }
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = getStaticBlogPost(params.slug);
+  loader: async ({ params }) => {
+    const post = (await getPublishedBlogPost({ data: { slug: params.slug } })) as PublicBlogPost | null;
     if (!post) throw notFound();
-    return post;
+    return post as StaticBlogPost;
   },
+  errorComponent: ({ error }) => (
+    <SiteLayout>
+      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">Article temporarily unavailable</h1>
+        <p className="mt-2 text-muted-foreground">{error?.message || "Please try again shortly."}</p>
+        <Button asChild className="mt-6"><Link to="/blog">Back to blog</Link></Button>
+      </div>
+    </SiteLayout>
+  ),
   head: ({ params, loaderData }) => {
     const post = loaderData as StaticBlogPost | undefined;
     const url = `${BASE}/blog/${params.slug}`;
