@@ -759,6 +759,36 @@ const AFFILIATE: Tool[] = [
 
 TOOLS.push(...AFFILIATE);
 
+const TIKTOK: Tool[] = [
+  { slug: "tt-caption-counter", name: "TikTok Caption Counter", shortDescription: "Live counts for characters (2200 limit), words, hashtags, mentions and emojis.", categorySlug: "tiktok", icon: "🔢", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-hashtag-counter", name: "Hashtag Counter", shortDescription: "Count total, unique and duplicate hashtags in any TikTok caption.", categorySlug: "tiktok", icon: "#", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-emoji-counter", name: "Emoji Counter", shortDescription: "Count and frequency-rank every emoji in your caption.", categorySlug: "tiktok", icon: "😊", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-line-break", name: "TikTok Line Break Generator", shortDescription: "Preserve blank lines in TikTok, Instagram and Threads with invisible characters.", categorySlug: "tiktok", icon: "↵", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-caption-formatter", name: "Caption Formatter", shortDescription: "Clean spacing, dedupe hashtags and group them at the end of your caption.", categorySlug: "tiktok", icon: "✨", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-hashtag-shuffle", name: "Hashtag Shuffle", shortDescription: "Randomise hashtag order between posts to avoid caption-pattern flags.", categorySlug: "tiktok", icon: "🔀", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-hashtag-dedupe", name: "Hashtag Deduplicator", shortDescription: "Remove duplicate hashtags from a caption or list — case-insensitive.", categorySlug: "tiktok", icon: "🧹", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-hashtag-sort", name: "Hashtag Sorter", shortDescription: "Sort hashtags A→Z, Z→A, shortest first or longest first.", categorySlug: "tiktok", icon: "↕", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-hashtag-merge", name: "Hashtag Merger", shortDescription: "Merge multiple hashtag lists into one deduplicated set.", categorySlug: "tiktok", icon: "🔗", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-hashtag-split", name: "Hashtag Splitter", shortDescription: "Split a long hashtag list into evenly sized groups for A/B testing.", categorySlug: "tiktok", icon: "✂️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-teleprompter", name: "Teleprompter", shortDescription: "Smooth-scrolling script prompter with speed, font size and mirror mode.", categorySlug: "tiktok", icon: "📜", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-countdown", name: "Recording Countdown", shortDescription: "Big countdown timer with beep — perfect before hitting record.", categorySlug: "tiktok", icon: "⏱", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-script-formatter", name: "Script Timing Formatter", shortDescription: "Format your script by scene with per-beat and cumulative seconds.", categorySlug: "tiktok", icon: "🎬", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-hook-picker", name: "Random Hook Picker", shortDescription: "Randomly pick from 15 proven TikTok hook templates for your niche.", categorySlug: "tiktok", icon: "🎣", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-cta-generator", name: "CTA Generator", shortDescription: "Ready-made calls to action for follow, like, comment, save, share and link goals.", categorySlug: "tiktok", icon: "📣", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-storyboard", name: "Storyboard Builder", shortDescription: "Plan shots, visuals, audio and per-scene timing — export as Markdown.", categorySlug: "tiktok", icon: "🖼️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-engagement-rate", name: "Engagement Rate Calculator", shortDescription: "Calculate engagement rate by views and by followers with a quality band.", categorySlug: "tiktok", icon: "📊", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-cpm-calc", name: "CPM Calculator", shortDescription: "Compute cost per 1,000 impressions from ad spend and reach.", categorySlug: "tiktok", icon: "💵", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-roi-calc", name: "ROI & ROAS Calculator", shortDescription: "Instantly calculate profit, ROI and return on ad spend for any campaign.", categorySlug: "tiktok", icon: "📈", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-profit-calc", name: "TikTok Shop Profit Calculator", shortDescription: "Model per-unit and total profit including product cost, shipping and platform fees.", categorySlug: "tiktok", icon: "🧮", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-barcode", name: "Barcode Generator", shortDescription: "Generate CODE128, EAN, UPC and ITF barcodes as downloadable SVGs.", categorySlug: "tiktok", icon: "▮▯▮", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-qr-generator", name: "QR Code Generator", shortDescription: "Create custom QR codes with color, size and error-correction control.", categorySlug: "tiktok", icon: "▦", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-sku-generator", name: "SKU Generator", shortDescription: "Generate structured SKUs for every color × size combination in bulk.", categorySlug: "tiktok", icon: "🏷", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-label-generator", name: "Shipping Label Generator", shortDescription: "Design and print product / shipping labels with title, SKU, price and note.", categorySlug: "tiktok", icon: "📦", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tt-price-tag", name: "Price Tag Maker", shortDescription: "Design printable sale price tags with badge, original vs sale price and accent color.", categorySlug: "tiktok", icon: "🏷️", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...TIKTOK);
+
 export const getCategory = (slug: string) => CATEGORIES.find((c) => c.slug === slug);
 export const getTool = (slug: string) => TOOLS.find((t) => t.slug === slug);
 export const toolsInCategory = (slug: string) => TOOLS.filter((t) => t.categorySlug === slug);
