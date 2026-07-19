@@ -1,12 +1,11 @@
-import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { Button } from "@/components/ui/button";
 import { Twitter, Linkedin, Link2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { SITE_URL } from "@/lib/site";
-import { getPublishedBlogPost, type PublicBlogPost } from "@/lib/blog.functions";
+import { getStaticBlogPost, type StaticBlogPost } from "@/generated/blog-index";
 const BASE = SITE_URL;
 
 function markdownToHtml(markdown: string) {
@@ -62,16 +61,6 @@ function markdownToHtml(markdown: string) {
   return html.join("\n");
 }
 
-const postQueryOptions = (slug: string) =>
-  queryOptions({
-    queryKey: ["blog-post", slug],
-    queryFn: async () => {
-      const row = await getPublishedBlogPost({ data: { slug } });
-      if (!row) throw notFound();
-      return row as PublicBlogPost;
-    },
-  });
-
 function truncate(text: string, max = 155) {
   const clean = text.replace(/\s+/g, " ").trim();
   if (clean.length <= max) return clean;
@@ -79,9 +68,13 @@ function truncate(text: string, max = 155) {
 }
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ context, params }) => context.queryClient.ensureQueryData(postQueryOptions(params.slug)),
+  loader: ({ params }) => {
+    const post = getStaticBlogPost(params.slug);
+    if (!post) throw notFound();
+    return post;
+  },
   head: ({ params, loaderData }) => {
-    const post = loaderData as PublicBlogPost | undefined;
+    const post = loaderData as StaticBlogPost | undefined;
     const url = `${BASE}/blog/${params.slug}`;
     const title = post?.meta_title || post?.title || "Blog — Nexatools";
     const rawDesc = post?.meta_description || post?.excerpt || (post?.content ? truncate(post.content) : "");
@@ -124,7 +117,6 @@ export const Route = createFileRoute("/blog/$slug")({
       ...(scripts ? { scripts } : {}),
     };
   },
-  errorComponent: BlogPostError,
   notFoundComponent: () => (
     <SiteLayout>
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
@@ -138,8 +130,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPost() {
-  const { slug } = Route.useParams();
-  const { data: post } = useSuspenseQuery(postQueryOptions(slug));
+  const post = Route.useLoaderData();
   const html = markdownToHtml(post.content ?? "");
   const url = `${BASE}/blog/${post.slug}`;
 
@@ -181,29 +172,6 @@ function BlogPost() {
           </Button>
         </div>
       </article>
-    </SiteLayout>
-  );
-}
-
-function BlogPostError({ reset }: { error: Error; reset: () => void }) {
-  const router = useRouter();
-  return (
-    <SiteLayout>
-      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">Article temporarily unavailable</h1>
-        <p className="mt-2 text-muted-foreground">We couldn't load this article right now.</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <Button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-          >
-            Try again
-          </Button>
-          <Button asChild variant="outline"><Link to="/blog">Back to blog</Link></Button>
-        </div>
-      </div>
     </SiteLayout>
   );
 }

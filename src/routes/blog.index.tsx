@@ -1,9 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { abs } from "@/lib/site";
-import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/site-layout";
-import { supabase } from "@/integrations/supabase/client";
-import { Skeleton } from "@/components/ui/skeleton";
+import { STATIC_BLOG_POSTS } from "@/generated/blog-index";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -20,18 +18,7 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogIndex() {
-  const q = useQuery({
-    queryKey: ["blog-index"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("blog_posts")
-        .select("id, slug, title, excerpt, cover_image, published_at, created_at, content")
-        .eq("published", true)
-        .order("published_at", { ascending: false, nullsFirst: false })
-        .limit(50);
-      return data ?? [];
-    },
-  });
+  const posts = STATIC_BLOG_POSTS;
 
   return (
     <SiteLayout>
@@ -41,15 +28,11 @@ function BlogIndex() {
           <p className="mt-2 text-muted-foreground">Tutorials, product updates, and tips for creators & developers.</p>
         </header>
 
-        {q.isLoading ? (
+        {posts.length ? (
           <div className="grid gap-6 md:grid-cols-3">
-            {[0, 1, 2].map((i) => <Skeleton key={i} className="h-64 w-full" />)}
-          </div>
-        ) : q.data?.length ? (
-          <div className="grid gap-6 md:grid-cols-3">
-            {q.data.map((p: any) => (
+            {posts.map((p) => (
               <Link
-                key={p.id}
+                key={p.slug}
                 to="/blog/$slug"
                 params={{ slug: p.slug }}
                 className="hover-lift group flex flex-col rounded-2xl border bg-card overflow-hidden"
