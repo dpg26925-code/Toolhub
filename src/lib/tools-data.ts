@@ -215,6 +215,16 @@ export const TOOLS: Tool[] = [
     clientSide: true,
   },
   {
+    slug: "pdf-ocr",
+    name: "PDF OCR",
+    shortDescription: "Extract text from scanned PDFs in 7 languages — 100% in your browser.",
+    categorySlug: "pdf",
+    icon: "🔍",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
     slug: "text-to-speech",
     name: "Text to Speech",
     shortDescription: "Convert text to natural speech with voice and speed control.",
