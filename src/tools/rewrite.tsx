@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { rewriteText } from "@/lib/ai.functions";
+import { callAi } from "@/lib/ai-client";
 
 export default function RewriteTool() {
-  const call = useServerFn(rewriteText);
   const [text, setText] = useState("");
   const [tone, setTone] = useState<"formal" | "casual" | "professional">("professional");
   const [length, setLength] = useState<"shorter" | "same" | "longer">("same");
@@ -18,8 +16,8 @@ export default function RewriteTool() {
   const run = async () => {
     setBusy(true); setError(null);
     try {
-      const r = await call({ data: { text, tone, length } });
-      setOut(r.rewritten);
+      const content = await callAi({ action: "rewrite", text, tone, length });
+      setOut(content);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed");
     } finally { setBusy(false); }
