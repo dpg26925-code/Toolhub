@@ -18,6 +18,8 @@ const CATEGORY_LABEL: Record<string, string> = {
   converter: "File Converter",
   ai: "AI Tool",
   developer: "Developer Tool",
+  youtube: "YouTube Tool",
+  affiliate: "Affiliate Marketing Tool",
 };
 
 /** Default long description used when no override exists — keeps SEO body copy on every tool page. */
