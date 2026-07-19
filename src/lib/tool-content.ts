@@ -37,6 +37,7 @@ function defaultLongDescription(tool: Tool): string {
     ai: `The underlying model is tuned for practical output: summaries you can send to a colleague, translations that read naturally and rewrites that preserve the meaning of the original text.`,
     developer: `It's the utility developers keep pinned in a tab — reach for it between commits, while reviewing an API response or when a teammate pastes something into Slack that needs decoding.`,
     tiktok: `TikTok creators, TikTok Shop sellers and short-form marketers use this to plan scripts, tune captions, size hashtags and price products — all inside the browser, so nothing you paste ever leaves your device.`,
+    trader: `Retail forex, crypto and CFD traders use this to size positions correctly, respect risk-per-trade rules and sanity-check indicator readings — all client-side, so account numbers, prices and P/L never leave your device.`,
   };
   const useCase = categoryContext[tool.categorySlug] ?? `Teams across engineering, marketing and operations rely on ${tool.name} for one-off conversions and repeatable, script-friendly workflows.`;
   return [
