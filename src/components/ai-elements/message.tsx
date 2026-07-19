@@ -14,8 +14,6 @@ import {
 import { cn } from "@/lib/utils";
 import { cjk } from "@streamdown/cjk";
 import { code } from "@streamdown/code";
-import { math } from "@streamdown/math";
-import { mermaid } from "@streamdown/mermaid";
 import type { UIMessage } from "ai";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { ComponentProps, HTMLAttributes, ReactElement } from "react";
@@ -321,7 +319,10 @@ export const MessageBranchPage = ({
 
 export type MessageResponseProps = ComponentProps<typeof Streamdown>;
 
-const streamdownPlugins = { cjk, code, math, mermaid };
+// Intentionally excluding @streamdown/math and @streamdown/mermaid — they pull
+// shiki (~9.5MB) + mermaid/cytoscape/jspdf/canvg/html2canvas (~7MB) into the
+// Cloudflare Worker SSR bundle. Chat-PDF answers don't need math or diagrams.
+const streamdownPlugins = { cjk, code };
 
 export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
