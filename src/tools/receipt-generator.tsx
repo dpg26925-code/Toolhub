@@ -66,7 +66,7 @@ export default function ReceiptGenerator() {
     center("Thank you!", 10, bold);
 
     const bytes = await doc.save();
-    const blob = new Blob([bytes], { type: "application/pdf" });
+    const blob = new Blob([new Uint8Array(bytes)], { type: "application/pdf" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `receipt-${Date.now()}.pdf`; a.click();
     toast.success("Receipt downloaded");
   }

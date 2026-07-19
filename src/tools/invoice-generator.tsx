@@ -77,7 +77,7 @@ export default function InvoiceGenerator() {
     if (notes) { y -= 15; page.drawText("Notes:", { x: 40, y, size: 10, font: bold }); y -= 13; notes.split("\n").forEach((l) => { page.drawText(l, { x: 40, y, size: 9, font }); y -= 11; }); }
 
     const bytes = await doc.save();
-    const blob = new Blob([bytes], { type: "application/pdf" });
+    const blob = new Blob([new Uint8Array(bytes)], { type: "application/pdf" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `${num}.pdf`; a.click();
     toast.success("Invoice downloaded");
   }
