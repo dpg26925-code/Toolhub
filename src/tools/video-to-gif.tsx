@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { getFFmpeg, readFileAsUint8, downloadBlob, humanSize } from "./_ffmpeg";
+import { getFFmpeg, readFileAsUint8, humanSize } from "./_ffmpeg";
 
 export default function VideoToGifTool() {
   const [file, setFile] = useState<File | null>(null);
@@ -54,7 +54,7 @@ export default function VideoToGifTool() {
         <div className="space-y-2 rounded-xl border border-border bg-background p-4">
           <img src={url} alt="GIF preview" className="max-h-96 rounded" />
           <p className="text-sm text-muted-foreground">Size: {humanSize(size)}</p>
-          <Button variant="outline" onClick={() => downloadBlob(new Uint8Array([]), "", "")}><a href={url} download="clip.gif">Download GIF</a></Button>
+          <Button variant="outline" asChild><a href={url} download="clip.gif">Download GIF</a></Button>
         </div>
       )}
     </div>
