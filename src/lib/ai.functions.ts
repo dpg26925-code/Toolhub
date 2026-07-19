@@ -2,8 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const GATEWAY = "https://ai.gateway.lovable.dev/v1/chat/completions";
-const MODEL = "google/gemini-2.5-flash";
+const GATEWAY = "https://openrouter.ai/api/v1/chat/completions";
+const MODEL = process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-exp:free";
 const CREDIT_COST = 1;
 
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -55,20 +55,22 @@ async function runWithLogging<T>(
 }
 
 async function callGateway(messages: { role: string; content: string }[]) {
-  const key = process.env.LOVABLE_API_KEY;
-  if (!key) throw new Error("Missing LOVABLE_API_KEY");
+  const key = process.env.OPENROUTER_API_KEY;
+  if (!key) throw new Error("Missing OPENROUTER_API_KEY");
   const res = await fetch(GATEWAY, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${key}`,
+      "HTTP-Referer": "https://nexatools.cloud",
+      "X-Title": "Nexatools",
     },
     body: JSON.stringify({ model: MODEL, messages }),
   });
   if (!res.ok) {
     const text = await res.text();
     if (res.status === 429) throw new Error("Rate limit — please try again in a moment.");
-    if (res.status === 402) throw new Error("AI credits exhausted for this workspace.");
+    if (res.status === 402) throw new Error("OpenRouter credits exhausted. Top up at openrouter.ai/credits.");
     throw new Error(`AI request failed (${res.status}): ${text.slice(0, 200)}`);
   }
   const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
