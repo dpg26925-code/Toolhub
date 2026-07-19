@@ -255,3 +255,50 @@ export const chatWithPdf = createServerFn({ method: "POST" })
       return { answer };
     });
   });
+
+const WRITING_MODES = [
+  "grammar-check",
+  "paragraph",
+  "email",
+  "blog-titles",
+  "expand",
+  "tone",
+] as const;
+type WritingMode = (typeof WRITING_MODES)[number];
+
+const WRITING_SYSTEM: Record<WritingMode, (opts: string) => string> = {
+  "grammar-check": () =>
+    "You are a professional editor. Fix grammar, spelling and punctuation errors in the user's text. Preserve their voice, meaning and formatting. Reply with only the corrected text — no commentary, no explanations.",
+  paragraph: (opts) =>
+    `Write one well-structured paragraph (4-6 sentences) on the given topic. Tone: ${opts || "neutral"}. Reply with only the paragraph.`,
+  email: (opts) =>
+    `Draft a complete email based on the user's brief. Include subject line on the first line prefixed "Subject: ". Tone: ${opts || "professional"}. Keep it concise and actionable.`,
+  "blog-titles": () =>
+    "Generate exactly 10 catchy, SEO-friendly blog titles for the given topic. Return them as a numbered list (1. ... 2. ...). No intro, no outro.",
+  expand: (opts) =>
+    `Expand the user's short notes into detailed, well-written content. Target length: ${opts || "medium (2-3 paragraphs)"}. Preserve every key point.`,
+  tone: (opts) =>
+    `Rewrite the user's text in a ${opts || "friendly"} tone. Preserve meaning and length. Reply with only the rewritten text.`,
+};
+
+export const writingAssistant = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) =>
+    z
+      .object({
+        text: z.string().min(1).max(20000),
+        mode: z.enum(WRITING_MODES),
+        option: z.string().max(80).optional(),
+        toolSlug: z.string().optional(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data }) => {
+    return runAiTool(data.toolSlug ?? data.mode, async () => {
+      const system = WRITING_SYSTEM[data.mode](data.option ?? "");
+      const output = await callGateway([
+        { role: "system", content: system },
+        { role: "user", content: data.text },
+      ]);
+      return { output };
+    });
+  });
