@@ -104,6 +104,7 @@
 
   /* Navy → mid-navy — used sparingly (CTA bands, footer). */
   --gradient-brand: linear-gradient(135deg, oklch(0.20 0.06 260) 0%, oklch(0.28 0.07 258) 100%);
+  --gradient-brand-foreground: oklch(0.98 0.003 247);
   --shadow-soft: 0 1px 2px rgb(15 27 61 / 0.04), 0 4px 12px rgb(15 27 61 / 0.06);
   --shadow-lift: 0 10px 30px -10px rgb(15 27 61 / 0.18), 0 4px 12px rgb(15 27 61 / 0.08);
 }
@@ -141,6 +142,9 @@
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+  /* Brighter brand gradient in dark mode so CTAs stay readable. */
+  --gradient-brand: linear-gradient(135deg, oklch(0.55 0.20 258) 0%, oklch(0.68 0.19 45) 100%);
+  --gradient-brand-foreground: oklch(0.99 0 0);
 }
 
 @layer base {
@@ -171,6 +175,7 @@
 
 @utility bg-gradient-brand {
   background-image: var(--gradient-brand);
+  color: var(--gradient-brand-foreground);
 }
 
 @utility shadow-soft {
