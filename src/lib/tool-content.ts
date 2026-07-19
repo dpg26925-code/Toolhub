@@ -14,6 +14,8 @@ export type ToolContent = {
 const CATEGORY_LABEL: Record<string, string> = {
   pdf: "PDF Tool",
   image: "Image Tool",
+  video: "Video Tool",
+  converter: "File Converter",
   ai: "AI Tool",
   developer: "Developer Tool",
 };
@@ -26,6 +28,8 @@ function defaultLongDescription(tool: Tool): string {
   const categoryContext: Record<string, string> = {
     pdf: `Common workflows include preparing contracts before emailing them to clients, reorganising scanned reports and getting PDFs down to a size that customer portals actually accept.`,
     image: `Photographers, marketers and product teams reach for this tool when they need a quick, format-consistent asset for a website, ad campaign or social post — without opening Photoshop.`,
+    video: `Creators, marketers and support teams use this to prep video assets — cutting clips for social, shrinking screen recordings for support tickets and pulling audio from interviews — without installing any editing software.`,
+    converter: `Developers, analysts and content creators use this converter to move data between formats — turning configs into APIs, spreadsheets into data pipelines and drafts into publish-ready markup.`,
     ai: `The underlying model is tuned for practical output: summaries you can send to a colleague, translations that read naturally and rewrites that preserve the meaning of the original text.`,
     developer: `It's the utility developers keep pinned in a tab — reach for it between commits, while reviewing an API response or when a teammate pastes something into Slack that needs decoding.`,
   };
