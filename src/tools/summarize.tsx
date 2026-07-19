@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { summarizeText } from "@/lib/ai.functions";
+import { callAi } from "@/lib/ai-client";
 
 export default function SummarizeTool() {
-  const call = useServerFn(summarizeText);
   const [text, setText] = useState("");
   const [length, setLength] = useState<"short" | "medium" | "long">("medium");
   const [style, setStyle] = useState<"bullet" | "paragraph">("paragraph");
@@ -18,8 +16,8 @@ export default function SummarizeTool() {
   const run = async () => {
     setBusy(true); setError(null);
     try {
-      const r = await call({ data: { text, length, style } });
-      setOut(r.summary);
+      const content = await callAi({ action: "summarize", text, length, style });
+      setOut(content);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed");
     } finally { setBusy(false); }
