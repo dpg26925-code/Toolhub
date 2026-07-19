@@ -271,6 +271,10 @@ export type Database = {
           current_period_end: string | null
           id: number
           plan_id: string
+          provider: string | null
+          provider_customer_id: string | null
+          provider_subscription_id: string | null
+          provider_variant_id: string | null
           status: string
           updated_at: string
           user_id: string
@@ -281,6 +285,10 @@ export type Database = {
           current_period_end?: string | null
           id?: number
           plan_id: string
+          provider?: string | null
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          provider_variant_id?: string | null
           status: string
           updated_at?: string
           user_id: string
@@ -291,6 +299,10 @@ export type Database = {
           current_period_end?: string | null
           id?: number
           plan_id?: string
+          provider?: string | null
+          provider_customer_id?: string | null
+          provider_subscription_id?: string | null
+          provider_variant_id?: string | null
           status?: string
           updated_at?: string
           user_id?: string
