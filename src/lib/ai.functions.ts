@@ -1,13 +1,75 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getCookie, getRequest, setCookie } from "@tanstack/react-start/server";
+import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const GATEWAY = "https://openrouter.ai/api/v1/chat/completions";
-const MODEL = process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-exp:free";
+const DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free";
 const CREDIT_COST = 1;
+const GUEST_COOKIE = "nexatools_ai_guest_uses";
+const GUEST_LIMIT = 3;
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+
+type AuthContext = { supabase: SupabaseClient<Database>; userId: string };
+
+function isNewSupabaseApiKey(value: string): boolean {
+  return value.startsWith("sb_publishable_") || value.startsWith("sb_secret_");
+}
+
+function createSupabaseFetch(supabaseKey: string): typeof fetch {
+  return (input, init) => {
+    const headers = new Headers(typeof Request !== "undefined" && input instanceof Request ? input.headers : undefined);
+    if (init?.headers) new Headers(init.headers).forEach((value, key) => headers.set(key, value));
+    if (isNewSupabaseApiKey(supabaseKey) && headers.get("Authorization") === `Bearer ${supabaseKey}`) {
+      headers.delete("Authorization");
+    }
+    headers.set("apikey", supabaseKey);
+    return fetch(input, { ...init, headers });
+  };
+}
+
+async function getOptionalAuthContext(): Promise<AuthContext | null> {
+  const request = getRequest();
+  const authHeader = request.headers.get("authorization");
+  if (!authHeader) return null;
+  if (!authHeader.startsWith("Bearer ")) throw new Error("Please sign in again to use AI tools.");
+
+  const token = authHeader.replace("Bearer ", "");
+  if (!token || token.split(".").length !== 3) throw new Error("Please sign in again to use AI tools.");
+
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_PUBLISHABLE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
+  if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) return null;
+
+  const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    global: {
+      fetch: createSupabaseFetch(SUPABASE_PUBLISHABLE_KEY),
+      headers: { Authorization: `Bearer ${token}` },
+    },
+    auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+  });
+
+  const { data, error } = await supabase.auth.getClaims(token);
+  if (error || !data?.claims?.sub) throw new Error("Please sign in again to use AI tools.");
+  return { supabase, userId: data.claims.sub };
+}
+
+function spendGuestUse() {
+  const used = Number.parseInt(getCookie(GUEST_COOKIE) ?? "0", 10);
+  const safeUsed = Number.isFinite(used) && used > 0 ? Math.min(used, GUEST_LIMIT) : 0;
+  if (safeUsed >= GUEST_LIMIT) {
+    throw new Error("Guest AI limit reached. Sign up or upgrade to continue using AI tools.");
+  }
+  const request = getRequest();
+  setCookie(GUEST_COOKIE, String(safeUsed + 1), {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "lax",
+    secure: new URL(request.url).protocol === "https:",
+  });
+}
 
 async function spendCredit(supabase: SupabaseClient<Database>) {
   const { error } = await supabase.rpc("consume_credits", { _amount: CREDIT_COST });
@@ -38,7 +100,7 @@ async function logUsage(
 }
 
 async function runWithLogging<T>(
-  context: { supabase: SupabaseClient<Database>; userId: string },
+  context: AuthContext,
   toolSlug: string | undefined,
   work: () => Promise<T>,
 ): Promise<T> {
@@ -54,9 +116,17 @@ async function runWithLogging<T>(
   }
 }
 
+async function runAiTool<T>(toolSlug: string | undefined, work: () => Promise<T>): Promise<T> {
+  const authContext = await getOptionalAuthContext();
+  if (authContext) return runWithLogging(authContext, toolSlug, work);
+  spendGuestUse();
+  return work();
+}
+
 async function callGateway(messages: { role: string; content: string }[]) {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) throw new Error("Missing OPENROUTER_API_KEY");
+  const model = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
   const res = await fetch(GATEWAY, {
     method: "POST",
     headers: {
@@ -65,20 +135,27 @@ async function callGateway(messages: { role: string; content: string }[]) {
       "HTTP-Referer": "https://nexatools.cloud",
       "X-Title": "Nexatools",
     },
-    body: JSON.stringify({ model: MODEL, messages }),
+    body: JSON.stringify({ model, messages }),
   });
   if (!res.ok) {
     const text = await res.text();
+    let providerMessage = text;
+    try {
+      const parsed = JSON.parse(text) as { error?: { message?: string } };
+      providerMessage = parsed.error?.message ?? text;
+    } catch {
+      providerMessage = text;
+    }
     if (res.status === 429) throw new Error("Rate limit — please try again in a moment.");
     if (res.status === 402) throw new Error("OpenRouter credits exhausted. Top up at openrouter.ai/credits.");
-    throw new Error(`AI request failed (${res.status}): ${text.slice(0, 200)}`);
+    if (res.status === 404) throw new Error("Selected AI model is unavailable. Please try again in a moment.");
+    throw new Error(`AI request failed (${res.status}): ${providerMessage.slice(0, 180)}`);
   }
   const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
   return json.choices?.[0]?.message?.content ?? "";
 }
 
 export const summarizeText = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -89,8 +166,8 @@ export const summarizeText = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data, context }) => {
-    return runWithLogging(context, data.toolSlug ?? "summarize", async () => {
+  .handler(async ({ data }) => {
+    return runAiTool(data.toolSlug ?? "summarize", async () => {
       const lengthMap = { short: "2-3 sentences", medium: "1 short paragraph", long: "3-4 paragraphs" };
       const styleInstr =
         data.style === "bullet" ? "Format as a concise bulleted list." : "Format as flowing prose.";
@@ -103,7 +180,6 @@ export const summarizeText = createServerFn({ method: "POST" })
   });
 
 export const translateText = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -113,8 +189,8 @@ export const translateText = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data, context }) => {
-    return runWithLogging(context, data.toolSlug ?? "translate", async () => {
+  .handler(async ({ data }) => {
+    return runAiTool(data.toolSlug ?? "translate", async () => {
       const translated = await callGateway([
         {
           role: "system",
@@ -127,7 +203,6 @@ export const translateText = createServerFn({ method: "POST" })
   });
 
 export const rewriteText = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -138,8 +213,8 @@ export const rewriteText = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data, context }) => {
-    return runWithLogging(context, data.toolSlug ?? "rewrite", async () => {
+  .handler(async ({ data }) => {
+    return runAiTool(data.toolSlug ?? "rewrite", async () => {
       const rewritten = await callGateway([
         {
           role: "system",
@@ -152,7 +227,6 @@ export const rewriteText = createServerFn({ method: "POST" })
   });
 
 export const chatWithPdf = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
     z
       .object({
@@ -166,8 +240,8 @@ export const chatWithPdf = createServerFn({ method: "POST" })
       })
       .parse(d),
   )
-  .handler(async ({ data, context }) => {
-    return runWithLogging(context, data.toolSlug ?? "chat-pdf", async () => {
+  .handler(async ({ data }) => {
+    return runAiTool(data.toolSlug ?? "chat-pdf", async () => {
       const answer = await callGateway([
         {
           role: "system",

@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { Download, ImageUp, RefreshCw } from "lucide-react";
 
 const PRESETS: { label: string; w: number; h: number }[] = [
   { label: "Custom", w: 0, h: 0 },
@@ -33,6 +34,8 @@ export default function ImageResizerTool() {
   const [keepRatio, setKeepRatio] = useState(true);
   const [format, setFormat] = useState<"image/png" | "image/jpeg" | "image/webp">("image/png");
   const [output, setOutput] = useState<string>("");
+  const [outputSize, setOutputSize] = useState(0);
+  const [resizing, setResizing] = useState(false);
   const [preset, setPreset] = useState("Custom");
   const lastEdit = useRef<"w" | "h">("w");
 
@@ -56,6 +59,7 @@ export default function ImageResizerTool() {
     if (!f.type.startsWith("image/")) return toast.error("Please choose an image");
     setFile(f);
     setOutput("");
+    setOutputSize(0);
   };
 
   const changeW = (v: number) => {
@@ -80,6 +84,8 @@ export default function ImageResizerTool() {
 
   const resize = async () => {
     if (!url) return;
+    if (width < 1 || height < 1) return toast.error("Width and height must be at least 1px");
+    setResizing(true);
     const img = new Image();
     img.src = url;
     await new Promise((r) => (img.onload = r));
@@ -87,12 +93,22 @@ export default function ImageResizerTool() {
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) {
+      setResizing(false);
+      return;
+    }
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
     ctx.drawImage(img, 0, 0, width, height);
-    setOutput(canvas.toDataURL(format, 0.92));
+    const dataUrl = canvas.toDataURL(format, 0.92);
+    setOutput(dataUrl);
+    const base64 = dataUrl.split(",")[1] ?? "";
+    setOutputSize(Math.round((base64.length * 3) / 4));
+    setResizing(false);
   };
 
-  const ext = format.split("/")[1];
+  const ext = format === "image/jpeg" ? "jpg" : format.split("/")[1];
+  const formatBytes = (n: number) => `${(n / 1024).toFixed(n > 1024 * 1024 ? 1 : 0)} ${n > 1024 * 1024 ? "MB" : "KB"}`;
 
   return (
     <div className="space-y-6">
@@ -105,6 +121,12 @@ export default function ImageResizerTool() {
           className="mt-1"
         />
       </div>
+      {!url && (
+        <div className="flex min-h-40 flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background p-8 text-center text-sm text-muted-foreground">
+          <ImageUp className="mb-3 size-8 text-primary" />
+          Choose an image to unlock resize controls, preview, and download.
+        </div>
+      )}
       {url && (
         <>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -169,15 +191,26 @@ export default function ImageResizerTool() {
             )}
           </div>
           <div className="flex gap-3">
-            <Button onClick={resize}>Resize</Button>
+            <Button onClick={resize} disabled={resizing}>
+              <RefreshCw className={resizing ? "animate-spin" : ""} />
+              {resizing ? "Resizing…" : "Resize"}
+            </Button>
             {output && (
               <Button variant="outline" asChild>
                 <a href={output} download={`resized.${ext}`}>
-                  Download
+                  <Download />
+                  Download {ext.toUpperCase()}
                 </a>
               </Button>
             )}
           </div>
+          {output && (
+            <div className="grid gap-3 rounded-xl border border-border bg-background p-4 text-sm sm:grid-cols-3">
+              <div><span className="text-muted-foreground">Original</span><div className="font-semibold">{natural?.w}×{natural?.h}</div></div>
+              <div><span className="text-muted-foreground">Resized</span><div className="font-semibold">{width}×{height}</div></div>
+              <div><span className="text-muted-foreground">Output size</span><div className="font-semibold">{formatBytes(outputSize)}</div></div>
+            </div>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-xl border border-border bg-background p-3">
               <div className="mb-2 text-xs text-muted-foreground">Original</div>
