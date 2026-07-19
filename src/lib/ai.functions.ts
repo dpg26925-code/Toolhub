@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 
 const GATEWAY = "https://openrouter.ai/api/v1/chat/completions";
-const DEFAULT_MODEL = "openrouter/free";
+const DEFAULT_MODEL = "google/gemma-4-26b-a4b-it:free";
 const CREDIT_COST = 1;
 const GUEST_COOKIE = "nexatools_ai_guest_uses";
 const GUEST_LIMIT = 3;
