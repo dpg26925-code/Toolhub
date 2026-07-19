@@ -122,6 +122,71 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "What's the maximum size?", a: "There's no hard limit, but very large payloads (10 MB+) may slow down your browser tab." },
     ],
   },
+  "base64": {
+    longDescription: "Base64 Encoder / Decoder converts text and binary data between raw form and the Base64 text encoding used all over the web — Basic Auth headers, JWT payloads, data: URLs, email attachments and embedded images in CSS. Paste in either direction and get an instant, faithful result you can copy straight into your code.\n\nEncoding runs entirely in your browser using the native TextEncoder and btoa/atob APIs, so credentials and tokens you're debugging never touch a server. The tool handles UTF-8 correctly — no more mangled characters when your input contains emoji, accents or non-Latin scripts — and supports URL-safe variants for JWT-style payloads.\n\nPair Base64 with JWT Decoder to inspect auth tokens, JSON Formatter to pretty-print decoded payloads, or Hash Generator when you need to fingerprint the encoded output.",
+    howToUse: [
+      "Paste your text (to encode) or Base64 string (to decode) into the input box.",
+      "Choose Encode or Decode — UTF-8 is handled automatically.",
+      "Copy the result or download it as a text file.",
+    ],
+    faqs: [
+      { q: "Does this handle UTF-8 and emoji?", a: "Yes — the tool encodes via TextEncoder, so multi-byte characters round-trip correctly instead of getting mangled by naive btoa()." },
+      { q: "Can I decode URL-safe Base64 (JWTs)?", a: "Yes. The decoder accepts both standard and URL-safe alphabets and pads missing '=' characters automatically." },
+      { q: "Is my input sent to a server?", a: "No — all encoding and decoding happens in your browser tab." },
+    ],
+  },
+  "jwt-decoder": {
+    longDescription: "JWT Decoder inspects the header, payload and signature of any JSON Web Token so you can see exactly what a client or backend is sending. Paste a token and the tool splits it, Base64URL-decodes each segment, pretty-prints the JSON and highlights standard claims like iss, sub, aud, exp and iat with human-readable expiry dates.\n\nThis is the fastest way to debug auth issues — expired tokens, wrong audience, missing scopes, misconfigured issuer — without spinning up a debugger or writing a script. Everything happens in your browser, so production tokens stay on your machine and are never logged.\n\nJWT Decoder does not verify signatures against a secret or JWKS — for that, wire your library of choice into your test environment. It's designed for quick inspection, not authentication.",
+    howToUse: [
+      "Paste a JWT (three dot-separated Base64URL segments) into the input.",
+      "Read the decoded header and payload side by side, with expiry claims formatted as dates.",
+      "Copy any field or the full decoded JSON with the Copy button.",
+    ],
+    faqs: [
+      { q: "Does the tool verify the JWT signature?", a: "No. Signature verification requires the signing secret or JWKS, which we intentionally never ask for. Use your language's JWT library for verification." },
+      { q: "Is the token sent to a server?", a: "No — parsing happens in your browser, so it's safe to paste production tokens." },
+      { q: "Which algorithms are supported for reading?", a: "Any JWT with a standard three-segment structure — HS256, RS256, ES256 and others. Only the payload is decoded; the signature is displayed but not verified." },
+    ],
+  },
+  "password-generator": {
+    longDescription: "Password Generator creates strong, cryptographically random passwords tuned to the requirements of the site or system you're signing up for. Set the length, toggle uppercase, digits and symbols, and generate a new password with one click — or a batch of them if you're onboarding a team.\n\nUnlike naive JavaScript Math.random() generators, this tool uses the browser's Web Crypto API (crypto.getRandomValues) so the output is genuinely unpredictable and safe for use as an account password, API secret, database seed or one-time code. Nothing is transmitted or stored — the password only exists in your clipboard until you paste it into a password manager.\n\nFor sensitive accounts, pair the generated password with a passphrase manager like 1Password, Bitwarden or your browser's built-in vault. For system secrets, drop the output straight into your .env file or CI secret store.",
+    howToUse: [
+      "Set the desired length (12–64 characters recommended).",
+      "Toggle character classes — uppercase, digits, symbols — to match the site's requirements.",
+      "Click Generate and copy the password directly into your password manager.",
+    ],
+    faqs: [
+      { q: "How random are the passwords?", a: "The generator uses crypto.getRandomValues from the Web Crypto API — the same source browsers use for TLS keys. Output is suitable for account passwords and API secrets." },
+      { q: "Are passwords sent or logged?", a: "No. Generation runs in your browser and no password ever leaves the page." },
+      { q: "What length should I use?", a: "16 characters is a safe default for most accounts. Use 24+ for high-value accounts and 32+ for machine-to-machine secrets." },
+    ],
+  },
+  "image-resizer": {
+    longDescription: "Image Resizer scales JPG, PNG, WebP and GIF files to exact pixel dimensions or a percentage of the original, keeping the aspect ratio locked by default. It's the quickest way to prep hero images for a website, avatars for a social profile, or thumbnails for a product listing — without opening a full image editor.\n\nResizing runs in your browser using the Canvas API, so your photos never upload to a server. That matters for personal photos, unreleased product shots and client work under NDA. Output is re-encoded in the format of your choice, so you can also convert a PNG to a smaller JPG or WebP as part of the same step.\n\nFor batch workflows or transparent-background cutouts, combine Image Resizer with Remove Background and Image Compressor to build a complete asset-prep pipeline that never leaves the tab.",
+    howToUse: [
+      "Upload a JPG, PNG, WebP or GIF (up to 10 MB).",
+      "Enter the target width or height — the other dimension follows automatically to preserve aspect ratio.",
+      "Choose the output format and click Download.",
+    ],
+    faqs: [
+      { q: "Does resizing lose quality?", a: "Downscaling looks great. Upscaling beyond the original resolution will inevitably look soft — for enlargement, use an AI upscaler." },
+      { q: "Are my images uploaded?", a: "No. Resizing runs entirely in your browser via the Canvas API." },
+      { q: "Can I convert between formats?", a: "Yes — pick JPG, PNG or WebP as the output format regardless of the input format." },
+    ],
+  },
+  "translate": {
+    longDescription: "AI Translator converts text between 100+ languages while preserving tone, idiom and technical vocabulary far better than word-for-word tools. Paste up to 10,000 characters, pick the source and target languages (or leave source on Auto-detect), and get a translation that reads naturally to a native speaker.\n\nPowered by Google Gemini, this translator handles nuance that classic MT engines miss: idioms are localised rather than translated literally, honorifics adapt to the target culture, and code snippets or product names are preserved verbatim. It's ideal for translating marketing copy, support emails, documentation and short-form content that will be read by humans, not just crawled by search engines.\n\nEvery translation costs 1 credit. Free accounts get 10 credits on signup; Pro accounts get 500 credits per month plus API access to embed translation directly into your product.",
+    howToUse: [
+      "Paste the text you want to translate into the input box.",
+      "Pick the source language (or Auto-detect) and the target language.",
+      "Click Translate — the result appears in seconds and can be copied with one click.",
+    ],
+    faqs: [
+      { q: "How many languages are supported?", a: "100+ — including all major European, Asian, Middle Eastern and African languages that Gemini supports." },
+      { q: "How does this compare to Google Translate?", a: "The underlying model is designed for context-aware output, so idioms and tone typically read more naturally, especially for longer passages." },
+      { q: "How many credits does a translation cost?", a: "1 credit per translation, regardless of length or language pair." },
+    ],
+  },
 };
 
 export function getToolContent(tool: Tool): ToolContent {
