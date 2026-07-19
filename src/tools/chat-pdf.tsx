@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { Input } from "@/components/ui/input";
 import {
   Conversation,
@@ -16,14 +15,13 @@ import {
   PromptInputTextarea,
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
-import { chatWithPdf } from "@/lib/ai.functions";
+import { callAi } from "@/lib/ai-client";
 import { extractPdfText } from "./pdf-text";
 import { FileText, Upload } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 export default function ChatPdfTool() {
-  const call = useServerFn(chatWithPdf);
   const [file, setFile] = useState<File | null>(null);
   const [pdfText, setPdfText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,8 +47,8 @@ export default function ChatPdfTool() {
     setMessages(next);
     setLoading(true); setError(null);
     try {
-      const r = await call({ data: { pdfText, question: q, history: messages.slice(-10) } });
-      setMessages([...next, { role: "assistant", content: r.answer }]);
+      const content = await callAi({ action: "chat-pdf", pdfText, question: q, history: messages.slice(-10) });
+      setMessages([...next, { role: "assistant", content }]);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed");
     } finally { setLoading(false); }
