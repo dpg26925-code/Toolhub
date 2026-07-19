@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { writingAssistant } from "@/lib/ai.functions";
+import { callAi } from "@/lib/ai-client";
 
 type Mode = "grammar-check" | "paragraph" | "email" | "blog-titles" | "expand" | "tone";
 
@@ -26,7 +25,6 @@ export function WritingTool({
   optionValues?: string[];
   defaultOption?: string;
 }) {
-  const call = useServerFn(writingAssistant);
   const [text, setText] = useState("");
   const [option, setOption] = useState(defaultOption ?? optionValues?.[0] ?? "");
   const [out, setOut] = useState("");
@@ -36,8 +34,8 @@ export function WritingTool({
     setBusy(true);
     setOut("");
     try {
-      const r = await call({ data: { text, mode, option, toolSlug } });
-      setOut(r.output);
+      const content = await callAi({ action: "writing", text, mode, option, toolSlug });
+      setOut(content);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     } finally {
