@@ -23,6 +23,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "video", name: "Video", description: "Trim, compress, convert video and extract audio — all in-browser.", icon: "🎬" },
   { slug: "youtube", name: "YouTube", description: "Free YouTube helpers: thumbnails, embeds, chapters, hashtags — 100% in-browser.", icon: "▶️" },
   { slug: "affiliate", name: "Affiliate", description: "UTM builders, disclosures, commission calculators and link tools for affiliate marketers.", icon: "🔗" },
+  { slug: "tiktok", name: "TikTok Creator", description: "Caption counters, hashtag utilities, teleprompter, calculators and TikTok Shop helpers — 100% in-browser.", icon: "🎵" },
   { slug: "converter", name: "Converters", description: "Convert between file formats: images, data, spreadsheets, markdown.", icon: "⇄" },
   { slug: "ai", name: "AI", description: "AI-powered writing, summarising and generation tools.", icon: "✨" },
   { slug: "developer", name: "Developer", description: "Everyday utilities for developers — formatters, encoders, testers.", icon: "🧑‍💻" },

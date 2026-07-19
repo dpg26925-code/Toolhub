@@ -20,6 +20,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   developer: "Developer Tool",
   youtube: "YouTube Tool",
   affiliate: "Affiliate Marketing Tool",
+  tiktok: "TikTok Creator Tool",
 };
 
 /** Default long description used when no override exists — keeps SEO body copy on every tool page. */
