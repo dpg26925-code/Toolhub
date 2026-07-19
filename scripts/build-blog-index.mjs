@@ -1,12 +1,25 @@
 // Build-time fetch of published blog posts.
 // Emits src/generated/blog-posts.ts so the runtime (Cloudflare Workers)
 // never has to hit Supabase for blog reads.
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = resolve(__dirname, "../src/generated/blog-posts.ts");
+const ENV_FILE = resolve(__dirname, "../.env");
+
+// Best-effort .env loader — the standalone node script does not get Vite's
+// env injection, so read .env directly when available.
+if (existsSync(ENV_FILE)) {
+  const raw = readFileSync(ENV_FILE, "utf8");
+  for (const line of raw.split(/\r?\n/)) {
+    const m = /^\s*([A-Z0-9_]+)\s*=\s*(.*)$/.exec(line);
+    if (!m) continue;
+    const [, k, v] = m;
+    if (!process.env[k]) process.env[k] = v.replace(/^['"]|['"]$/g, "");
+  }
+}
 
 const url = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
 const key = process.env.SUPABASE_PUBLISHABLE_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -23,9 +36,16 @@ function emit(posts) {
   console.log(`[build-blog] wrote ${posts.length} posts -> ${OUT}`);
 }
 
+function keepExisting(reason) {
+  if (existsSync(OUT)) {
+    console.warn(`[build-blog] ${reason} — keeping existing ${OUT}`);
+    return true;
+  }
+  return false;
+}
+
 if (!url || !key) {
-  console.warn("[build-blog] Supabase env vars missing — writing empty index");
-  emit([]);
+  if (!keepExisting("Supabase env vars missing")) emit([]);
   process.exit(0);
 }
 
@@ -35,13 +55,15 @@ const endpoint = `${url}/rest/v1/blog_posts?select=${encodeURIComponent(select)}
 try {
   const res = await fetch(endpoint, { headers: { apikey: key, Accept: "application/json" } });
   if (!res.ok) {
-    console.warn(`[build-blog] Supabase ${res.status} — writing empty index`);
-    emit([]);
+    if (!keepExisting(`Supabase ${res.status}`)) emit([]);
     process.exit(0);
   }
   const posts = await res.json();
-  emit(Array.isArray(posts) ? posts : []);
+  if (Array.isArray(posts) && posts.length > 0) {
+    emit(posts);
+  } else if (!keepExisting("Supabase returned no posts")) {
+    emit([]);
+  }
 } catch (err) {
-  console.warn("[build-blog] fetch failed — writing empty index:", err?.message || err);
-  emit([]);
+  if (!keepExisting(`fetch failed: ${err?.message || err}`)) emit([]);
 }
