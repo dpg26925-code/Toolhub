@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
+import { toast } from "sonner";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
+import { createLemonCheckout } from "@/lib/lemonsqueezy.functions";
 
 export const Route = createFileRoute("/dashboard/subscription")({
   head: () => ({ meta: [{ title: "Subscription — Nexatools" }, { name: "robots", content: "noindex" }] }),
@@ -15,6 +19,20 @@ export const Route = createFileRoute("/dashboard/subscription")({
 
 function SubPage() {
   const { user } = useAuth();
+  const checkout = useServerFn(createLemonCheckout);
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const upgrade = async () => {
+    setLoading("pro");
+    try {
+      const { url } = await checkout();
+      window.location.href = url;
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to start checkout");
+      setLoading(null);
+    }
+  };
+
   const q = useQuery({
     queryKey: ["subscription", user?.id],
     enabled: !!user,
@@ -46,15 +64,30 @@ function SubPage() {
 
         <div className="grid gap-4 md:grid-cols-3">
           <PlanCard name="Free" price="$0" features={["10 credits/day", "All client-side tools", "Ads shown"]} current={plan === "free"} />
-          <PlanCard name="Pro" price="$20/mo" features={["Unlimited runs", "No ads", "API access", "Priority queue"]} current={plan === "pro"} highlight />
-          <PlanCard name="Enterprise" price="Custom" features={["SLA", "SSO", "Dedicated support"]} current={plan === "enterprise"} />
+          <PlanCard
+            name="Pro"
+            price="$20/mo"
+            features={["Unlimited runs", "No ads", "API access", "Priority queue"]}
+            current={plan === "pro"}
+            highlight
+            cta={plan === "pro" ? undefined : { label: loading === "pro" ? "Redirecting…" : "Upgrade to Pro", onClick: upgrade, loading: loading === "pro" }}
+          />
+          <PlanCard
+            name="Enterprise"
+            price="Custom"
+            features={["SLA", "SSO", "Dedicated support"]}
+            current={plan === "enterprise"}
+            cta={{ label: "Contact sales", href: "mailto:hello@nexatools.cloud" }}
+          />
         </div>
       </div>
     </DashboardShell>
   );
 }
 
-function PlanCard({ name, price, features, current, highlight }: { name: string; price: string; features: string[]; current?: boolean; highlight?: boolean }) {
+type CtaProps = { label: string; onClick?: () => void; href?: string; loading?: boolean };
+
+function PlanCard({ name, price, features, current, highlight, cta }: { name: string; price: string; features: string[]; current?: boolean; highlight?: boolean; cta?: CtaProps }) {
   return (
     <Card className={highlight ? "border-primary shadow-lg" : ""}>
       <CardHeader>
@@ -70,7 +103,18 @@ function PlanCard({ name, price, features, current, highlight }: { name: string;
             <li key={f} className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-500" />{f}</li>
           ))}
         </ul>
-        {!current && <Button className="w-full" disabled>Coming soon</Button>}
+        {!current && cta && (
+          cta.href ? (
+            <Button asChild className="w-full" variant={highlight ? "default" : "outline"}>
+              <a href={cta.href}>{cta.label}</a>
+            </Button>
+          ) : (
+            <Button className="w-full" onClick={cta.onClick} disabled={cta.loading} variant={highlight ? "default" : "outline"}>
+              {cta.loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {cta.label}
+            </Button>
+          )
+        )}
       </CardContent>
     </Card>
   );
