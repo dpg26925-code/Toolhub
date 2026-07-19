@@ -1,6 +1,5 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { marked } from "marked";
 import { SiteLayout } from "@/components/site-layout";
 import { Button } from "@/components/ui/button";
 import { Twitter, Linkedin, Link2 } from "lucide-react";
@@ -9,6 +8,59 @@ import { toast } from "sonner";
 import { SITE_URL } from "@/lib/site";
 import { getPublishedBlogPost, type PublicBlogPost } from "@/lib/blog.functions";
 const BASE = SITE_URL;
+
+function markdownToHtml(markdown: string) {
+  const escapeHtml = (value: string) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  const inline = (value: string) =>
+    escapeHtml(value)
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]+|mailto:[^\s)]+)\)/g, '<a href="$2">$1</a>')
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>");
+
+  const lines = markdown.split(/\r?\n/);
+  const html: string[] = [];
+  let list: string[] = [];
+
+  const flushList = () => {
+    if (!list.length) return;
+    html.push(`<ul>${list.map((item) => `<li>${inline(item)}</li>`).join("")}</ul>`);
+    list = [];
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      flushList();
+      continue;
+    }
+    if (trimmed.startsWith("### ")) {
+      flushList();
+      html.push(`<h3>${inline(trimmed.slice(4))}</h3>`);
+    } else if (trimmed.startsWith("## ")) {
+      flushList();
+      html.push(`<h2>${inline(trimmed.slice(3))}</h2>`);
+    } else if (trimmed.startsWith("# ")) {
+      flushList();
+      html.push(`<h2>${inline(trimmed.slice(2))}</h2>`);
+    } else if (/^-\s+/.test(trimmed)) {
+      list.push(trimmed.replace(/^-\s+/, ""));
+    } else if (/^\d+\.\s+/.test(trimmed)) {
+      list.push(trimmed.replace(/^\d+\.\s+/, ""));
+    } else {
+      flushList();
+      html.push(`<p>${inline(trimmed)}</p>`);
+    }
+  }
+  flushList();
+  return html.join("\n");
+}
 
 const postQueryOptions = (slug: string) =>
   queryOptions({
@@ -72,15 +124,7 @@ export const Route = createFileRoute("/blog/$slug")({
       ...(scripts ? { scripts } : {}),
     };
   },
-  errorComponent: () => (
-    <SiteLayout>
-      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">Something went wrong</h1>
-        <p className="mt-2 text-muted-foreground">We couldn't load this article.</p>
-        <Button asChild className="mt-6"><Link to="/blog">Back to blog</Link></Button>
-      </div>
-    </SiteLayout>
-  ),
+  errorComponent: BlogPostError,
   notFoundComponent: () => (
     <SiteLayout>
       <div className="mx-auto max-w-3xl px-4 py-16 text-center">
@@ -96,7 +140,7 @@ export const Route = createFileRoute("/blog/$slug")({
 function BlogPost() {
   const { slug } = Route.useParams();
   const { data: post } = useSuspenseQuery(postQueryOptions(slug));
-  const html = marked.parse(post.content ?? "", { async: false }) as string;
+  const html = markdownToHtml(post.content ?? "");
   const url = `${BASE}/blog/${post.slug}`;
 
   return (
@@ -137,6 +181,29 @@ function BlogPost() {
           </Button>
         </div>
       </article>
+    </SiteLayout>
+  );
+}
+
+function BlogPostError({ reset }: { error: Error; reset: () => void }) {
+  const router = useRouter();
+  return (
+    <SiteLayout>
+      <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">Article temporarily unavailable</h1>
+        <p className="mt-2 text-muted-foreground">We couldn't load this article right now.</p>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          <Button
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+          >
+            Try again
+          </Button>
+          <Button asChild variant="outline"><Link to="/blog">Back to blog</Link></Button>
+        </div>
+      </div>
     </SiteLayout>
   );
 }
