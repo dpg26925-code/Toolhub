@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Conversation,
@@ -29,7 +28,6 @@ export default function ChatPdfTool() {
   const [pdfText, setPdfText] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
-  const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const onFile = async (f: File | null) => {
@@ -45,14 +43,8 @@ export default function ChatPdfTool() {
     } finally { setLoading(false); }
   };
 
-  const send = async () => {
-    const q = input.trim();
-    await ask(q);
-  };
-
   const ask = async (q: string) => {
     if (!q || !pdfText) return;
-    setInput("");
     const next = [...messages, { role: "user" as const, content: q }];
     setMessages(next);
     setLoading(true); setError(null);
