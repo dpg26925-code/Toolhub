@@ -52,4 +52,8 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "xml-json": lazy(() => import("./xml-json")),
   "toml-json": lazy(() => import("./toml-json")),
   "excel-to-csv": lazy(() => import("./excel-to-csv")),
+  "image-crop": lazy(() => import("./image-crop")),
+  "image-rotate-flip": lazy(() => import("./image-rotate-flip")),
+  "image-remove-exif": lazy(() => import("./image-remove-exif")),
+  "image-to-base64": lazy(() => import("./image-to-base64")),
 };
