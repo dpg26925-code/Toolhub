@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolShell } from "@/components/tool-shell";
 import { getTool, getCategory } from "@/lib/tools-data";
@@ -100,9 +100,11 @@ function ToolPage() {
   return (
     <ToolShell tool={tool} category={category}>
       {Component ? (
-        <Suspense fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
-          <Component />
-        </Suspense>
+        <ClientOnly fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
+          <Suspense fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
+            <Component />
+          </Suspense>
+        </ClientOnly>
       ) : (
         <div className="rounded-xl border border-dashed border-border p-10 text-center">
           <p className="text-sm font-semibold text-primary">Coming soon</p>
