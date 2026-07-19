@@ -57,6 +57,14 @@ export function ToolShell({
           <ToolActions slug={tool.slug} />
         </header>
         <p className="mt-3 max-w-2xl text-muted-foreground">{tool.shortDescription}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+          <span className="inline-flex items-center gap-1 rounded-full bg-brand/10 px-2.5 py-1 font-medium text-brand">
+            ✓ No sign-up required
+          </span>
+          <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 font-medium text-secondary-foreground">
+            Free to use
+          </span>
+        </div>
 
         <section aria-label="Tool" className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-soft sm:p-8">
           {children}

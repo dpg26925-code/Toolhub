@@ -75,7 +75,7 @@ function Index() {
                 to="/tools"
                 className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-brand"
               >
-                Explore Tools
+                Try free — no sign-up
               </Link>
               <Link
                 to="/pricing"
@@ -84,6 +84,9 @@ function Index() {
                 See pricing
               </Link>
             </div>
+            <p className="mt-4 text-xs text-muted-foreground">
+              No account required. Guests get 3 free AI runs — unlimited use for basic tools.
+            </p>
           </div>
         </div>
       </section>
