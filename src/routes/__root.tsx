@@ -110,6 +110,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         children: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-E57495G278');`,
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Nexatools",
+          url: "https://nexatools.cloud",
+          logo: "https://nexatools.cloud/favicon.ico",
+          sameAs: ["https://twitter.com/nexatools"],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Nexatools",
+          url: "https://nexatools.cloud",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://nexatools.cloud/tools?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        }),
+      },
     ],
   }),
   shellComponent: RootShell,
