@@ -33,8 +33,11 @@ export async function callAi<T extends Record<string, unknown>>(payload: T & { a
     throw new Error(msg);
   }
 
-  const res = data as { content?: string; guestUses?: number; error?: string };
+  const res = data as { content?: string; guestUses?: number; creditsRemaining?: number | null; error?: string };
   if (res?.error) throw new Error(res.error);
   if (typeof res?.guestUses === "number") bumpGuestUses(res.guestUses);
+  if (typeof window !== "undefined" && typeof res?.creditsRemaining === "number") {
+    window.dispatchEvent(new CustomEvent("nexatools:credits", { detail: res.creditsRemaining }));
+  }
   return res?.content ?? "";
 }
