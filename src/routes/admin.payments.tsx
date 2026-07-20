@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { AdminShell } from "@/components/admin-shell";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -70,8 +70,8 @@ function AdminPayments() {
               {(q.data ?? []).map((o: any) => {
                 const open = expanded === o.id;
                 return (
-                  <>
-                    <TableRow key={o.id}>
+                  <Fragment key={o.id}>
+                    <TableRow>
                       <TableCell>
                         <Button size="icon" variant="ghost" onClick={() => setExpanded(open ? null : o.id)}>
                           {open ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
@@ -85,13 +85,13 @@ function AdminPayments() {
                       <TableCell className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleString()}</TableCell>
                     </TableRow>
                     {open && (
-                      <TableRow key={`${o.id}-detail`}>
+                      <TableRow>
                         <TableCell colSpan={7} className="bg-muted/30">
                           <pre className="text-xs overflow-auto max-h-80 whitespace-pre-wrap">{JSON.stringify(o, null, 2)}</pre>
                         </TableCell>
                       </TableRow>
                     )}
-                  </>
+                  </Fragment>
                 );
               })}
               {q.data && q.data.length === 0 && (
