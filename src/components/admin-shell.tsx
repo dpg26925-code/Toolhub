@@ -47,7 +47,7 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 p-8">
+      <div className="min-h-screen bg-background p-8">
         <Skeleton className="h-8 w-48 mb-4" />
         <Skeleton className="h-64 w-full" />
       </div>
