@@ -123,6 +123,39 @@ function buildMessages(body: any): { messages: Msg[]; toolSlug: string } {
         ],
       };
     }
+    case "blog-write": {
+      const topic = String(body.topic ?? "").trim();
+      const tone = String(body.tone ?? "informative");
+      const audience = String(body.audience ?? "general readers");
+      const length = String(body.length ?? "medium");
+      const keywords = String(body.keywords ?? "");
+      const lengthMap: Record<string, string> = {
+        short: "500-700 words",
+        medium: "900-1200 words",
+        long: "1500-2000 words",
+      };
+      const wordCount = lengthMap[length] ?? lengthMap.medium;
+      return {
+        toolSlug: "admin-blog-writer",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an expert SEO blog writer. Return ONLY valid JSON (no code fences, no prose) matching this shape:\n" +
+              `{"title": string, "slug": string, "excerpt": string, "tags": string[], "content": string}\n` +
+              "- title: catchy, <= 60 chars, includes primary keyword.\n" +
+              "- slug: url-safe lowercase kebab-case derived from title.\n" +
+              "- excerpt: 140-160 chars meta description.\n" +
+              "- tags: 3-6 lowercase tags.\n" +
+              "- content: Markdown body only (no H1 — the title is the H1). Use ## for section headings, short paragraphs, bullet lists, and a concluding section. Target " +
+              wordCount +
+              `. Tone: ${tone}. Audience: ${audience}.` +
+              (keywords ? ` Naturally include these keywords: ${keywords}.` : ""),
+          },
+          { role: "user", content: `Topic: ${topic}` },
+        ],
+      };
+    }
     default:
       throw new Error(`Unknown action: ${action}`);
   }
