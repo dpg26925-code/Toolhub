@@ -240,6 +240,8 @@ export type Database = {
           full_name: string | null
           id: string
           plan: string
+          referral_code: string | null
+          referred_by: string | null
           updated_at: string
         }
         Insert: {
@@ -250,6 +252,8 @@ export type Database = {
           full_name?: string | null
           id: string
           plan?: string
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
         }
         Update: {
@@ -260,9 +264,132 @@ export type Database = {
           full_name?: string | null
           id?: string
           plan?: string
+          referral_code?: string | null
+          referred_by?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_referred_by_fkey"
+            columns: ["referred_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referral_payouts: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          id: string
+          method: string | null
+          notes: string | null
+          paid_at: string | null
+          payout_reference: string | null
+          referrer_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          id?: string
+          method?: string | null
+          notes?: string | null
+          paid_at?: string | null
+          payout_reference?: string | null
+          referrer_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          method?: string | null
+          notes?: string | null
+          paid_at?: string | null
+          payout_reference?: string | null
+          referrer_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_payouts_referrer_id_fkey"
+            columns: ["referrer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referrals: {
+        Row: {
+          commission_cents: number
+          converted_at: string | null
+          created_at: string
+          currency: string
+          id: string
+          order_id: string | null
+          paid_at: string | null
+          payout_id: string | null
+          referred_user_id: string
+          referrer_id: string
+          status: string
+          subscription_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          commission_cents?: number
+          converted_at?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          order_id?: string | null
+          paid_at?: string | null
+          payout_id?: string | null
+          referred_user_id: string
+          referrer_id: string
+          status?: string
+          subscription_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          commission_cents?: number
+          converted_at?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          order_id?: string | null
+          paid_at?: string | null
+          payout_id?: string | null
+          referred_user_id?: string
+          referrer_id?: string
+          status?: string
+          subscription_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referrals_referred_user_id_fkey"
+            columns: ["referred_user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referrals_referrer_id_fkey"
+            columns: ["referrer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscriptions: {
         Row: {
@@ -516,7 +643,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      attach_referral: { Args: { _code: string }; Returns: boolean }
       consume_credits: { Args: { _amount: number }; Returns: number }
+      generate_referral_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
