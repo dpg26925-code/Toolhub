@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { SITE_URL } from "@/lib/site";
 import { getStaticBlogPost, type StaticBlogPost } from "@/generated/blog-index";
+import { TOOLS, type Tool } from "@/lib/tools-data";
 const BASE = SITE_URL;
 
 const slugifyHeading = (s: string) =>
@@ -99,6 +100,26 @@ function truncate(text: string, max = 155) {
   return clean.slice(0, max - 1).trimEnd() + "…";
 }
 
+function findRelatedTools(text: string, max = 4): Tool[] {
+  const hay = text.toLowerCase();
+  const scored = TOOLS.map((t) => {
+    const name = t.name.toLowerCase();
+    const slug = t.slug.toLowerCase().replace(/-/g, " ");
+    let score = 0;
+    if (hay.includes(name)) score += 3;
+    if (hay.includes(slug)) score += 2;
+    for (const word of name.split(/\s+/)) {
+      if (word.length > 4 && hay.includes(word)) score += 1;
+    }
+    return { t, score };
+  })
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, max)
+    .map((x) => x.t);
+  return scored;
+}
+
 export const Route = createFileRoute("/blog/$slug")({
   loader: ({ params }) => {
     const post = getStaticBlogPost(params.slug);
@@ -175,6 +196,7 @@ function BlogPost() {
   const html = markdownToHtml(post.content ?? "");
   const toc = extractToc(post.content ?? "");
   const url = `${BASE}/blog/${post.slug}`;
+  const related = findRelatedTools(`${post.title}\n${post.content ?? ""}`);
 
   return (
     <SiteLayout>
@@ -211,6 +233,30 @@ function BlogPost() {
           className="mt-8 max-w-none text-base leading-7 text-foreground [&_a]:font-medium [&_a]:text-primary [&_a]:underline-offset-4 [&_a:hover]:underline [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_h2]:mb-3 [&_h2]:mt-9 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mb-2 [&_h3]:mt-7 [&_h3]:text-xl [&_h3]:font-semibold [&_li]:mb-2 [&_p]:mb-5 [&_strong]:font-semibold [&_ul]:mb-6 [&_ul]:ml-6 [&_ul]:list-disc"
           dangerouslySetInnerHTML={{ __html: html }}
         />
+
+        {related.length > 0 && (
+          <section aria-labelledby="related-tools" className="mt-12 rounded-2xl border bg-muted/20 p-6">
+            <h2 id="related-tools" className="text-xl font-bold tracking-tight">Related tools</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Try these tools mentioned in this article.</p>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {related.map((t) => (
+                <li key={t.slug}>
+                  <Link
+                    to="/tools/$slug"
+                    params={{ slug: t.slug }}
+                    className="flex items-start gap-3 rounded-xl border border-border bg-card p-3 transition hover:border-primary/40"
+                  >
+                    <span className="text-lg">{t.icon}</span>
+                    <span>
+                      <span className="block font-medium text-foreground">{t.name}</span>
+                      <span className="mt-0.5 block text-xs text-muted-foreground line-clamp-2">{t.shortDescription}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <div className="mt-10 flex items-center gap-2 border-t pt-6">
           <span className="text-sm text-muted-foreground mr-2">Share:</span>
