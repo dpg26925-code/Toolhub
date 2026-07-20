@@ -839,3 +839,28 @@ const ACCOUNTING: Tool[] = [
 ];
 
 TOOLS.push(...ACCOUNTING);
+
+const NEW_BATCH: Tool[] = [
+  // PDF
+  { slug: "pdf-unlock", name: "PDF Unlock", shortDescription: "Remove owner restrictions (print, copy, edit) from PDFs — 100% in-browser.", categorySlug: "pdf", icon: "🔓", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-page-counter", name: "PDF Page Counter", shortDescription: "Count pages across multiple PDFs at once with a per-file breakdown.", categorySlug: "pdf", icon: "🔢", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-metadata-editor", name: "PDF Metadata Editor", shortDescription: "View and edit PDF title, author, subject, keywords and producer fields.", categorySlug: "pdf", icon: "🏷️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-merge-images", name: "Images to PDF (merge)", shortDescription: "Combine JPG/PNG images into a single PDF with A4, Letter or fit-to-image pages.", categorySlug: "pdf", icon: "🖼️", isFree: true, creditCost: 0, clientSide: true },
+  // Image / converters
+  { slug: "heic-to-jpg", name: "HEIC to JPG / PNG", shortDescription: "Convert Apple HEIC/HEIF photos from iPhone to JPG or PNG in your browser.", categorySlug: "converter", icon: "📱", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "webp-to-png", name: "WebP to PNG / JPG", shortDescription: "Batch convert WebP images to PNG or JPG — great for CMS and Office compatibility.", categorySlug: "converter", icon: "🖼️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "svg-to-png", name: "SVG to PNG / JPG", shortDescription: "Rasterize any SVG to high-resolution PNG or JPG at 1×–8× scale.", categorySlug: "converter", icon: "✏️", isFree: true, creditCost: 0, clientSide: true },
+  // Developer / design
+  { slug: "qr-code-generator", name: "QR Code Generator", shortDescription: "Generate QR codes for URLs, Wi-Fi, vCards and mailto — custom colours and size.", categorySlug: "developer", icon: "🔳", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "meta-tag-generator", name: "Meta Tag Generator", shortDescription: "Build SEO title, description, Open Graph and Twitter Card meta tags in seconds.", categorySlug: "developer", icon: "🏷️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "og-preview", name: "Open Graph Preview", shortDescription: "Preview how your links look on Facebook, LinkedIn and Twitter/X before you post.", categorySlug: "developer", icon: "🔗", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "gradient-generator", name: "CSS Gradient Generator", shortDescription: "Design linear & radial gradients with multi-stop editor and copy-ready CSS.", categorySlug: "developer", icon: "🎨", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "color-palette-generator", name: "Color Palette Generator", shortDescription: "Generate monochrome, analogous, complementary, triadic or tetradic palettes.", categorySlug: "developer", icon: "🎨", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "contrast-checker", name: "Contrast Checker (WCAG)", shortDescription: "Check color contrast ratio against WCAG AA and AAA for normal and large text.", categorySlug: "developer", icon: "◐", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "batch-find-replace", name: "Batch Find & Replace", shortDescription: "Run multiple find/replace rules over a block of text — supports regex and case-insensitive.", categorySlug: "developer", icon: "🔎", isFree: true, creditCost: 0, clientSide: true },
+  // Video / audio
+  { slug: "video-thumbnail-generator", name: "Video Thumbnail Generator", shortDescription: "Extract evenly-spaced thumbnails from any video, right in your browser.", categorySlug: "video", icon: "🎞️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "audio-trimmer", name: "Audio Trimmer", shortDescription: "Trim MP3, WAV or M4A audio to any range and download as WAV — no upload.", categorySlug: "video", icon: "✂️", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...NEW_BATCH);
