@@ -465,7 +465,6 @@ function AdminBlog() {
                   </div>
                 </div>
 
-                <div><Label>Content (Markdown)</Label><Textarea rows={12} className="font-mono text-sm" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} /></div>
                 <div>
                   <div className="flex items-center justify-between">
                     <Label>Content (Markdown)</Label>
