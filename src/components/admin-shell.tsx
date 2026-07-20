@@ -47,7 +47,7 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 p-8">
+      <div className="min-h-screen bg-background p-8">
         <Skeleton className="h-8 w-48 mb-4" />
         <Skeleton className="h-64 w-full" />
       </div>
@@ -58,13 +58,13 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <Sidebar collapsible="icon" className="border-r border-slate-800 bg-slate-950 text-slate-100">
-          <SidebarHeader className="border-b border-slate-800 px-4 py-3">
-            <Link to="/" className="font-bold text-lg text-white">Nexatools Admin</Link>
+        <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
+          <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
+            <Link to="/" className="font-bold text-lg text-sidebar-foreground">Nexatools Admin</Link>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
-              <SidebarGroupLabel className="text-slate-400">Manage</SidebarGroupLabel>
+              <SidebarGroupLabel>Manage</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {NAV.map((item) => {
@@ -85,7 +85,7 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="border-t border-slate-800 p-2">
+          <SidebarFooter className="border-t border-sidebar-border p-2">
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton
@@ -101,8 +101,8 @@ export function AdminShell({ children, title }: { children: ReactNode; title: st
             </SidebarMenu>
           </SidebarFooter>
         </Sidebar>
-        <div className="flex-1 flex flex-col bg-slate-50">
-          <header className="h-14 flex items-center gap-3 border-b bg-white px-4">
+        <div className="flex-1 flex flex-col bg-background text-foreground">
+          <header className="h-14 flex items-center gap-3 border-b bg-card text-card-foreground px-4">
             <SidebarTrigger />
             <h1 className="text-lg font-semibold">{title}</h1>
           </header>
