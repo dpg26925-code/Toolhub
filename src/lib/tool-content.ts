@@ -25,44 +25,236 @@ const CATEGORY_LABEL: Record<string, string> = {
   accounting: "Accounting Tool",
 };
 
-/** Default long description used when no override exists — keeps SEO body copy on every tool page. */
+// Category-specific copy fragments used to weave tool-specific detail
+// into the three default paragraphs and the default FAQ answers.
+// Each field varies by category so two tools in different categories
+// (and to a large extent, two tools within the same category — because
+// tool.name and tool.shortDescription are threaded through) produce
+// clearly distinct body copy for search engines and readers.
+type CategoryCopy = {
+  /** Who uses this and in what real workflow. */
+  audience: string;
+  /** The concrete input the tool consumes. */
+  input: string;
+  /** The concrete output the tool produces. */
+  output: string;
+  /** Related tools worth mentioning in the closing paragraph. */
+  companions: string;
+  /** Tool-category context for the "limits" FAQ. */
+  limits: string;
+  /** Tool-category context for the "commercial use" FAQ. */
+  commercial: string;
+  /** An extra category-specific Q&A appended to the default FAQ list. */
+  extraFaq: (tool: Tool) => Faq;
+};
+
+const CATEGORY_COPY: Record<string, CategoryCopy> = {
+  pdf: {
+    audience: "Legal teams, students, accountants and support staff",
+    input: "a PDF file (single or multi-page, up to the size limit shown in the form)",
+    output: "a new PDF you can email, upload to a portal or archive",
+    companions: "PDF Merge, PDF Split and PDF to Image",
+    limits: "Free users can process files up to 50 MB per run. Sign in for higher per-day limits, or upgrade to Pro for batch processing.",
+    commercial: "Yes — signed contracts, invoices and internal reports are exactly what this tool is built for. Nexatools grants a commercial-use licence on every plan.",
+    extraFaq: (t) => ({
+      q: `Will ${t.name} preserve fonts, forms and hyperlinks in my PDF?`,
+      a: `Yes. ${t.name} operates on the PDF object stream directly, so embedded fonts, form fields, bookmarks and hyperlinks survive the round-trip. Scanned image-only PDFs behave like flat images — run OCR first if you need selectable text.`,
+    }),
+  },
+  image: {
+    audience: "Photographers, e-commerce sellers, designers and marketing teams",
+    input: "a JPG, PNG or WebP image (up to the size limit shown in the form)",
+    output: "a re-encoded image you can drop into a website, ad or product listing",
+    companions: "Image Resizer, Remove Background and Image Compressor",
+    limits: "Uploads are capped at 10 MB per image for the free tier. Signed-in users get higher daily quotas and Pro accounts unlock batch runs.",
+    commercial: "Yes — commercial photography, product mockups and ad assets are covered by every plan's licence.",
+    extraFaq: (t) => ({
+      q: `Does ${t.name} strip EXIF metadata from my photo?`,
+      a: `${t.name} preserves EXIF by default so cameras, colour profiles and orientation stay intact. If you want a clean file with metadata removed, run the EXIF Remover tool afterwards.`,
+    }),
+  },
+  video: {
+    audience: "Short-form creators, product marketers and support engineers",
+    input: "an MP4, MOV or WebM clip (up to the size shown in the form)",
+    output: "a smaller, re-encoded clip ready for social, docs or a support ticket",
+    companions: "Video Compressor, Video to GIF and Audio Extractor",
+    limits: "Client-side video tools cap uploads at 200 MB for the free tier because processing happens in your browser via FFmpeg WASM.",
+    commercial: "Yes — YouTube uploads, paid ad creatives and client deliverables are all covered.",
+    extraFaq: (t) => ({
+      q: `Which codecs does ${t.name} accept?`,
+      a: `${t.name} reads whatever the FFmpeg WebAssembly build supports — H.264/AVC and H.265/HEVC in MP4 or MOV, VP8/VP9 in WebM, plus AV1. Exotic containers or DRM-protected files won't decode.`,
+    }),
+  },
+  converter: {
+    audience: "Developers, data analysts and content teams",
+    input: "your source data — a file upload or pasted text in the input box",
+    output: "the same data in the target format, ready to copy or download",
+    companions: "JSON Formatter, CSV to JSON and Markdown to HTML",
+    limits: "There's no hard cap on paste-based conversions; file uploads follow the size shown in the form. Very large payloads (10 MB+) may slow the browser tab.",
+    commercial: "Yes — build pipelines, migrate spreadsheets or ship converted assets to clients. Every plan includes commercial rights.",
+    extraFaq: (t) => ({
+      q: `Is the conversion in ${t.name} lossless?`,
+      a: `Structural conversions (JSON ↔ CSV, YAML ↔ JSON, XML ↔ JSON) round-trip cleanly. When mapping to a less expressive format — like flattening nested JSON into CSV — ${t.name} shows a warning so you can decide whether the loss is acceptable.`,
+    }),
+  },
+  ai: {
+    audience: "Marketers, students, support agents and busy knowledge workers",
+    input: "up to 20,000 characters of text — an article, transcript, chat log or draft",
+    output: "AI-generated output you can copy straight into an email, doc or CMS",
+    companions: "AI Summarizer, AI Translator and AI Rewriter",
+    limits: "Each run costs 1 credit. Free accounts start with 10 credits, Pro accounts get 500/month plus API access for automation.",
+    commercial: "Yes — you own the outputs and can publish or resell them. We don't train models on your inputs.",
+    extraFaq: (t) => ({
+      q: `Which model powers ${t.name}?`,
+      a: `${t.name} runs on OpenRouter with a fast default model (Gemini 2.5 Flash class). Pro users can pin a specific model — Claude, GPT-4o or Llama — for consistent style across runs.`,
+    }),
+  },
+  developer: {
+    audience: "Backend and frontend developers, DevOps engineers and QA teams",
+    input: "the text, token or payload you're inspecting — paste it into the input box",
+    output: "a formatted, decoded or validated result you can copy back into your editor",
+    companions: "JSON Formatter, JWT Decoder and Base64 Encoder",
+    limits: "No hard limits for paste-based input. For very large payloads (5 MB+) the browser may lag briefly while the tool parses.",
+    commercial: "Yes — use it inside client work, at your day job or on a public product. There's no attribution requirement.",
+    extraFaq: (t) => ({
+      q: `Can I automate ${t.name} from a script or CI job?`,
+      a: `Pro accounts include an HTTP API that exposes the same functionality as ${t.name}. Generate an API key from the dashboard, then POST your payload — the response matches what you see in the UI.`,
+    }),
+  },
+  youtube: {
+    audience: "YouTubers, agencies and social media managers",
+    input: "a YouTube URL or the raw text you want to format",
+    output: "a snippet, description block, timestamp list or asset you can paste into YouTube Studio",
+    companions: "YouTube Thumbnail Downloader, Chapter Generator and Hashtag Generator",
+    limits: "Public YouTube metadata is fetched via the oEmbed and public thumbnail endpoints — no API key required and no per-day quota for reasonable use.",
+    commercial: "Yes — use the outputs in monetised videos, sponsored posts or agency deliverables.",
+    extraFaq: (t) => ({
+      q: `Does ${t.name} work with unlisted or private videos?`,
+      a: `Unlisted videos work when you have the direct URL, since YouTube exposes the same public metadata. Private videos require you to be signed into YouTube — ${t.name} can't bypass access controls.`,
+    }),
+  },
+  affiliate: {
+    audience: "Affiliate marketers, bloggers and creator-economy operators",
+    input: "your tracking URL, commission numbers or campaign details",
+    output: "a ready-to-share link, disclosure block or income projection",
+    companions: "UTM Builder, Commission Calculator and Affiliate Link Checker",
+    limits: "No credit cost and no per-day cap — every affiliate tool runs client-side, so you can build hundreds of links in a session.",
+    commercial: "Yes — Amazon Associates, ShareASale, Impact and every major network are supported use cases.",
+    extraFaq: (t) => ({
+      q: `Does ${t.name} store the links or campaign data I enter?`,
+      a: `No. ${t.name} runs entirely in your browser, so tracking IDs, sub-affiliate tags and commission figures never leave your device — safe to use with campaigns under NDA.`,
+    }),
+  },
+  tiktok: {
+    audience: "TikTok creators, TikTok Shop sellers and short-form ad buyers",
+    input: "your script, caption, hashtag idea or product details",
+    output: "a polished caption, hashtag set, checklist or calculation you can paste into TikTok",
+    companions: "Hashtag Generator, Caption Writer and TikTok Shop tools",
+    limits: "Local tools have no per-day cap; AI-assisted tools cost 1 credit each. Free accounts start with 10 credits.",
+    commercial: "Yes — paid creator content, TikTok Shop listings and agency posts are all covered.",
+    extraFaq: (t) => ({
+      q: `Will ${t.name} respect TikTok's character and hashtag limits?`,
+      a: `Yes. ${t.name} enforces TikTok's current caption limit (2,200 characters) and warns before you exceed the recommended 3–5 hashtags for engagement.`,
+    }),
+  },
+  trader: {
+    audience: "Retail forex, crypto and CFD traders",
+    input: "your account size, entry, stop-loss and instrument details",
+    output: "position size, risk figures and indicator readings you can act on",
+    companions: "Position Size Calculator, Risk/Reward Calculator and Pip Calculator",
+    limits: "No credit cost and no per-day cap — trading tools run 100% in your browser, so account balances and P/L never leave your device.",
+    commercial: "Yes — use the outputs in prop-firm challenges, client portfolios or trading education. Results are informational, not financial advice.",
+    extraFaq: (t) => ({
+      q: `Which instruments does ${t.name} support?`,
+      a: `${t.name} handles forex pairs, crypto (BTC, ETH and major alts), stock CFDs and index CFDs. Pip and lot values are computed from the quote currency you pick, so exotic pairs work as well as majors.`,
+    }),
+  },
+  accounting: {
+    audience: "Freelancers, small business owners and finance teams",
+    input: "the invoice, salary, VAT or loan figures you're working with",
+    output: "a calculated result or downloadable document (PDF invoice, receipt, schedule)",
+    companions: "VAT Calculator, Invoice Generator and Loan Amortization",
+    limits: "No credit cost. PDF exports are unlimited and there's no per-day cap — everything runs client-side.",
+    commercial: "Yes — generated invoices, receipts and schedules are yours to send to real clients. Nexatools takes no branding cut on the output.",
+    extraFaq: (t) => ({
+      q: `Which currencies and tax rates does ${t.name} support?`,
+      a: `${t.name} supports every currency ISO code and accepts any tax rate you type in, so it works for VAT (EU), GST (AU/CA/IN), sales tax (US) and any other regime. Formatting follows the locale you choose in the form.`,
+    }),
+  },
+};
+
+const DEFAULT_CATEGORY_COPY: CategoryCopy = {
+  audience: "Product, engineering and operations teams",
+  input: "the input shown in the form above (text, file or URL)",
+  output: "a result you can copy or download in one click",
+  companions: "the other utilities in the Nexatools directory",
+  limits: "No hard limits on the free tier for reasonable use. Sign in for higher daily quotas and Pro accounts unlock batch runs and API access.",
+  commercial: "Yes — every Nexatools plan grants a commercial-use licence over the output.",
+  extraFaq: (t) => ({
+    q: `What makes ${t.name} different from other online tools?`,
+    a: `${t.name} is part of Nexatools — a single directory of 130+ purpose-built tools with a consistent interface, real internal linking between related tools and a privacy-first architecture (client-side where possible, no ad trackers on the tool pages).`,
+  }),
+};
+
+function categoryCopy(tool: Tool): CategoryCopy {
+  return CATEGORY_COPY[tool.categorySlug] ?? DEFAULT_CATEGORY_COPY;
+}
+
+function toolAction(tool: Tool): string {
+  return tool.shortDescription.replace(/\.$/, "").replace(/^./, (c) => c.toLowerCase());
+}
+
+/** Default long description used when no override exists — keeps SEO body copy on every tool page.
+ *  The copy is deliberately category- and tool-specific in every paragraph
+ *  so two tool pages never share identical passages. */
 function defaultLongDescription(tool: Tool): string {
+  const c = categoryCopy(tool);
   const runtime = tool.clientSide
-    ? "runs entirely in your browser — your files and text never leave your device"
-    : "is powered by our secure server infrastructure";
-  const categoryContext: Record<string, string> = {
-    pdf: `Common workflows include preparing contracts before emailing them to clients, reorganising scanned reports and getting PDFs down to a size that customer portals actually accept.`,
-    image: `Photographers, marketers and product teams reach for this tool when they need a quick, format-consistent asset for a website, ad campaign or social post — without opening Photoshop.`,
-    video: `Creators, marketers and support teams use this to prep video assets — cutting clips for social, shrinking screen recordings for support tickets and pulling audio from interviews — without installing any editing software.`,
-    converter: `Developers, analysts and content creators use this converter to move data between formats — turning configs into APIs, spreadsheets into data pipelines and drafts into publish-ready markup.`,
-    ai: `The underlying model is tuned for practical output: summaries you can send to a colleague, translations that read naturally and rewrites that preserve the meaning of the original text.`,
-    developer: `It's the utility developers keep pinned in a tab — reach for it between commits, while reviewing an API response or when a teammate pastes something into Slack that needs decoding.`,
-    tiktok: `TikTok creators, TikTok Shop sellers and short-form marketers use this to plan scripts, tune captions, size hashtags and price products — all inside the browser, so nothing you paste ever leaves your device.`,
-    trader: `Retail forex, crypto and CFD traders use this to size positions correctly, respect risk-per-trade rules and sanity-check indicator readings — all client-side, so account numbers, prices and P/L never leave your device.`,
-  };
-  const useCase = categoryContext[tool.categorySlug] ?? `Teams across engineering, marketing and operations rely on ${tool.name} for one-off conversions and repeatable, script-friendly workflows.`;
-  return [
-    `The ${tool.name} is a free online utility that helps you ${tool.shortDescription.toLowerCase().replace(/\.$/, "")}. It ${runtime}, so you get instant results without installing software or creating an account.`,
-    useCase,
-    `${tool.name} is part of the Nexatools platform — a growing library of 30+ purpose-built utilities. Sign in for a free account to save history, mark favorites and get higher daily limits; upgrade to Pro when you need API access, batch processing and no ads.`,
-  ].join("\n\n");
+    ? `${tool.name} runs 100% inside your browser tab — nothing you paste or upload is sent to a server`
+    : `${tool.name} runs on Nexatools' secure server infrastructure with per-session isolation and no long-term storage`;
+  const action = toolAction(tool);
+
+  const p1 = `${tool.name} is a purpose-built online tool that helps you ${action}. Instead of stitching together a spreadsheet, a CLI or a heavyweight desktop app, you get a focused single-page workflow that takes ${c.input} and returns ${c.output} in seconds.`;
+
+  const p2 = `${c.audience} reach for ${tool.name} when they need a reliable answer fast — inside a support ticket, before a meeting, while shipping a release or between takes on a video shoot. ${runtime}, so the workflow stays private and portable across desktop, tablet and mobile browsers.`;
+
+  const p3 = `${tool.name} is one of 130+ tools in the Nexatools directory. Pair it with ${c.companions} to build a full ${c.audience.toLowerCase().split(",")[0]} toolkit that lives in a single tab. Sign in for a free account to save history and favourites, or upgrade to Pro for API access, batch processing and higher daily quotas.`;
+
+  return [p1, p2, p3].join("\n\n");
 }
 
 function defaultHowToUse(tool: Tool): string[] {
+  const c = categoryCopy(tool);
   return [
-    `Open the ${tool.name} page — no signup required to get started.`,
-    `Provide your input using the form above (paste text, upload a file or adjust the options).`,
-    `Click the action button and download or copy the result instantly.`,
+    `Open the ${tool.name} page — no signup required to try it once.`,
+    `Provide ${c.input} using the form above and adjust any options for your workflow.`,
+    `Click the action button and download or copy ${c.output.replace(/^a(n)? /, "the ")}.`,
   ];
 }
 
 function defaultFaqs(tool: Tool): Faq[] {
+  const c = categoryCopy(tool);
+  const privacy = tool.clientSide
+    ? `Nothing you paste or upload to ${tool.name} leaves your device. The tool runs in your browser via JavaScript and WebAssembly, so files, tokens and account numbers stay local — safe for confidential documents and internal data.`
+    : `${tool.name} processes your input on Nexatools' servers with per-session isolation. Files are deleted immediately after your session ends and nothing is used to train models or sold to third parties.`;
   return [
-    { q: `Is the ${tool.name} free?`, a: `Yes — the ${tool.name} is completely free to use. Signed-in users get higher limits and can save history and favorites.` },
-    { q: `Do you store my files or data?`, a: tool.clientSide
-      ? `No. This tool runs entirely in your browser, so nothing is ever uploaded to our servers.`
-      : `Files are processed on our servers and deleted immediately after your session ends. We never share or sell your data.` },
-    { q: `Can I use the ${tool.name} on mobile?`, a: `Yes. Every Nexatools tool works on desktop, tablet and mobile browsers — no app install needed.` },
+    {
+      q: `Is ${tool.name} really free?`,
+      a: `Yes — ${tool.name} is free to use without an account. Signed-in users get higher daily limits and can save history and favourites; Pro accounts unlock API access and batch runs.`,
+    },
+    {
+      q: `Does ${tool.name} store my files or data?`,
+      a: privacy,
+    },
+    {
+      q: `Are there limits on how much I can use ${tool.name}?`,
+      a: c.limits,
+    },
+    {
+      q: `Can I use ${tool.name} for commercial or client work?`,
+      a: c.commercial,
+    },
+    c.extraFaq(tool),
   ];
 }
 
