@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/dashboard/")({
 
 function DashboardHome() {
   const { user } = useAuth();
+  const qc = useQueryClient();
 
   const profileQ = useQuery({
     queryKey: ["profile", user?.id],
@@ -51,6 +53,32 @@ function DashboardHome() {
       return data ?? [];
     },
   });
+
+  const monthQ = useQuery({
+    queryKey: ["month-usage", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const start = new Date();
+      start.setDate(1);
+      start.setHours(0, 0, 0, 0);
+      const { data } = await supabase
+        .from("usage_logs")
+        .select("credits_used")
+        .eq("user_id", user!.id)
+        .gte("created_at", start.toISOString());
+      return (data ?? []).reduce((sum, r: any) => sum + (r.credits_used ?? 0), 0);
+    },
+  });
+
+  useEffect(() => {
+    const onCredits = () => {
+      qc.invalidateQueries({ queryKey: ["profile", user?.id] });
+      qc.invalidateQueries({ queryKey: ["month-usage", user?.id] });
+      qc.invalidateQueries({ queryKey: ["recent-usage", user?.id] });
+    };
+    window.addEventListener("nexatools:credits", onCredits);
+    return () => window.removeEventListener("nexatools:credits", onCredits);
+  }, [qc, user?.id]);
 
   const credits = profileQ.data?.credits ?? 0;
   const plan = profileQ.data?.plan ?? "free";
@@ -127,9 +155,10 @@ function DashboardHome() {
 
         <Card>
           <CardHeader><CardTitle>Quick stats</CardTitle></CardHeader>
-          <CardContent className="grid grid-cols-3 gap-4 text-center">
+          <CardContent className="grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
             <Stat label="Tools available" value={TOOLS.length} />
             <Stat label="Credits" value={credits} />
+            <Stat label="Used this month" value={monthQ.data ?? 0} />
             <Stat label="Plan" value={plan.toUpperCase()} />
           </CardContent>
         </Card>
