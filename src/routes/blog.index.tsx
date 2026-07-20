@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { abs } from "@/lib/site";
 import { SiteLayout } from "@/components/site-layout";
 import { STATIC_BLOG_POSTS } from "@/generated/blog-index";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -18,7 +20,20 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogIndex() {
-  const posts = STATIC_BLOG_POSTS;
+  const { data: livePosts } = useQuery({
+    queryKey: ["blog-index-live"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("slug,title,excerpt,content,cover_image,published_at,created_at,updated_at")
+        .eq("published", true)
+        .order("published_at", { ascending: false, nullsFirst: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+    staleTime: 60_000,
+  });
+  const posts = (livePosts && livePosts.length ? livePosts : STATIC_BLOG_POSTS) as any[];
 
   return (
     <SiteLayout>
