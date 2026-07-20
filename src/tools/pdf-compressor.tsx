@@ -23,6 +23,11 @@ export default function PdfCompressorTool() {
 
   const compress = async (target = file) => {
     if (!target) return;
+    if (target.size > 50 * 1024 * 1024) {
+      setError("File too large. Max 50MB.");
+      setResult(null);
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
@@ -33,7 +38,8 @@ export default function PdfCompressorTool() {
       setResult({ url, original: target.size, compressed: out.byteLength });
       toast.success("PDF ready to download");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Compression failed");
+      const msg = e instanceof Error ? e.message : "";
+      setError(/invalid|parse|encrypt|pdf/i.test(msg) ? "This file is not a valid PDF" : msg || "Compression failed");
       setResult(null);
     } finally {
       setBusy(false);
