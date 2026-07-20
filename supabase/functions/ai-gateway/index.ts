@@ -183,7 +183,7 @@ Deno.serve(async (req) => {
       if (userErr || !userData.user) return json({ error: "Please sign in again to use AI tools." }, 401);
       const userId = userData.user.id;
 
-      const { error: creditErr } = await supabase.rpc("consume_credits", { _amount: CREDIT_COST });
+      const { data: remaining, error: creditErr } = await supabase.rpc("consume_credits", { _amount: CREDIT_COST });
       if (creditErr) {
         if (creditErr.message.includes("insufficient_credits")) {
           return json({ error: "You have no credits left. Upgrade or wait for your daily refill." }, 402);
@@ -202,7 +202,7 @@ Deno.serve(async (req) => {
           status: "success",
           processing_time_ms: Date.now() - started,
         });
-        return json({ content });
+        return json({ content, creditsRemaining: typeof remaining === "number" ? remaining : null });
       } catch (e) {
         const { data: tool } = await supabase.from("tools").select("id").eq("slug", toolSlug).maybeSingle();
         await supabase.from("usage_logs").insert({
