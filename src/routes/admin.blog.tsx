@@ -13,7 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { Pencil, Trash2, X } from "lucide-react";
+import { Pencil, Trash2, X, Sparkles } from "lucide-react";
+import { callAi } from "@/lib/ai-client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type PostForm = {
   id: number | null;
@@ -34,6 +36,16 @@ const EMPTY: PostForm = {
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+function extractJson(raw: string): any {
+  let s = raw.trim();
+  const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fence) s = fence[1].trim();
+  const first = s.indexOf("{");
+  const last = s.lastIndexOf("}");
+  if (first !== -1 && last !== -1) s = s.slice(first, last + 1);
+  return JSON.parse(s);
+}
+
 export const Route = createFileRoute("/admin/blog")({
   head: () => ({ meta: [{ title: "Blog — Admin" }, { name: "robots", content: "noindex" }] }),
   component: AdminBlog,
@@ -44,6 +56,41 @@ function AdminBlog() {
   const { user } = useAuth();
   const [form, setForm] = useState<PostForm>(EMPTY);
   const isEditing = form.id !== null;
+  const [aiTopic, setAiTopic] = useState("");
+  const [aiKeywords, setAiKeywords] = useState("");
+  const [aiTone, setAiTone] = useState("informative");
+  const [aiAudience, setAiAudience] = useState("general readers");
+  const [aiLength, setAiLength] = useState("medium");
+  const [aiBusy, setAiBusy] = useState(false);
+
+  const generate = async () => {
+    if (!aiTopic.trim()) { toast.error("Enter a topic"); return; }
+    setAiBusy(true);
+    try {
+      const raw = await callAi({
+        action: "blog-write",
+        topic: aiTopic,
+        keywords: aiKeywords,
+        tone: aiTone,
+        audience: aiAudience,
+        length: aiLength,
+      });
+      const j = extractJson(raw);
+      setForm((f) => ({
+        ...f,
+        title: j.title ?? f.title,
+        slug: j.slug ? slugify(j.slug) : (j.title ? slugify(j.title) : f.slug),
+        excerpt: j.excerpt ?? f.excerpt,
+        tags: Array.isArray(j.tags) ? j.tags.join(", ") : f.tags,
+        content: j.content ?? f.content,
+      }));
+      toast.success("Draft generated — review then publish");
+    } catch (e: any) {
+      toast.error(e.message || "Generation failed");
+    } finally {
+      setAiBusy(false);
+    }
+  };
 
   const postsQ = useQuery({
     queryKey: ["admin-blog"],
@@ -123,6 +170,55 @@ function AdminBlog() {
 
   return (
     <AdminShell title="Blog">
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2"><Sparkles className="h-4 w-4 text-primary" /> AI Blog Writer</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <Label>Topic</Label>
+              <Input value={aiTopic} onChange={(e) => setAiTopic(e.target.value)} placeholder="e.g. Top 10 free PDF tools for freelancers in 2026" />
+            </div>
+            <div className="md:col-span-2">
+              <Label>Keywords (optional, comma-separated)</Label>
+              <Input value={aiKeywords} onChange={(e) => setAiKeywords(e.target.value)} placeholder="pdf compressor, merge pdf, online tools" />
+            </div>
+            <div>
+              <Label>Tone</Label>
+              <Select value={aiTone} onValueChange={setAiTone}>
+                <SelectTrigger className="mt-2"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {["informative","friendly","professional","persuasive","casual","authoritative"].map((t) => (
+                    <SelectItem key={t} value={t}>{t}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Audience</Label>
+              <Input value={aiAudience} onChange={(e) => setAiAudience(e.target.value)} placeholder="general readers" />
+            </div>
+            <div>
+              <Label>Length</Label>
+              <Select value={aiLength} onValueChange={setAiLength}>
+                <SelectTrigger className="mt-2"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="short">Short (500-700 words)</SelectItem>
+                  <SelectItem value="medium">Medium (900-1200 words)</SelectItem>
+                  <SelectItem value="long">Long (1500-2000 words)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <Button onClick={generate} disabled={aiBusy || !aiTopic.trim()}>
+            <Sparkles className="h-4 w-4 mr-2" />
+            {aiBusy ? "Generating…" : "Generate draft"}
+          </Button>
+          <p className="text-xs text-muted-foreground">Fills the form below. Review, edit, then toggle Publish.</p>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
