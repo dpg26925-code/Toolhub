@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AdminShell } from "@/components/admin-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -13,7 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { Pencil, Trash2, X, Sparkles, Eye, Clock, User as UserIcon, Calendar } from "lucide-react";
+import { Pencil, Trash2, X, Sparkles, Eye, Clock, User as UserIcon, Calendar,
+  Bold, Italic, Heading2, Heading3, Link2, Image as ImageIcon, List, ListOrdered,
+  Quote, Code, Minus, ListTree } from "lucide-react";
 import { callAi } from "@/lib/ai-client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -46,14 +48,44 @@ const slugify = (s: string) =>
 const wordsIn = (s: string) => (s.trim().match(/\S+/g)?.length ?? 0);
 const readingMinutes = (s: string) => Math.max(1, Math.round(wordsIn(s) / 220));
 
+const slugifyHeading = (s: string) =>
+  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+function extractToc(md: string) {
+  const items: { level: 2 | 3; text: string; id: string }[] = [];
+  const used = new Map<string, number>();
+  for (const raw of (md || "").split(/\r?\n/)) {
+    const m = raw.trim().match(/^(#{2,3})\s+(.+)$/);
+    if (!m) continue;
+    const level = (m[1].length === 2 ? 2 : 3) as 2 | 3;
+    const text = m[2].replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/[*_`]/g, "").trim();
+    let id = slugifyHeading(text) || `section-${items.length + 1}`;
+    const n = used.get(id) ?? 0;
+    if (n > 0) id = `${id}-${n}`;
+    used.set(id, n + 1);
+    items.push({ level, text, id });
+  }
+  return items;
+}
+
 function mdPreview(md: string): string {
   let s = (md || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   s = s.replace(/```([\s\S]*?)```/g, (_, c) => `<pre><code>${c.trim()}</code></pre>`);
   s = s.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+  const used = new Map<string, number>();
+  const hid = (t: string) => {
+    let id = slugifyHeading(t) || `section-${used.size + 1}`;
+    const n = used.get(id) ?? 0; if (n > 0) id = `${id}-${n}`;
+    used.set(id, n + 1); return id;
+  };
   s = s.replace(/^###### (.+)$/gm, "<h6>$1</h6>").replace(/^##### (.+)$/gm, "<h5>$1</h5>")
-       .replace(/^#### (.+)$/gm, "<h4>$1</h4>").replace(/^### (.+)$/gm, "<h3>$1</h3>")
-       .replace(/^## (.+)$/gm, "<h2>$1</h2>").replace(/^# (.+)$/gm, "<h1>$1</h1>");
+       .replace(/^#### (.+)$/gm, "<h4>$1</h4>")
+       .replace(/^### (.+)$/gm, (_, t) => `<h3 id="${hid(t)}">${t}</h3>`)
+       .replace(/^## (.+)$/gm, (_, t) => `<h2 id="${hid(t)}">${t}</h2>`)
+       .replace(/^# (.+)$/gm, (_, t) => `<h1 id="${hid(t)}">${t}</h1>`);
   s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>");
+  s = s.replace(/^> (.+)$/gm, "<blockquote>$1</blockquote>");
+  s = s.replace(/^---$/gm, "<hr/>");
   s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2" class="rounded-lg my-3" />');
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary underline">$1</a>');
   s = s.replace(/^(?:- |\* )(.+)$/gm, "<li>$1</li>").replace(/(<li>[\s\S]+?<\/li>)/g, (m) => `<ul>${m}</ul>`);
@@ -82,6 +114,7 @@ function AdminBlog() {
   const [form, setForm] = useState<PostForm>(EMPTY);
   const isEditing = form.id !== null;
   const [showPreview, setShowPreview] = useState(false);
+  const contentRef = useRef<HTMLTextAreaElement | null>(null);
   const [aiTopic, setAiTopic] = useState("");
   const [aiKeywords, setAiKeywords] = useState("");
   const [aiTone, setAiTone] = useState("informative");
@@ -91,6 +124,71 @@ function AdminBlog() {
 
   const readingMin = useMemo(() => readingMinutes(form.content), [form.content]);
   const wordCount = useMemo(() => wordsIn(form.content), [form.content]);
+  const toc = useMemo(() => extractToc(form.content), [form.content]);
+
+  const applyMd = (
+    wrap: { before: string; after?: string; placeholder?: string; block?: boolean } | ((sel: string) => string)
+  ) => {
+    const ta = contentRef.current;
+    if (!ta) return;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const value = ta.value;
+    const sel = value.slice(start, end);
+    let insert: string;
+    let selStart: number;
+    let selEnd: number;
+    if (typeof wrap === "function") {
+      insert = wrap(sel);
+      selStart = start + insert.length;
+      selEnd = selStart;
+    } else {
+      const text = sel || wrap.placeholder || "";
+      const before = wrap.block && start > 0 && value[start - 1] !== "\n" ? "\n" : "";
+      insert = `${before}${wrap.before}${text}${wrap.after ?? ""}`;
+      selStart = start + before.length + wrap.before.length;
+      selEnd = selStart + text.length;
+    }
+    const next = value.slice(0, start) + insert + value.slice(end);
+    setForm((f) => ({ ...f, content: next }));
+    requestAnimationFrame(() => {
+      ta.focus();
+      ta.setSelectionRange(selStart, selEnd);
+    });
+  };
+
+  const insertToc = () =>
+    applyMd(() => {
+      const items = extractToc(form.content);
+      if (!items.length) { toast.error("Add H2/H3 headings first"); return ""; }
+      const md = ["## Table of contents", ...items.map((it) =>
+        `${it.level === 3 ? "  " : ""}- [${it.text}](#${it.id})`
+      ), ""].join("\n");
+      return md + "\n";
+    });
+
+  const promptLink = () => {
+    const url = typeof window !== "undefined" ? window.prompt("URL", "https://") : "";
+    if (!url) return;
+    applyMd({ before: "[", after: `](${url})`, placeholder: "link text" });
+  };
+  const promptImage = () => {
+    const url = typeof window !== "undefined" ? window.prompt("Image URL", "https://") : "";
+    if (!url) return;
+    applyMd({ before: "![", after: `](${url})`, placeholder: "alt text", block: true });
+  };
+
+  const TB = ({ onClick, title, children }: { onClick: () => void; title: string; children: React.ReactNode }) => (
+    <button
+      type="button"
+      onClick={onClick}
+      title={title}
+      aria-label={title}
+      className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
+    >
+      {children}
+    </button>
+  );
 
   const generate = async () => {
     if (!aiTopic.trim()) { toast.error("Enter a topic"); return; }
@@ -367,7 +465,52 @@ function AdminBlog() {
                   </div>
                 </div>
 
-                <div><Label>Content (Markdown)</Label><Textarea rows={12} className="font-mono text-sm" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} /></div>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <Label>Content (Markdown)</Label>
+                    <span className="text-xs text-muted-foreground">WordPress-style editor · {toc.length} heading{toc.length === 1 ? "" : "s"}</span>
+                  </div>
+                  <div className="mt-2 flex flex-wrap items-center gap-0.5 rounded-t-md border border-b-0 bg-muted/40 p-1">
+                    <TB title="Heading 2" onClick={() => applyMd({ before: "## ", placeholder: "Heading", block: true })}><Heading2 className="h-4 w-4" /></TB>
+                    <TB title="Heading 3" onClick={() => applyMd({ before: "### ", placeholder: "Subheading", block: true })}><Heading3 className="h-4 w-4" /></TB>
+                    <span className="mx-1 h-5 w-px bg-border" />
+                    <TB title="Bold" onClick={() => applyMd({ before: "**", after: "**", placeholder: "bold" })}><Bold className="h-4 w-4" /></TB>
+                    <TB title="Italic" onClick={() => applyMd({ before: "*", after: "*", placeholder: "italic" })}><Italic className="h-4 w-4" /></TB>
+                    <TB title="Inline code" onClick={() => applyMd({ before: "`", after: "`", placeholder: "code" })}><Code className="h-4 w-4" /></TB>
+                    <span className="mx-1 h-5 w-px bg-border" />
+                    <TB title="Link" onClick={promptLink}><Link2 className="h-4 w-4" /></TB>
+                    <TB title="Image" onClick={promptImage}><ImageIcon className="h-4 w-4" /></TB>
+                    <span className="mx-1 h-5 w-px bg-border" />
+                    <TB title="Bulleted list" onClick={() => applyMd({ before: "- ", placeholder: "List item", block: true })}><List className="h-4 w-4" /></TB>
+                    <TB title="Numbered list" onClick={() => applyMd({ before: "1. ", placeholder: "List item", block: true })}><ListOrdered className="h-4 w-4" /></TB>
+                    <TB title="Quote" onClick={() => applyMd({ before: "> ", placeholder: "Quote", block: true })}><Quote className="h-4 w-4" /></TB>
+                    <TB title="Horizontal rule" onClick={() => applyMd(() => "\n\n---\n\n")}><Minus className="h-4 w-4" /></TB>
+                    <span className="mx-1 h-5 w-px bg-border" />
+                    <TB title="Insert Table of Contents" onClick={insertToc}><ListTree className="h-4 w-4" /></TB>
+                  </div>
+                  <Textarea
+                    ref={contentRef}
+                    rows={16}
+                    className="rounded-t-none font-mono text-sm"
+                    value={form.content}
+                    onChange={(e) => setForm({ ...form, content: e.target.value })}
+                    placeholder={"Write your post in Markdown…\n\n## Introduction\nStart here."}
+                  />
+                  {toc.length > 0 && (
+                    <div className="mt-3 rounded-lg border bg-muted/30 p-3">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+                        <ListTree className="h-3 w-3" /> Table of contents preview
+                      </p>
+                      <ol className="mt-2 space-y-1 text-sm">
+                        {toc.map((it) => (
+                          <li key={it.id} className={it.level === 3 ? "ml-4 text-muted-foreground" : ""}>
+                            {it.text}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
+                </div>
                 <div className="flex items-center gap-2"><Switch checked={form.published} onCheckedChange={(v) => setForm({ ...form, published: v })} /><Label>Publish</Label></div>
                 <div className="flex gap-2">
                   <Button onClick={() => saveM.mutate()} disabled={saveM.isPending || !form.title}>

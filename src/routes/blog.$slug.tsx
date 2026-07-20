@@ -8,6 +8,27 @@ import { SITE_URL } from "@/lib/site";
 import { getStaticBlogPost, type StaticBlogPost } from "@/generated/blog-index";
 const BASE = SITE_URL;
 
+const slugifyHeading = (s: string) =>
+  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+function extractToc(markdown: string) {
+  const items: { level: 2 | 3; text: string; id: string }[] = [];
+  const used = new Map<string, number>();
+  for (const raw of markdown.split(/\r?\n/)) {
+    const line = raw.trim();
+    const m = line.match(/^(#{2,3})\s+(.+)$/);
+    if (!m) continue;
+    const level = (m[1].length === 2 ? 2 : 3) as 2 | 3;
+    const text = m[2].replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/[*_`]/g, "").trim();
+    let id = slugifyHeading(text) || `section-${items.length + 1}`;
+    const n = used.get(id) ?? 0;
+    if (n > 0) id = `${id}-${n}`;
+    used.set(id, n + 1);
+    items.push({ level, text, id });
+  }
+  return items;
+}
+
 function markdownToHtml(markdown: string) {
   const escapeHtml = (value: string) =>
     value
@@ -26,6 +47,14 @@ function markdownToHtml(markdown: string) {
   const lines = markdown.split(/\r?\n/);
   const html: string[] = [];
   let list: string[] = [];
+  const used = new Map<string, number>();
+  const headingId = (text: string) => {
+    let id = slugifyHeading(text) || `section-${used.size + 1}`;
+    const n = used.get(id) ?? 0;
+    if (n > 0) id = `${id}-${n}`;
+    used.set(id, n + 1);
+    return id;
+  };
 
   const flushList = () => {
     if (!list.length) return;
@@ -41,13 +70,16 @@ function markdownToHtml(markdown: string) {
     }
     if (trimmed.startsWith("### ")) {
       flushList();
-      html.push(`<h3>${inline(trimmed.slice(4))}</h3>`);
+      const t = trimmed.slice(4);
+      html.push(`<h3 id="${headingId(t)}">${inline(t)}</h3>`);
     } else if (trimmed.startsWith("## ")) {
       flushList();
-      html.push(`<h2>${inline(trimmed.slice(3))}</h2>`);
+      const t = trimmed.slice(3);
+      html.push(`<h2 id="${headingId(t)}">${inline(t)}</h2>`);
     } else if (trimmed.startsWith("# ")) {
       flushList();
-      html.push(`<h2>${inline(trimmed.slice(2))}</h2>`);
+      const t = trimmed.slice(2);
+      html.push(`<h2 id="${headingId(t)}">${inline(t)}</h2>`);
     } else if (/^-\s+/.test(trimmed)) {
       list.push(trimmed.replace(/^-\s+/, ""));
     } else if (/^\d+\.\s+/.test(trimmed)) {
@@ -141,6 +173,7 @@ export const Route = createFileRoute("/blog/$slug")({
 function BlogPost() {
   const post = Route.useLoaderData();
   const html = markdownToHtml(post.content ?? "");
+  const toc = extractToc(post.content ?? "");
   const url = `${BASE}/blog/${post.slug}`;
 
   return (
@@ -158,6 +191,21 @@ function BlogPost() {
           <span>·</span>
           <span>{Math.max(1, Math.round((post.content?.length ?? 0) / 1000))} min read</span>
         </div>
+
+        {toc.length >= 3 && (
+          <nav aria-label="Table of contents" className="mt-8 rounded-xl border bg-muted/30 p-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Table of contents</p>
+            <ol className="mt-3 space-y-1.5 text-sm">
+              {toc.map((it, i) => (
+                <li key={it.id} className={it.level === 3 ? "ml-5" : ""}>
+                  <a href={`#${it.id}`} className="text-foreground/80 hover:text-primary hover:underline">
+                    {it.level === 2 ? `${i + 1}. ` : ""}{it.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
 
         <div
           className="mt-8 max-w-none text-base leading-7 text-foreground [&_a]:font-medium [&_a]:text-primary [&_a]:underline-offset-4 [&_a:hover]:underline [&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_h2]:mb-3 [&_h2]:mt-9 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mb-2 [&_h3]:mt-7 [&_h3]:text-xl [&_h3]:font-semibold [&_li]:mb-2 [&_p]:mb-5 [&_strong]:font-semibold [&_ul]:mb-6 [&_ul]:ml-6 [&_ul]:list-disc"
