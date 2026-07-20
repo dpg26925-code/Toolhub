@@ -42,6 +42,9 @@ export default function PdfCompressorTool() {
 
   const savings = result ? Math.max(0, Math.round((1 - result.compressed / result.original) * 100)) : 0;
   const progress = busy ? 65 : result ? 100 : file ? 20 : 0;
+  const downloadName = file
+    ? `${file.name.replace(/\.pdf$/i, "")}-compressed.pdf`
+    : "compressed.pdf";
 
   return (
     <div className="grid gap-5 lg:grid-cols-[1fr_22rem]">
@@ -74,7 +77,7 @@ export default function PdfCompressorTool() {
             {busy ? "Compressing…" : result ? "Compress again" : "Compress PDF"}
           </Button>
           <Button asChild variant="outline" aria-disabled={!result} className={!result ? "pointer-events-none opacity-50" : undefined}>
-            <a href={result?.url ?? "#"} download="compressed.pdf">Download compressed.pdf</a>
+            <a href={result?.url ?? "#"} download={downloadName}>Download {downloadName}</a>
           </Button>
         </div>
       </div>
