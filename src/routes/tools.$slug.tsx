@@ -82,10 +82,10 @@ export const Route = createFileRoute("/tools/$slug")({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-              { "@type": "ListItem", position: 2, name: "Tools", item: "/tools" },
+              { "@type": "ListItem", position: 1, name: "Home", item: abs("/") },
+              { "@type": "ListItem", position: 2, name: "Tools", item: abs("/tools") },
               ...(category
-                ? [{ "@type": "ListItem", position: 3, name: category.name, item: `/categories/${category.slug}` }]
+                ? [{ "@type": "ListItem", position: 3, name: category.name, item: abs(`/categories/${category.slug}`) }]
                 : []),
               { "@type": "ListItem", position: category ? 4 : 3, name: tool.name, item: url },
             ],
