@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { AuthLayout } from "@/components/auth-layout";
 import { supabase } from "@/integrations/supabase/client";
 import { GoogleSignInButton } from "@/components/google-signin-button";
+import { attachReferralCode } from "@/lib/referrals.functions";
 
 export const Route = createFileRoute("/auth/signup")({
   head: () => ({
@@ -43,6 +44,10 @@ function SignupPage() {
       return;
     }
     if (data.session) {
+      try {
+        const code = typeof window !== "undefined" ? window.localStorage.getItem("nexa_ref") : null;
+        if (code) await attachReferralCode({ data: { code } });
+      } catch { /* ignore */ }
       navigate({ to: "/" });
     } else {
       setConfirmSent(true);
