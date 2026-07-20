@@ -133,8 +133,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Organization",
           name: "Nexatools",
           url: "https://nexatools.cloud",
-          logo: "https://nexatools.cloud/favicon.ico",
-          sameAs: ["https://twitter.com/nexatools"],
+          logo: "https://nexatools.cloud/logo.png",
+          description: "Free online tools for PDF, image, video, AI, and developer tasks.",
+          sameAs: [
+            "https://twitter.com/nexatools",
+            "https://linkedin.com/company/nexatools",
+          ],
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: "support@nexatools.cloud",
+          },
         }),
       },
       {
