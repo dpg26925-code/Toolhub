@@ -1,62 +1,51 @@
-## Affiliate Program (Referral) — Plan
+## Admin Panel Build Plan for Nexatools
 
-Goal: mỗi user có 1 mã referral. Ai đăng ký qua link đó và mua Pro → user gốc được cộng hoa hồng. Admin duyệt payout.
+Build a complete `/admin/*` panel reusing existing Supabase auth + `user_roles` table (role = 'admin'). Keep public pages untouched.
 
-### 1) Database (migration)
+### Auth model
+- Reuse Supabase Auth. Admin check = row in `public.user_roles` with `role='admin'` (already exists — do NOT add `profiles.role`, project already uses proper `user_roles` pattern per security guidance).
+- Optional email allowlist (`@nexatools.cloud`) enforced via a new trigger `grant_admin_for_verified_domain` on `auth.users` insert/verify (only for confirmed emails).
+- `/admin/login` = dedicated page. On success, verify user has admin role via `has_role` RPC; if not, sign out + error.
+- Existing `AdminShell` already gates via `useRoles()`. Extend to redirect to `/admin/login` (not `/`) when unauthenticated/non-admin.
 
-- `profiles`:
-  - `referral_code text unique` — tự sinh khi tạo profile (trigger `handle_new_user`).
-  - `referred_by uuid null references profiles(id)` — set khi signup có `?ref=`.
-- `referrals` (một dòng / referred user):
-  - `referrer_id`, `referred_user_id unique`, `status` (`pending` | `converted` | `paid` | `void`),
-  - `commission_cents int default 0`, `subscription_id`, `converted_at`, `paid_at`.
-- `referral_payouts`:
-  - `referrer_id`, `amount_cents`, `method` (paypal/bank/other), `payout_reference`, `status` (`pending`/`paid`), `notes`, `paid_at`.
-- RLS:
-  - Referrer đọc `referrals` của mình + payouts của mình.
-  - Admin đọc/ghi tất cả (`has_role(auth.uid(),'admin')`).
-  - Ghi từ webhook dùng `service_role` (bypass RLS).
-- Trigger cập nhật `handle_new_user`: sinh `referral_code` random 8-char base36 unique.
+### Routes to build/update
+1. **`/admin/login`** (new, public) — email/password + Google, verifies admin role post-login, redirect `/admin/dashboard`.
+2. **`/admin/dashboard`** (rename of existing `/admin`) — stats cards (users, tools, blog posts, MTD revenue from `subscriptions`), recent subscriptions table, recent signups, quick links.
+3. **`/admin/blog`** (rewrite existing) — list table with Edit/Delete/Toggle publish actions.
+4. **`/admin/blog/new`** + **`/admin/blog/$id/edit`** — dedicated create/edit forms (split out from current inline editor). Keep existing AI Blog Writer panel on new.
+5. **`/admin/tools`** (extend existing) — add create/edit form + delete + toggle featured; page `/admin/tools/new` and `/admin/tools/$id/edit`.
+6. **`/admin/users`** (extend) — search, view detail drawer, add/subtract credits, change role (grant/revoke admin via `user_roles`), delete user (admin RPC).
+7. **`/admin/payments`** (new) — read from `subscriptions` table, filter by status, expandable row for raw JSON.
+8. **`/admin/settings`** (rewrite) — form persisted in new `site_settings` table (single-row key/value JSON).
 
-Commission: **30% one-time** của lần thanh toán đầu tiên Pro ($20 → 600 cents). Config qua env `REFERRAL_COMMISSION_PCT` (default 30).
+### Backend changes (single migration)
+- Create `site_settings` table (id=1 singleton, `data jsonb`, RLS: admins read/write via `has_role`).
+- Add SECURITY DEFINER RPCs (all check `has_role(auth.uid(),'admin')`):
+  - `admin_adjust_credits(_user_id, _delta)`
+  - `admin_set_role(_user_id, _role, _grant boolean)`
+  - `admin_delete_user(_user_id)` — deletes from `auth.users` cascade.
+- Trigger `grant_admin_for_verified_domain` on `@nexatools.cloud` verified emails (per email-domain-role-assignment guidance).
+- GRANTs on new table + RPCs.
 
-### 2) Capture referral trên client
+### UI/Layout
+- Keep existing `AdminShell` (already has sidebar with correct nav items). Add: dashboard renamed, Payments item, top-bar search + theme toggle + admin email + notification bell (static), breadcrumbs component.
+- Mobile hamburger already handled by `SidebarProvider` + `SidebarTrigger`.
+- All shadcn components, existing design tokens — no color/font changes.
 
-- `src/routes/__root.tsx` (client-only): đọc `?ref=CODE` từ URL, lưu vào `localStorage` (`nexa_ref`) + cookie 60 ngày.
-- `src/routes/auth.signup.tsx`: khi submit signup gọi server fn `attachReferral({ code })` sau khi user đã có session → set `profiles.referred_by` nếu chưa có.
+### Files
+- New: `src/routes/admin.login.tsx`, `src/routes/admin.dashboard.tsx`, `src/routes/admin.blog.new.tsx`, `src/routes/admin.blog.$id.edit.tsx`, `src/routes/admin.tools.new.tsx`, `src/routes/admin.tools.$id.edit.tsx`, `src/routes/admin.payments.tsx`, `src/components/admin-topbar.tsx`, `src/components/admin-breadcrumb.tsx`.
+- Update: `src/components/admin-shell.tsx` (redirect target, top bar, Payments nav, dashboard link), `src/routes/admin.index.tsx` (redirect to `/admin/dashboard`), `src/routes/admin.blog.tsx` (list-only), `src/routes/admin.tools.tsx` (add actions), `src/routes/admin.users.tsx` (search + actions), `src/routes/admin.settings.tsx` (real form).
+- Migration: `site_settings` + admin RPCs + domain trigger.
 
-### 3) Ghi nhận commission
+### Not changed
+Homepage, `/tools`, `/pricing`, `/blog`, `/faq`, `/auth/*`, `/dashboard/*`. No color/typography changes.
 
-Trong `src/routes/api/public/webhooks/lemonsqueezy.ts`, khi event `subscription_created` hoặc `order_created` cho user có `referred_by` và chưa có bản ghi `referrals`:
-- Tính `commission_cents = round(total_cents * pct / 100)`.
-- Insert `referrals` (status=`converted`, converted_at=now).
-
-### 4) Dashboard user — `/dashboard/referrals`
-
-- Hiển thị: referral link (`https://nexatools.cloud/?ref=CODE`) + copy, tổng số click (bỏ qua v1), số signup, số converted, tổng earned, tổng đã paid, danh sách referrals, danh sách payouts.
-- Thêm mục "Referrals" vào `dashboard-shell.tsx` sidebar.
-
-### 5) Admin — `/admin/referrals`
-
-- Bảng tất cả referrals (filter status).
-- Bảng payouts + form "Create payout" (chọn referrer, số tiền, method, reference) → set các referrals liên quan sang `paid`.
-- Thêm mục "Referrals" vào `admin-shell.tsx`.
-
-### 6) Trang landing `/affiliates`
-
-Marketing page ngắn: how it works, 30% commission, cookie 60 ngày, CTA "Sign in to get your link". Thêm link footer.
-
-### 7) Files sẽ tạo/sửa
-
-- Migration mới (schema + trigger + RLS).
-- `src/lib/referrals.functions.ts` — `getMyReferralStats`, `attachReferral`.
-- `src/routes/dashboard.referrals.tsx`.
-- `src/routes/admin.referrals.tsx`.
-- `src/routes/affiliates.tsx`.
-- Sửa: `__root.tsx` (capture ref), `auth.signup.tsx` (attach sau signup), `api/public/webhooks/lemonsqueezy.ts` (ghi commission), `dashboard-shell.tsx` + `admin-shell.tsx` (menu), `site-footer.tsx` (link Affiliates).
-
-### Ngoài phạm vi v1
-
-- Click tracking chi tiết, multi-tier, hoa hồng recurring, tự động payout qua Stripe/PayPal API.
-
-Nếu OK mình bắt đầu bằng migration.
+### Order
+1. Migration (RPCs + `site_settings` + domain trigger).
+2. `/admin/login` + updated `AdminShell` redirect + `/admin/index` → dashboard redirect.
+3. `/admin/dashboard`.
+4. Blog list + new + edit.
+5. Tools list + new + edit.
+6. Users + actions.
+7. Payments.
+8. Settings.
