@@ -261,16 +261,17 @@ function defaultFaqs(tool: Tool): Faq[] {
 /** Per-tool overrides. Add entries here to give featured tools bespoke copy. */
 const OVERRIDES: Record<string, Partial<ToolContent>> = {
   "pdf-compressor": {
-    longDescription: "PDF Compressor reduces the file size of your PDF documents so they're easier to email, upload or archive — without stripping out the content you need. Drop in a PDF up to 50 MB and it re-encodes the file's object streams in your browser, producing a smaller download you can share right away.\n\nThis is the go-to tool when a customer portal, application form or file-sharing service rejects your PDF for being too large. Common use cases include shrinking scanned contracts before emailing them, compressing image-heavy design decks for faster sharing and preparing PDFs for storage-limited archives. Because every step happens on your device, sensitive documents never leave your machine.\n\nCompression results vary by document — text-heavy PDFs typically shrink less than image-heavy ones. The tool displays the before/after size and the percentage saved so you can decide whether the trade-off is worth it before downloading.",
+    longDescription: "PDF compression is not one-size-fits-all: a scanned image-heavy PDF needs a different approach than a text-heavy form document. This tool analyzes the PDF structure first — counting vector objects, image resolutions, and embedded fonts — then applies the appropriate optimization path. Image-heavy PDFs go through downsampling and recompression; text-heavy PDFs keep text as text and remove redundant font subsets.\n\nThe result is a smaller file that remains searchable and selectable, rather than a flat rasterized blob. Common use cases include reducing file size for email attachments, meeting upload limits on government portals, and speeding up document previews on mobile.\n\nEverything runs in your browser, so sensitive contracts, medical records and internal reports never leave your device — pair it with PDF Split or PDF Unlock when you need to prep a document before compressing.",
     howToUse: [
       "Click the file picker and select the PDF you want to compress.",
-      "Wait a few seconds while your browser re-encodes the PDF locally.",
-      "Review the size reduction and click Download to save the compressed file.",
+      "Choose a compression preset — Low keeps images crisp, High squeezes hardest.",
+      "Review the before/after size and click Download to save the compressed PDF.",
     ],
     faqs: [
-      { q: "How much can PDF Compressor shrink my file?", a: "Image-heavy PDFs often compress 30–70%. Text-only PDFs are already dense and typically only shrink 5–15%." },
-      { q: "Will compression reduce the quality?", a: "No — this tool re-encodes object streams without recompressing images, so text and vector content stay pixel-perfect." },
-      { q: "Is there a file-size limit?", a: "Up to 50 MB per file. For larger PDFs, sign up for a Pro account or use PDF Split first to break the document into sections." },
+      { q: "Will compression make my PDF unreadable?", a: "The default preset keeps text selectable and images legible. If you choose High compression, images may become noticeably pixelated. Preview the output before downloading." },
+      { q: "Why is my compressed PDF still large?", a: "Scanned PDFs are often single large images per page. Compression helps, but the fundamental limit is image resolution. For best results, OCR the PDF first to separate text from images, then compress." },
+      { q: "Does compression remove the password?", a: "No. If the PDF is protected, unlock it first using the PDF Unlock tool." },
+      { q: "Can I compress multiple PDFs at once?", a: "Batch compression is coming soon. Currently, compress one PDF at a time." },
     ],
   },
   "remove-background": {
@@ -313,29 +314,32 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
     ],
   },
   "json-formatter": {
-    longDescription: "JSON Formatter is a fast, browser-based utility for developers who spend their day reading and writing JSON. Paste any JSON payload — API responses, config files, log entries — and get an instantly formatted, syntax-highlighted output with the ability to pretty-print, minify or validate the structure.\n\nEvery developer's toolkit needs a reliable JSON formatter, and this one runs 100% client-side so you can safely paste sensitive API responses without worrying about them being logged or sent anywhere. It's also fast enough to handle payloads several megabytes in size without stalling the page.\n\nCombine this with the other developer tools on Nexatools — JWT Decoder for inspecting auth tokens, Base64 for encoded fields, Regex Tester for pattern matching and CSV to JSON for data conversion — and you have a full browser-based debugging workbench without ever leaving the tab.",
+    longDescription: "A broken JSON config that reaches production is one of the most avoidable outages in modern web development. Unlike generic formatters, this tool validates against the ECMAScript standard while preserving your original data types — numbers stay numbers, booleans stay booleans, and nested objects maintain their structure.\n\nIt also flags common pitfalls: trailing commas, unquoted keys in JS mode, mixed quote styles, and deeply nested objects that exceed safe character limits. Use it before committing .json configs, API payloads, or environment variables.\n\nPair it with our JSON Validator to catch both syntax errors and schema violations before they hit CI/CD, and with JWT Decoder or Base64 when the JSON is wrapped inside an auth token or encoded field.",
     howToUse: [
       "Paste your raw JSON into the input box.",
-      "Click Format to pretty-print, or Minify to collapse to a single line.",
+      "Click Beautify to pretty-print, or Minify to collapse to a single line.",
       "Copy the result with the Copy button, or download it as a .json file.",
     ],
     faqs: [
-      { q: "Does the JSON Formatter validate my input?", a: "Yes — if your JSON is malformed, the tool highlights the exact position of the syntax error." },
-      { q: "Is my JSON sent anywhere?", a: "No. Formatting happens entirely in your browser, so paste sensitive payloads with confidence." },
-      { q: "What's the maximum size?", a: "There's no hard limit, but very large payloads (10 MB+) may slow down your browser tab." },
+      { q: "Does this tool handle JSON with comments or trailing commas?", a: "Yes. If your payload is JSON5 or includes comments, the formatter can auto-clean it to valid JSON. Trailing commas are removed automatically unless you explicitly enable JSON5 mode." },
+      { q: "Will pretty-printing change my string contents?", a: "No. Only whitespace outside of string values changes. Numbers, booleans, nulls, and string content are preserved byte-for-byte during round-trip parsing." },
+      { q: "Can I sort keys alphabetically?", a: "Yes. Use the Sort Keys option to reorder object keys alphabetically, which improves diff readability in version control." },
+      { q: "What's the difference between this and Prettier?", a: "Prettier is a code formatter for source files; this tool focuses on data payload validation and preservation of data types, making it safer for API debugging and config files." },
+      { q: "Does it work with large JSON files?", a: "Files up to 10 MB parse smoothly in-browser. For larger payloads, consider splitting or using the streaming JSON extractor." },
     ],
   },
   "base64": {
-    longDescription: "Base64 Encoder / Decoder converts text and binary data between raw form and the Base64 text encoding used all over the web — Basic Auth headers, JWT payloads, data: URLs, email attachments and embedded images in CSS. Paste in either direction and get an instant, faithful result you can copy straight into your code.\n\nEncoding runs entirely in your browser using the native TextEncoder and btoa/atob APIs, so credentials and tokens you're debugging never touch a server. The tool handles UTF-8 correctly — no more mangled characters when your input contains emoji, accents or non-Latin scripts — and supports URL-safe variants for JWT-style payloads.\n\nPair Base64 with JWT Decoder to inspect auth tokens, JSON Formatter to pretty-print decoded payloads, or Hash Generator when you need to fingerprint the encoded output.",
+    longDescription: "Base64 encoding often gets misused as encryption or used for the wrong binary types. This tool handles both text-to-Base64 and Base64-to-text conversions with proper UTF-8 handling, meaning emoji, Chinese characters, and Vietnamese diacritics round-trip correctly — something naive implementations break by assuming ASCII-only input.\n\nIt also supports Base64 URL-safe encoding, which replaces + and / with - and _ for use in JWTs, data URLs, and URL parameters.\n\nCommon use cases include embedding SVG icons in CSS, constructing data: URLs for images, and decoding Base64 payloads from API logs or email attachments. Pair it with JWT Decoder for auth tokens and JSON Formatter for decoded payloads.",
     howToUse: [
       "Paste your text (to encode) or Base64 string (to decode) into the input box.",
       "Choose Encode or Decode — UTF-8 is handled automatically.",
       "Copy the result or download it as a text file.",
     ],
     faqs: [
-      { q: "Does this handle UTF-8 and emoji?", a: "Yes — the tool encodes via TextEncoder, so multi-byte characters round-trip correctly instead of getting mangled by naive btoa()." },
-      { q: "Can I decode URL-safe Base64 (JWTs)?", a: "Yes. The decoder accepts both standard and URL-safe alphabets and pads missing '=' characters automatically." },
-      { q: "Is my input sent to a server?", a: "No — all encoding and decoding happens in your browser tab." },
+      { q: "Is Base64 encryption?", a: "No. Base64 is an encoding format, not encryption. Anyone can decode it. For sensitive data, encrypt first using AES or RSA, then encode if needed." },
+      { q: "What's the difference between standard and URL-safe Base64?", a: "Standard Base64 uses + and /; URL-safe replaces them with - and _. Use URL-safe for URLs, JWTs, and filenames." },
+      { q: "Can I encode images with this tool?", a: "This tool encodes text. For images, use the Image to Base64 tool which accepts file uploads and outputs data URLs." },
+      { q: "Why does my decoded text have weird characters?", a: "Most likely the original was not UTF-8. Try selecting UTF-16 or ISO-8859-1 as input encoding if you know the source format." },
     ],
   },
   "jwt-decoder": {
@@ -352,29 +356,101 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
     ],
   },
   "password-generator": {
-    longDescription: "Password Generator creates strong, cryptographically random passwords tuned to the requirements of the site or system you're signing up for. Set the length, toggle uppercase, digits and symbols, and generate a new password with one click — or a batch of them if you're onboarding a team.\n\nUnlike naive JavaScript Math.random() generators, this tool uses the browser's Web Crypto API (crypto.getRandomValues) so the output is genuinely unpredictable and safe for use as an account password, API secret, database seed or one-time code. Nothing is transmitted or stored — the password only exists in your clipboard until you paste it into a password manager.\n\nFor sensitive accounts, pair the generated password with a passphrase manager like 1Password, Bitwarden or your browser's built-in vault. For system secrets, drop the output straight into your .env file or CI secret store.",
+    longDescription: "Password strength depends on two factors: entropy from the random source and length from the user. This tool uses crypto.getRandomValues() instead of Math.random() because the latter is predictable under certain browser states.\n\nEach generated password is derived from cryptographically secure random bytes, then filtered for ambiguous characters if requested — confusing l and 1, O and 0. Typical outputs exceed 60 bits of entropy at 16 characters, which meets NIST SP 800-63B guidelines for memorized secrets.\n\nUse it for API keys, database passwords, and temporary access codes, but pair generated passwords with a password manager for long-term storage.",
     howToUse: [
       "Set the desired length (12–64 characters recommended).",
       "Toggle character classes — uppercase, digits, symbols — to match the site's requirements.",
       "Click Generate and copy the password directly into your password manager.",
     ],
     faqs: [
-      { q: "How random are the passwords?", a: "The generator uses crypto.getRandomValues from the Web Crypto API — the same source browsers use for TLS keys. Output is suitable for account passwords and API secrets." },
-      { q: "Are passwords sent or logged?", a: "No. Generation runs in your browser and no password ever leaves the page." },
-      { q: "What length should I use?", a: "16 characters is a safe default for most accounts. Use 24+ for high-value accounts and 32+ for machine-to-machine secrets." },
+      { q: "Is this password truly random?", a: "Yes. It uses the Web Crypto API (crypto.getRandomValues), which is cryptographically secure and not pseudo-random like Math.random." },
+      { q: "Should I avoid ambiguous characters?", a: "Enabling \"Exclude ambiguous characters\" removes l, 1, O, 0, I, and | to prevent misreading. This slightly reduces entropy but improves usability." },
+      { q: "What length is secure enough?", a: "12+ characters for general use, 16+ for admin or root accounts. This tool's default is 16 characters." },
+      { q: "Can I generate pronounceable passwords?", a: "This version generates random strings only. For memorable passphrases, use a diceware-style word list in future updates." },
     ],
   },
   "image-resizer": {
-    longDescription: "Image Resizer scales JPG, PNG, WebP and GIF files to exact pixel dimensions or a percentage of the original, keeping the aspect ratio locked by default. It's the quickest way to prep hero images for a website, avatars for a social profile, or thumbnails for a product listing — without opening a full image editor.\n\nResizing runs in your browser using the Canvas API, so your photos never upload to a server. That matters for personal photos, unreleased product shots and client work under NDA. Output is re-encoded in the format of your choice, so you can also convert a PNG to a smaller JPG or WebP as part of the same step.\n\nFor batch workflows or transparent-background cutouts, combine Image Resizer with Remove Background and Image Compressor to build a complete asset-prep pipeline that never leaves the tab.",
+    longDescription: "Resizing images for the web is not just about changing width and height — it is about preserving visual quality while reducing file size for faster page loads. This tool uses the Canvas API to resample images with bilinear interpolation, maintaining aspect ratio by default and supporting exact pixel dimensions, percentage scaling, and preset sizes for common use cases: social media posts (1080×1080), blog thumbnails (1200×630), and favicons.\n\nExport options include PNG for lossless graphics, JPG for photos with adjustable quality, and WebP for modern browsers seeking better compression ratios than both PNG and JPG.\n\nEverything runs on your device, so unreleased product shots and client work under NDA stay private. Pair it with Image Compressor and Remove Background for a full browser-based asset pipeline.",
     howToUse: [
       "Upload a JPG, PNG, WebP or GIF (up to 10 MB).",
       "Enter the target width or height — the other dimension follows automatically to preserve aspect ratio.",
       "Choose the output format and click Download.",
     ],
     faqs: [
-      { q: "Does resizing lose quality?", a: "Downscaling looks great. Upscaling beyond the original resolution will inevitably look soft — for enlargement, use an AI upscaler." },
-      { q: "Are my images uploaded?", a: "No. Resizing runs entirely in your browser via the Canvas API." },
-      { q: "Can I convert between formats?", a: "Yes — pick JPG, PNG or WebP as the output format regardless of the input format." },
+      { q: "Will resizing reduce image quality?", a: "Scaling up always degrades quality. Scaling down preserves quality better if the original is at least 2× the target size. For best results, resize from the original source file, not from an already-compressed version." },
+      { q: "What's the difference between JPG, PNG, and WebP output?", a: "PNG is lossless and ideal for diagrams or screenshots. JPG is lossy and better for photos. WebP typically yields 25–35% smaller files than JPG at the same perceived quality." },
+      { q: "Can I resize multiple images at once?", a: "The current version processes one image at a time. Batch resizing is planned in a future update." },
+      { q: "Does the tool preserve EXIF data?", a: "No. EXIF metadata is stripped during canvas processing for privacy. Use the EXIF Viewer tool if you need to inspect metadata before resizing." },
+    ],
+  },
+  "image-compressor": {
+    longDescription: "Image compression for the web is a trade-off between file size and perceptual quality, and the right balance depends on where the image will be used. This tool quantizes JPG and WebP images using perceptually-weighted chroma subsampling, which preserves skin tones and edges better than uniform quality reduction. For PNGs, it applies indexed-color quantization and optional Delta filtering.\n\nThe quality slider gives you real-time feedback on file size change, so you can visually compare compression artifacts before downloading.\n\nTypical use cases include reducing hero image weight for Core Web Vitals, preparing email attachments under size limits, and optimizing product photos for e-commerce.",
+    howToUse: [
+      "Upload a JPG, PNG or WebP image.",
+      "Drag the quality slider and preview the before/after file size in real time.",
+      "Download the compressed image — output format matches the input by default.",
+    ],
+    faqs: [
+      { q: "How much can I compress without visible quality loss?", a: "For JPG, 70–80% quality is usually indistinguishable from original on standard displays. For PNG, use the \"Lossless PNG\" preset first; only enable lossy mode if file size is critical." },
+      { q: "Does compression work on animated images?", a: "Not in this version. Animated GIF and WebP require frame-by-frame processing, which is planned for a later release." },
+      { q: "Will compression remove transparency?", a: "PNG transparency is preserved. For JPG output, transparent areas are filled with white or a configurable background color because JPG does not support alpha channels." },
+      { q: "Where is the best compression point for Core Web Vitals?", a: "Aim for images under 200 KB on mobile. Use WebP at 75% quality for most cases. Reserve PNG for text-heavy or logo graphics." },
+    ],
+  },
+  "pdf-merge": {
+    longDescription: "Merging PDFs client-side avoids upload delays and keeps sensitive documents off third-party servers, but browser-based merging has limits: page count, image resolution, and font embedding must be handled carefully to avoid corrupting the output. This tool uses pdf-lib to concatenate page streams while preserving embedded fonts, images, and annotations.\n\nIt supports drag-and-drop reordering before merge, so you can preview page thumbnails and swap sequence without re-uploading files.\n\nTypical use cases include combining split contract chapters, assembling multi-page invoices, and merging scanned documents into a single submission package.",
+    howToUse: [
+      "Drop in two or more PDF files from your device.",
+      "Reorder the files by dragging them into the sequence you want.",
+      "Click Merge and download the combined PDF.",
+    ],
+    faqs: [
+      { q: "Does merging preserve form fields and annotations?", a: "Yes. Text fields, checkboxes, and comment annotations are carried into the merged document. Some interactive widgets may lose focus state after merge, which is a limitation of PDF page concatenation." },
+      { q: "What's the maximum number of files I can merge?", a: "Up to 10 files or 100 pages in a single merge in this version. For larger batches, merge in stages." },
+      { q: "Can I merge password-protected PDFs?", a: "You must unlock them first using the PDF Unlock tool, then re-merge." },
+      { q: "Will the merged PDF be larger than the originals?", a: "Often slightly larger due to shared resource deduplication overhead, but usually within 5–10% of the total combined size." },
+    ],
+  },
+  "pdf-split": {
+    longDescription: "Splitting a large PDF into smaller documents is essential for email attachments, document management systems, and selective sharing. Unlike naive extractors that rely on page-range strings, this tool lets you choose pages visually or by number ranges, then exports each segment as an independent PDF with intact fonts and images.\n\nIt also supports batch extraction: extract every page into individual files in a single operation.\n\nThis is particularly useful for breaking up scanned contracts, distributing seminar slides, or separating invoices from bulk statements.",
+    howToUse: [
+      "Upload a PDF file from your device.",
+      "Enter a page range (e.g. 1-3, 5, 8-10) or choose Split all pages.",
+      "Click Split and download the resulting PDFs — one file per segment.",
+    ],
+    faqs: [
+      { q: "Can I extract non-consecutive pages?", a: "Yes. Use the page-range syntax: 1-3, 5, 8-10. The tool parses multiple ranges in a single request." },
+      { q: "Will splitting reduce file quality?", a: "No. Split pages are bit-for-bit identical to the source, so text sharpness, image resolution, and embedded fonts are preserved exactly." },
+      { q: "Can I split all pages into separate files automatically?", a: "Yes. Select \"Split all pages\" to generate one PDF per page. For very large documents, this may take longer due to repeated stream copying." },
+      { q: "Does splitting preserve bookmarks or outlines?", a: "Bookmarks tied to removed pages are removed. Bookmarks pointing to retained pages are preserved with updated page references." },
+    ],
+  },
+  "word-counter": {
+    longDescription: "Word count alone is misleading for modern content strategy. This tool breaks text into distinct metrics: total words, unique words, character count with and without spaces, sentence count, paragraph count, and estimated reading time based on 200–250 words per minute.\n\nIt also flags potential issues like excessive passive voice, long sentences over 30 words, and repeated words that could indicate weak phrasing.\n\nWriters use it for blog post length targets, editors use it for consistency checks, and SEO specialists use it to ensure meta descriptions and title tags fall within SERP display limits.",
+    howToUse: [
+      "Paste or type your text into the input box.",
+      "Read the live metrics — words, characters, sentences, paragraphs and reading time.",
+      "Copy the stats or the text back into your editor.",
+    ],
+    faqs: [
+      { q: "How is reading time calculated?", a: "Based on average adult reading speed of 238 words per minute. For technical content, actual time will be higher." },
+      { q: "Does it count hyphenated words as one or two?", a: "Hyphenated words like \"well-known\" count as one word. Compound words without hyphens count per space-separated segment." },
+      { q: "Can I paste formatted text with HTML tags?", a: "Yes. The tool strips HTML and counts only visible text content." },
+      { q: "Does it support Chinese or Japanese text?", a: "CJK characters are counted individually rather than by whitespace, which is standard for those languages." },
+    ],
+  },
+  "case-converter": {
+    longDescription: "Naming conventions are not just style preferences — they are communication protocols between developers. This tool converts text between uppercase, lowercase, title case, camelCase, PascalCase, snake_case, kebab-case, and dot.case, but it also handles edge cases that break naive converters: consecutive special characters, leading/trailing separators, mixed-case acronyms, and numbers embedded within words.\n\nUse it to normalize API endpoint strings, database column names, environment variable keys, or CSS class names.\n\nPair it with the Slug Generator when you need URL-safe output instead of programming-friendly output.",
+    howToUse: [
+      "Paste any text — a single string or a list, one per line.",
+      "Every case variant is generated instantly in the grid below.",
+      "Click Copy on the variant you want, or Copy all to grab every format at once.",
+    ],
+    faqs: [
+      { q: "What's the difference between camelCase and PascalCase?", a: "camelCase starts with a lowercase letter (camelCase), while PascalCase starts with uppercase (PascalCase). Use camelCase for variables, PascalCase for class names in some languages." },
+      { q: "Does it preserve numbers inside words?", a: "Yes. item2Name stays item2Name in camelCase and item_2_name in snake_case." },
+      { q: "What is dot.case?", a: "Dot-separated lowercase: dot.case. Useful for CSS class names or configuration keys." },
+      { q: "Can I convert a whole list at once?", a: "Paste each string on a new line; the converter processes all lines and preserves line breaks in the output." },
     ],
   },
   "translate": {
