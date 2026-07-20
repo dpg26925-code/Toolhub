@@ -24,6 +24,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ToolsSlugRouteImport } from './routes/tools.$slug'
 import { Route as DashboardSubscriptionRouteImport } from './routes/dashboard.subscription'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard.settings'
+import { Route as DashboardReferralsRouteImport } from './routes/dashboard.referrals'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard.history'
 import { Route as DashboardFavoritesRouteImport } from './routes/dashboard.favorites'
 import { Route as DashboardApiKeysRouteImport } from './routes/dashboard.api-keys'
@@ -113,6 +114,11 @@ const DashboardSubscriptionRoute = DashboardSubscriptionRouteImport.update({
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   id: '/dashboard/settings',
   path: '/dashboard/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardReferralsRoute = DashboardReferralsRouteImport.update({
+  id: '/dashboard/referrals',
+  path: '/dashboard/referrals',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/history': typeof DashboardHistoryRoute
+  '/dashboard/referrals': typeof DashboardReferralsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/subscription': typeof DashboardSubscriptionRoute
   '/tools/$slug': typeof ToolsSlugRoute
@@ -247,6 +254,7 @@ export interface FileRoutesByTo {
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/history': typeof DashboardHistoryRoute
+  '/dashboard/referrals': typeof DashboardReferralsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/subscription': typeof DashboardSubscriptionRoute
   '/tools/$slug': typeof ToolsSlugRoute
@@ -280,6 +288,7 @@ export interface FileRoutesById {
   '/dashboard/api-keys': typeof DashboardApiKeysRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/history': typeof DashboardHistoryRoute
+  '/dashboard/referrals': typeof DashboardReferralsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/subscription': typeof DashboardSubscriptionRoute
   '/tools/$slug': typeof ToolsSlugRoute
@@ -314,6 +323,7 @@ export interface FileRouteTypes {
     | '/dashboard/api-keys'
     | '/dashboard/favorites'
     | '/dashboard/history'
+    | '/dashboard/referrals'
     | '/dashboard/settings'
     | '/dashboard/subscription'
     | '/tools/$slug'
@@ -346,6 +356,7 @@ export interface FileRouteTypes {
     | '/dashboard/api-keys'
     | '/dashboard/favorites'
     | '/dashboard/history'
+    | '/dashboard/referrals'
     | '/dashboard/settings'
     | '/dashboard/subscription'
     | '/tools/$slug'
@@ -378,6 +389,7 @@ export interface FileRouteTypes {
     | '/dashboard/api-keys'
     | '/dashboard/favorites'
     | '/dashboard/history'
+    | '/dashboard/referrals'
     | '/dashboard/settings'
     | '/dashboard/subscription'
     | '/tools/$slug'
@@ -411,6 +423,7 @@ export interface RootRouteChildren {
   DashboardApiKeysRoute: typeof DashboardApiKeysRoute
   DashboardFavoritesRoute: typeof DashboardFavoritesRoute
   DashboardHistoryRoute: typeof DashboardHistoryRoute
+  DashboardReferralsRoute: typeof DashboardReferralsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardSubscriptionRoute: typeof DashboardSubscriptionRoute
   ToolsSlugRoute: typeof ToolsSlugRoute
@@ -526,6 +539,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/referrals': {
+      id: '/dashboard/referrals'
+      path: '/dashboard/referrals'
+      fullPath: '/dashboard/referrals'
+      preLoaderRoute: typeof DashboardReferralsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/history': {
@@ -659,6 +679,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardApiKeysRoute: DashboardApiKeysRoute,
   DashboardFavoritesRoute: DashboardFavoritesRoute,
   DashboardHistoryRoute: DashboardHistoryRoute,
+  DashboardReferralsRoute: DashboardReferralsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardSubscriptionRoute: DashboardSubscriptionRoute,
   ToolsSlugRoute: ToolsSlugRoute,

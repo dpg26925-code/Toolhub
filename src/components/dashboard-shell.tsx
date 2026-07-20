@@ -7,6 +7,7 @@ import {
   Star,
   CreditCard,
   Settings,
+  Users,
   LogOut,
 } from "lucide-react";
 import {
@@ -32,6 +33,7 @@ const NAV = [
   { title: "History", url: "/dashboard/history", icon: History },
   { title: "API Keys", url: "/dashboard/api-keys", icon: Key },
   { title: "Favorites", url: "/dashboard/favorites", icon: Star },
+  { title: "Referrals", url: "/dashboard/referrals", icon: Users },
   { title: "Subscription", url: "/dashboard/subscription", icon: CreditCard },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ] as const;

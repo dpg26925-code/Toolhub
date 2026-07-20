@@ -74,6 +74,42 @@ export const Route = createFileRoute("/api/public/webhooks/lemonsqueezy")({
 
         await supabaseAdmin.from("profiles").update({ plan }).eq("id", userId);
 
+        // Record referral commission on first activation
+        if (isActive) {
+          try {
+            const { data: prof } = await supabaseAdmin
+              .from("profiles")
+              .select("referred_by")
+              .eq("id", userId)
+              .maybeSingle();
+            const referrer = prof?.referred_by as string | null | undefined;
+            if (referrer && referrer !== userId) {
+              const { data: existing } = await supabaseAdmin
+                .from("referrals")
+                .select("id")
+                .eq("referred_user_id", userId)
+                .maybeSingle();
+              if (!existing) {
+                const pct = Number(process.env.REFERRAL_COMMISSION_PCT ?? "30");
+                const flat = Number(process.env.REFERRAL_COMMISSION_CENTS ?? "600");
+                // Default Pro is $20/mo; use pct if we know a base price, else flat
+                const commission = Number.isFinite(pct) && pct > 0 ? Math.round(2000 * pct / 100) : flat;
+                await supabaseAdmin.from("referrals").insert({
+                  referrer_id: referrer,
+                  referred_user_id: userId,
+                  status: "converted",
+                  commission_cents: commission,
+                  currency: "USD",
+                  subscription_id: subId,
+                  converted_at: new Date().toISOString(),
+                });
+              }
+            }
+          } catch (err) {
+            console.error("[lemonsqueezy] referral insert failed", err);
+          }
+        }
+
         return new Response("ok", { status: 200 });
       },
     },

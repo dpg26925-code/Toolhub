@@ -12,6 +12,22 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
+function ReferralCapture() {
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("ref");
+      if (code && /^[A-Za-z0-9]{4,20}$/.test(code)) {
+        window.localStorage.setItem("nexa_ref", code.toUpperCase());
+        // 60-day cookie for server-side callers if needed
+        const maxAge = 60 * 24 * 60 * 60;
+        document.cookie = `nexa_ref=${encodeURIComponent(code.toUpperCase())}; path=/; max-age=${maxAge}; SameSite=Lax`;
+      }
+    } catch { /* ignore */ }
+  }, []);
+  return null;
+}
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -162,6 +178,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ReferralCapture />
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>

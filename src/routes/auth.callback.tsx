@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { attachReferralCode } from "@/lib/referrals.functions";
 
 export const Route = createFileRoute("/auth/callback")({
   ssr: false,
@@ -31,6 +32,12 @@ function AuthCallbackPage() {
       if (error) {
         setError(error.message);
         return;
+      }
+      if (data.session) {
+        try {
+          const code = window.localStorage.getItem("nexa_ref");
+          if (code) await attachReferralCode({ data: { code } });
+        } catch { /* ignore */ }
       }
       navigate({ to: data.session ? "/" : "/auth/login" });
     }
