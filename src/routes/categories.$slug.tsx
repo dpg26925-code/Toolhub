@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
-import { getCategory, toolsInCategory } from "@/lib/tools-data";
+import { getCategory, toolsInCategory, CATEGORIES } from "@/lib/tools-data";
 import type { Tool } from "@/lib/tools-data";
 import { abs } from "@/lib/site";
 
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/categories/$slug")({
   },
   head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Category not found — Nexatools" }, { name: "robots", content: "noindex" }] };
-    const { category } = loaderData;
+    const { category, tools } = loaderData;
     const title = `${category.name} Tools — Free Online ${category.name} Utilities | Nexatools`;
     const url = abs(`/categories/${params.slug}`);
     return {
@@ -25,6 +25,41 @@ export const Route = createFileRoute("/categories/$slug")({
         { property: "og:url", content: url },
       ],
       links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: `${category.name} Tools`,
+            description: category.description,
+            url,
+            isPartOf: { "@type": "WebSite", name: "Nexatools", url: abs("/") },
+            mainEntity: {
+              "@type": "ItemList",
+              numberOfItems: tools.length,
+              itemListElement: tools.map((t, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                url: abs(`/tools/${t.slug}`),
+                name: t.name,
+              })),
+            },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: abs("/") },
+              { "@type": "ListItem", position: 2, name: "Tools", item: abs("/tools") },
+              { "@type": "ListItem", position: 3, name: category.name, item: url },
+            ],
+          }),
+        },
+      ],
     };
   },
   component: CategoryPage,
@@ -48,6 +83,7 @@ export const Route = createFileRoute("/categories/$slug")({
 
 function CategoryPage() {
   const { category, tools } = Route.useLoaderData();
+  const others = CATEGORIES.filter((c) => c.slug !== category.slug).slice(0, 8);
   return (
     <SiteLayout>
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -66,6 +102,28 @@ function CategoryPage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {tools.map((t: Tool) => (<ToolCard key={t.slug} tool={t} />))}
           </div>
+        )}
+
+        {others.length > 0 && (
+          <section aria-labelledby="other-categories" className="mt-16 border-t pt-10">
+            <h2 id="other-categories" className="text-xl font-bold tracking-tight">Explore other categories</h2>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {others.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    to="/categories/$slug"
+                    params={{ slug: c.slug }}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm text-foreground transition hover:border-primary/40 hover:text-primary"
+                  >
+                    <span>{c.icon}</span>{c.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Or see the full <Link to="/tools" className="text-primary hover:underline">tools directory</Link>.
+            </p>
+          </section>
         )}
       </div>
     </SiteLayout>

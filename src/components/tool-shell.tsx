@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import type { Tool, ToolCategory } from "@/lib/tools-data";
+import { toolsInCategory } from "@/lib/tools-data";
 import { getToolContent } from "@/lib/tool-content";
 import { ToolActions } from "@/components/tool-actions";
 
@@ -15,6 +16,9 @@ export function ToolShell({
   children: ReactNode;
 }) {
   const content = getToolContent(tool);
+  const related = category
+    ? toolsInCategory(category.slug).filter((t) => t.slug !== tool.slug).slice(0, 6)
+    : [];
   return (
     <SiteLayout>
       <article className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
@@ -107,6 +111,46 @@ export function ToolShell({
             ))}
           </div>
         </section>
+
+        {related.length > 0 && category && (
+          <section aria-labelledby="related-tools" className="mt-14">
+            <div className="flex items-end justify-between gap-3">
+              <h2 id="related-tools" className="text-2xl font-bold tracking-tight">
+                More {category.name} tools
+              </h2>
+              <Link
+                to="/categories/$slug"
+                params={{ slug: category.slug }}
+                className="text-sm text-primary hover:underline"
+              >
+                View all {category.name} tools →
+              </Link>
+            </div>
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((r) => (
+                <li key={r.slug}>
+                  <Link
+                    to="/tools/$slug"
+                    params={{ slug: r.slug }}
+                    className="flex h-full items-start gap-3 rounded-xl border border-border bg-card p-4 transition hover:border-primary/40 hover:shadow-soft"
+                  >
+                    <span className="text-lg">{r.icon}</span>
+                    <span>
+                      <span className="block font-medium text-foreground">{r.name}</span>
+                      <span className="mt-0.5 block text-xs text-muted-foreground line-clamp-2">
+                        {r.shortDescription}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-sm text-muted-foreground">
+              Browse the full <Link to="/tools" className="text-primary hover:underline">tools directory</Link>
+              {" "}or explore other <Link to="/categories/$slug" params={{ slug: category.slug }} className="text-primary hover:underline">{category.name}</Link> utilities.
+            </p>
+          </section>
+        )}
       </article>
     </SiteLayout>
   );
