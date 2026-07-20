@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { ClientOnly, createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolShell } from "@/components/tool-shell";
 import { getTool, getCategory } from "@/lib/tools-data";
@@ -10,7 +10,14 @@ import { abs } from "@/lib/site";
 export const Route = createFileRoute("/tools/$slug")({
   loader: ({ params }) => {
     const tool = getTool(params.slug);
-    if (!tool) throw notFound();
+    if (!tool) {
+      const redirects: Record<string, string> = {
+        "ut-builder": "utm-builder",
+      };
+      const target = redirects[params.slug];
+      if (target) throw redirect({ to: "/tools/$slug", params: { slug: target } });
+      throw notFound();
+    }
     return { tool, category: getCategory(tool.categorySlug) };
   },
   head: ({ loaderData, params }) => {
@@ -95,24 +102,33 @@ export const Route = createFileRoute("/tools/$slug")({
 
 function ToolPage() {
   const { tool, category } = Route.useLoaderData();
-  const Component = TOOL_REGISTRY[tool.slug];
 
   return (
     <ToolShell tool={tool} category={category}>
-      {Component ? (
-        <ClientOnly fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
-          <Suspense fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
-            <Component />
-          </Suspense>
-        </ClientOnly>
-      ) : (
-        <div className="rounded-xl border border-dashed border-border p-10 text-center">
-          <p className="text-sm font-semibold text-primary">Coming soon</p>
-          <p className="mt-2 text-sm text-muted-foreground">
-            This tool is on the roadmap and will be available shortly.
-          </p>
-        </div>
-      )}
+      <ClientOnly fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
+        <ToolRenderer slug={tool.slug} />
+      </ClientOnly>
     </ToolShell>
+  );
+}
+
+// Rendered only on the client; TOOL_REGISTRY is intentionally empty during SSR
+// (see src/tools/registry.ts) to keep heavy tool chunks out of the Worker bundle.
+function ToolRenderer({ slug }: { slug: string }) {
+  const Component = TOOL_REGISTRY[slug];
+  if (!Component) {
+    return (
+      <div className="rounded-xl border border-dashed border-border p-10 text-center">
+        <p className="text-sm font-semibold text-primary">Coming soon</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          This tool is on the roadmap and will be available shortly.
+        </p>
+      </div>
+    );
+  }
+  return (
+    <Suspense fallback={<div className="py-12 text-center text-sm text-muted-foreground">Loading tool…</div>}>
+      <Component />
+    </Suspense>
   );
 }
