@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AdminShell } from "@/components/admin-shell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { Pencil, Trash2, X, Sparkles } from "lucide-react";
+import { Pencil, Trash2, X, Sparkles, Eye, Clock, User as UserIcon, Calendar } from "lucide-react";
 import { callAi } from "@/lib/ai-client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -26,15 +26,40 @@ type PostForm = {
   cover_image: string;
   tags: string;
   published: boolean;
+  meta_title: string;
+  meta_description: string;
+  category: string;
+  published_at: string; // ISO or ""
 };
 
 const EMPTY: PostForm = {
   id: null, title: "", slug: "", excerpt: "", content: "",
   cover_image: "", tags: "", published: false,
+  meta_title: "", meta_description: "", category: "", published_at: "",
 };
+
+const CATEGORIES = ["General", "PDF", "Image", "Video", "AI", "Developer", "Writing", "SEO", "Tutorial", "Product"];
 
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+const wordsIn = (s: string) => (s.trim().match(/\S+/g)?.length ?? 0);
+const readingMinutes = (s: string) => Math.max(1, Math.round(wordsIn(s) / 220));
+
+function mdPreview(md: string): string {
+  let s = (md || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  s = s.replace(/```([\s\S]*?)```/g, (_, c) => `<pre><code>${c.trim()}</code></pre>`);
+  s = s.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+  s = s.replace(/^###### (.+)$/gm, "<h6>$1</h6>").replace(/^##### (.+)$/gm, "<h5>$1</h5>")
+       .replace(/^#### (.+)$/gm, "<h4>$1</h4>").replace(/^### (.+)$/gm, "<h3>$1</h3>")
+       .replace(/^## (.+)$/gm, "<h2>$1</h2>").replace(/^# (.+)$/gm, "<h1>$1</h1>");
+  s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+)\*/g, "<em>$1</em>");
+  s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img alt="$1" src="$2" class="rounded-lg my-3" />');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary underline">$1</a>');
+  s = s.replace(/^(?:- |\* )(.+)$/gm, "<li>$1</li>").replace(/(<li>[\s\S]+?<\/li>)/g, (m) => `<ul>${m}</ul>`);
+  s = s.split(/\n{2,}/).map((p) => (/^<(h\d|ul|pre|blockquote|img)/.test(p.trim()) ? p : `<p>${p.replace(/\n/g, "<br/>")}</p>`)).join("\n\n");
+  return s;
+}
 
 function extractJson(raw: string): any {
   let s = raw.trim();
@@ -56,12 +81,16 @@ function AdminBlog() {
   const { user } = useAuth();
   const [form, setForm] = useState<PostForm>(EMPTY);
   const isEditing = form.id !== null;
+  const [showPreview, setShowPreview] = useState(false);
   const [aiTopic, setAiTopic] = useState("");
   const [aiKeywords, setAiKeywords] = useState("");
   const [aiTone, setAiTone] = useState("informative");
   const [aiAudience, setAiAudience] = useState("general readers");
   const [aiLength, setAiLength] = useState("medium");
   const [aiBusy, setAiBusy] = useState(false);
+
+  const readingMin = useMemo(() => readingMinutes(form.content), [form.content]);
+  const wordCount = useMemo(() => wordsIn(form.content), [form.content]);
 
   const generate = async () => {
     if (!aiTopic.trim()) { toast.error("Enter a topic"); return; }
@@ -83,6 +112,8 @@ function AdminBlog() {
         excerpt: j.excerpt ?? f.excerpt,
         tags: Array.isArray(j.tags) ? j.tags.join(", ") : f.tags,
         content: j.content ?? f.content,
+        meta_title: j.meta_title ?? j.title ?? f.meta_title,
+        meta_description: j.meta_description ?? j.excerpt ?? f.meta_description,
       }));
       toast.success("Draft generated — review then publish");
     } catch (e: any) {
@@ -105,7 +136,7 @@ function AdminBlog() {
       const slug = form.slug ? slugify(form.slug) : slugify(form.title);
       if (!slug) throw new Error("Title or slug is required");
       const tags = form.tags.split(",").map((t) => t.trim()).filter(Boolean);
-      const payload = {
+      const payload: any = {
         title: form.title,
         slug,
         excerpt: form.excerpt || null,
@@ -113,7 +144,12 @@ function AdminBlog() {
         cover_image: form.cover_image || null,
         tags,
         published: form.published,
-        published_at: form.published ? new Date().toISOString() : null,
+        meta_title: form.meta_title || null,
+        meta_description: form.meta_description || null,
+        category: form.category || null,
+        published_at: form.published
+          ? (form.published_at ? new Date(form.published_at).toISOString() : new Date().toISOString())
+          : null,
       };
       if (form.id) {
         const { error } = await supabase.from("blog_posts").update(payload).eq("id", form.id);
@@ -164,7 +200,12 @@ function AdminBlog() {
       cover_image: p.cover_image ?? "",
       tags: Array.isArray(p.tags) ? p.tags.join(", ") : "",
       published: !!p.published,
+      meta_title: p.meta_title ?? "",
+      meta_description: p.meta_description ?? "",
+      category: p.category ?? "",
+      published_at: p.published_at ? new Date(p.published_at).toISOString().slice(0, 16) : "",
     });
+    setShowPreview(false);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -223,25 +264,121 @@ function AdminBlog() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>{isEditing ? `Edit post #${form.id}` : "New post"}</span>
-              {isEditing && (
-                <Button size="sm" variant="ghost" onClick={() => setForm(EMPTY)}>
-                  <X className="h-4 w-4 mr-1" /> Cancel
+              <span className="flex items-center gap-2">
+                {isEditing ? `Edit post #${form.id}` : "New post"}
+                <Badge variant={form.published ? "default" : "secondary"}>
+                  {form.published ? "Published" : "Draft"}
+                </Badge>
+              </span>
+              <div className="flex items-center gap-1">
+                <Button size="sm" variant="ghost" onClick={() => setShowPreview((v) => !v)}>
+                  <Eye className="h-4 w-4 mr-1" /> {showPreview ? "Edit" : "Preview"}
                 </Button>
-              )}
+                {isEditing && (
+                  <Button size="sm" variant="ghost" onClick={() => { setForm(EMPTY); setShowPreview(false); }}>
+                    <X className="h-4 w-4 mr-1" /> Cancel
+                  </Button>
+                )}
+              </div>
             </CardTitle>
+            <div className="flex flex-wrap gap-3 text-xs text-muted-foreground pt-1">
+              <span className="inline-flex items-center gap-1"><UserIcon className="h-3 w-3" /> {user?.email ?? "—"}</span>
+              <span className="inline-flex items-center gap-1"><Calendar className="h-3 w-3" /> {form.published_at ? new Date(form.published_at).toLocaleString() : "Not scheduled"}</span>
+              <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {readingMin} min read · {wordCount} words</span>
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            <div><Label>Title</Label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
-            <div><Label>Slug (optional)</Label><Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} /></div>
-            <div><Label>Excerpt</Label><Textarea value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} /></div>
-            <div><Label>Cover image URL</Label><Input value={form.cover_image} onChange={(e) => setForm({ ...form, cover_image: e.target.value })} /></div>
-            <div><Label>Tags (comma-separated)</Label><Input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="seo, marketing, ai" /></div>
-            <div><Label>Content (Markdown)</Label><Textarea rows={10} className="font-mono text-sm" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} /></div>
-            <div className="flex items-center gap-2"><Switch checked={form.published} onCheckedChange={(v) => setForm({ ...form, published: v })} /><Label>Publish</Label></div>
-            <Button onClick={() => saveM.mutate()} disabled={saveM.isPending || !form.title}>
-              {saveM.isPending ? "Saving…" : isEditing ? "Update post" : "Create post"}
-            </Button>
+            {showPreview ? (
+              <article className="rounded-xl border bg-background p-5">
+                {form.cover_image && (
+                  <img src={form.cover_image} alt={form.title} className="mb-4 h-56 w-full rounded-lg object-cover" />
+                )}
+                <h1 className="text-3xl font-bold tracking-tight">{form.title || "Untitled"}</h1>
+                <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                  <span>{user?.email ?? "Author"}</span>
+                  <span>·</span>
+                  <span>{form.published_at ? new Date(form.published_at).toLocaleDateString() : new Date().toLocaleDateString()}</span>
+                  <span>·</span>
+                  <span>{readingMin} min read</span>
+                  {form.category && (<><span>·</span><Badge variant="secondary">{form.category}</Badge></>)}
+                </div>
+                {form.excerpt && <p className="mt-4 text-muted-foreground">{form.excerpt}</p>}
+                <div className="prose max-w-none dark:prose-invert mt-6 text-sm" dangerouslySetInnerHTML={{ __html: mdPreview(form.content) }} />
+              </article>
+            ) : (
+              <>
+                <div><Label>Title</Label><Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div>
+                <div>
+                  <Label>Slug (optional)</Label>
+                  <Input value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder={form.title ? slugify(form.title) : "auto from title"} />
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <Label>Category</Label>
+                    <Select value={form.category || "__none"} onValueChange={(v) => setForm({ ...form, category: v === "__none" ? "" : v })}>
+                      <SelectTrigger className="mt-2"><SelectValue placeholder="Select category" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__none">— None —</SelectItem>
+                        {CATEGORIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>Publish date</Label>
+                    <Input
+                      type="datetime-local"
+                      value={form.published_at}
+                      onChange={(e) => setForm({ ...form, published_at: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div><Label>Excerpt</Label><Textarea value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} rows={2} /></div>
+                <div>
+                  <Label>Cover image URL</Label>
+                  <Input value={form.cover_image} onChange={(e) => setForm({ ...form, cover_image: e.target.value })} placeholder="https://…" />
+                  {form.cover_image && (
+                    <div className="mt-2 overflow-hidden rounded-lg border">
+                      <img
+                        src={form.cover_image}
+                        alt="Cover preview"
+                        className="h-40 w-full object-cover"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div><Label>Tags (comma-separated)</Label><Input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="seo, marketing, ai" /></div>
+
+                <div className="rounded-lg border p-3 space-y-3">
+                  <p className="text-xs font-medium text-muted-foreground">SEO</p>
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <Label>Meta title</Label>
+                      <span className={`text-xs ${form.meta_title.length > 60 ? "text-destructive" : "text-muted-foreground"}`}>{form.meta_title.length}/60</span>
+                    </div>
+                    <Input value={form.meta_title} onChange={(e) => setForm({ ...form, meta_title: e.target.value })} placeholder={form.title || "Shown on Google (≤ 60 chars)"} />
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <Label>Meta description</Label>
+                      <span className={`text-xs ${form.meta_description.length > 160 ? "text-destructive" : "text-muted-foreground"}`}>{form.meta_description.length}/160</span>
+                    </div>
+                    <Textarea value={form.meta_description} onChange={(e) => setForm({ ...form, meta_description: e.target.value })} rows={2} placeholder={form.excerpt || "Shown under the title in search results (≤ 160 chars)"} />
+                  </div>
+                </div>
+
+                <div><Label>Content (Markdown)</Label><Textarea rows={12} className="font-mono text-sm" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} /></div>
+                <div className="flex items-center gap-2"><Switch checked={form.published} onCheckedChange={(v) => setForm({ ...form, published: v })} /><Label>Publish</Label></div>
+                <div className="flex gap-2">
+                  <Button onClick={() => saveM.mutate()} disabled={saveM.isPending || !form.title}>
+                    {saveM.isPending ? "Saving…" : isEditing ? "Update post" : "Create post"}
+                  </Button>
+                  <Button variant="outline" onClick={() => setShowPreview(true)} disabled={!form.title && !form.content}>
+                    <Eye className="h-4 w-4 mr-1" /> Preview
+                  </Button>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -252,6 +389,7 @@ function AdminBlog() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Title</TableHead>
+                  <TableHead>Category</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Publish</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -260,11 +398,21 @@ function AdminBlog() {
               <TableBody>
                 {(postsQ.data ?? []).map((p: any) => (
                   <TableRow key={p.id}>
-                    <TableCell><div className="font-medium">{p.title}</div><div className="text-xs text-muted-foreground font-mono">/{p.slug}</div></TableCell>
+                    <TableCell>
+                      <div className="font-medium">{p.title}</div>
+                      <div className="text-xs text-muted-foreground font-mono">/{p.slug}</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {new Date(p.published_at ?? p.created_at).toLocaleDateString()} · {readingMinutes(p.content ?? "")} min read
+                      </div>
+                    </TableCell>
+                    <TableCell>{p.category ? <Badge variant="outline">{p.category}</Badge> : <span className="text-xs text-muted-foreground">—</span>}</TableCell>
                     <TableCell><Badge variant={p.published ? "default" : "secondary"}>{p.published ? "Published" : "Draft"}</Badge></TableCell>
                     <TableCell><Switch checked={p.published} onCheckedChange={(v) => togglePub.mutate({ id: p.id, published: v })} /></TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
+                        <Button size="icon" variant="ghost" asChild aria-label="View">
+                          <a href={`/blog/${p.slug}`} target="_blank" rel="noreferrer"><Eye className="h-4 w-4" /></a>
+                        </Button>
                         <Button size="icon" variant="ghost" onClick={() => startEdit(p)} aria-label="Edit">
                           <Pencil className="h-4 w-4" />
                         </Button>
@@ -283,7 +431,7 @@ function AdminBlog() {
                   </TableRow>
                 ))}
                 {postsQ.data && postsQ.data.length === 0 && (
-                  <TableRow><TableCell colSpan={4} className="text-center text-sm text-muted-foreground py-8">No posts yet.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={5} className="text-center text-sm text-muted-foreground py-8">No posts yet.</TableCell></TableRow>
                 )}
               </TableBody>
             </Table>
