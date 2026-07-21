@@ -29,6 +29,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "developer", name: "Developer", description: "Everyday utilities for developers — formatters, encoders, testers.", icon: "🧑‍💻" },
   { slug: "trader", name: "Trader", description: "Forex position size, risk/reward, pip, margin, pivot, Fibonacci, RSI, MACD, Bollinger and backtesting — all in-browser.", icon: "📉" },
   { slug: "accounting", name: "Accounting", description: "Invoices, receipts, VAT, payroll, ROI, depreciation, mortgages and business calculators — 100% in-browser.", icon: "🧾" },
+  { slug: "health", name: "Health", description: "Educational medical & health calculators — BMI, BMR, TDEE, body fat, heart rate, blood pressure and more. Not medical advice.", icon: "❤️" },
 ];
 
 export const TOOLS: Tool[] = [
