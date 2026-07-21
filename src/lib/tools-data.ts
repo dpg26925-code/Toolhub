@@ -897,3 +897,11 @@ const EDUCATION: Tool[] = [
 ];
 
 TOOLS.push(...EDUCATION);
+
+const LEGAL: Tool[] = [
+  { slug: "privacy-policy-generator", name: "Privacy Policy Generator", shortDescription: "Create a GDPR/CCPA-aware privacy policy for your blog, SaaS, ecommerce or app in seconds.", categorySlug: "legal", icon: "🛡️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "terms-of-service-generator", name: "Terms of Service Generator", shortDescription: "Draft a Terms of Service with acceptance, IP, liability, termination and governing law clauses.", categorySlug: "legal", icon: "📜", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "affiliate-disclosure-generator", name: "Affiliate Disclosure Generator (FTC)", shortDescription: "FTC-compliant affiliate disclosure blocks for blog, YouTube, Instagram, TikTok or email — with network mentions.", categorySlug: "legal", icon: "📢", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...LEGAL);
