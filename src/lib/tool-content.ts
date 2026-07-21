@@ -23,6 +23,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   tiktok: "TikTok Creator Tool",
   trader: "Trader Tool",
   accounting: "Accounting Tool",
+  health: "Health Calculator",
 };
 
 // Category-specific copy fragments used to weave tool-specific detail
@@ -179,6 +180,18 @@ const CATEGORY_COPY: Record<string, CategoryCopy> = {
     extraFaq: (t) => ({
       q: `Which currencies and tax rates does ${t.name} support?`,
       a: `${t.name} supports every currency ISO code and accepts any tax rate you type in, so it works for VAT (EU), GST (AU/CA/IN), sales tax (US) and any other regime. Formatting follows the locale you choose in the form.`,
+    }),
+  },
+  health: {
+    audience: "Individuals tracking fitness, athletes, students and health-curious readers",
+    input: "your height, weight, age, date or vitals as prompted in the form",
+    output: "a calculated value, category label and short interpretation you can copy",
+    companions: "BMI, BMR and TDEE Calculators",
+    limits: "No credit cost and no per-day cap — health calculators run 100% in your browser, so nothing you enter is transmitted or stored.",
+    commercial: "These calculators are for educational and informational purposes only and are not a substitute for professional medical advice, diagnosis or treatment.",
+    extraFaq: (t) => ({
+      q: `Can I rely on ${t.name} for medical decisions?`,
+      a: `No. ${t.name} implements a widely published formula and is provided for general education. Always consult a qualified physician or health provider before making changes to diet, exercise, medication or a treatment plan.`,
     }),
   },
 };
