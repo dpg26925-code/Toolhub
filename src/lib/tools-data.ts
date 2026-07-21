@@ -906,3 +906,16 @@ const LEGAL: Tool[] = [
 ];
 
 TOOLS.push(...LEGAL);
+
+const UNITS: Tool[] = [
+  { slug: "length-converter", name: "Length Converter", shortDescription: "Convert between mm, cm, m, km, inch, foot, yard, mile and nautical mile — with formula.", categorySlug: "units", icon: "📏", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "weight-converter", name: "Weight Converter", shortDescription: "Convert mg, g, kg, metric tons, ounces, pounds, stones and carats — with formula.", categorySlug: "units", icon: "⚖️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "temperature-converter", name: "Temperature Converter", shortDescription: "Convert Celsius, Fahrenheit, Kelvin and Rankine with a live thermometer gauge.", categorySlug: "units", icon: "🌡️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "speed-converter", name: "Speed Converter", shortDescription: "Convert m/s, km/h, mph, knot, Mach and c — with real-world comparison.", categorySlug: "units", icon: "🏎️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "area-converter", name: "Area Converter", shortDescription: "Convert mm², cm², m², km², hectare, acre and square inch/foot/mile.", categorySlug: "units", icon: "🟩", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "volume-converter", name: "Volume Converter", shortDescription: "Convert ml, liter, US/UK gallon, pint, cup, fluid ounce, m³ and barrel.", categorySlug: "units", icon: "🧴", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "data-storage-converter", name: "Data Storage Converter", shortDescription: "Convert bit, byte, KB, MB, GB, TB, PB — with binary (KiB) vs decimal (KB) toggle.", categorySlug: "units", icon: "💾", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "time-zone-converter", name: "Time Zone Converter", shortDescription: "Convert times across IANA time zones with DST detection, 12/24h and next-day indicator.", categorySlug: "units", icon: "🕓", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...UNITS);
