@@ -34,6 +34,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "real-estate", name: "Real Estate", description: "Mortgage, rent vs buy, property tax, home affordability and amortization calculators — 100% in-browser.", icon: "🏠" },
   { slug: "legal", name: "Legal & Business", description: "Privacy policy, terms of service, affiliate disclosure and invoice generators — all client-side.", icon: "⚖️" },
   { slug: "units", name: "Unit Converters", description: "Length, weight, temperature, speed, area, volume, data storage and time zone converters — 100% in-browser.", icon: "📐" },
+  { slug: "fun", name: "Random & Fun", description: "Dice rollers, coin flips, random numbers, name generators, QR codes and ASCII art — 100% in-browser.", icon: "🎲" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -931,3 +932,13 @@ const FITNESS: Tool[] = [
 ];
 
 TOOLS.push(...FITNESS);
+
+const FUN: Tool[] = [
+  { slug: "dice-roller", name: "Dice Roller", shortDescription: "Roll d4–d100 with modifiers, D&D / Craps / Shadowrun presets and crit detection.", categorySlug: "fun", icon: "🎲", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "coin-flip", name: "Coin Flip", shortDescription: "Flip 1–1000 coins with heads/tails stats, distribution chart and 'until heads' mode.", categorySlug: "fun", icon: "🪙", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "random-number-generator", name: "Random Number Generator", shortDescription: "Generate unique random numbers with exclude list, lottery / Powerball presets and history.", categorySlug: "fun", icon: "🔢", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "random-name-generator", name: "Random Name Generator", shortDescription: "First + last names across 8 origins with gender filter, copy and favourites.", categorySlug: "fun", icon: "🪪", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ascii-art-generator", name: "ASCII Art Generator", shortDescription: "Convert text into ASCII banners in 6 fonts — copy or download as .txt.", categorySlug: "fun", icon: "🅰️", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...FUN);
