@@ -150,4 +150,12 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "batch-find-replace": lazy(() => import("./batch-find-replace")),
   "video-thumbnail-generator": lazy(() => import("./video-thumbnail-generator")),
   "audio-trimmer": lazy(() => import("./audio-trimmer")),
+  "bmi-calculator": lazy(() => import("./bmi-calculator")),
+  "bmr-calculator": lazy(() => import("./bmr-calculator")),
+  "tdee-calculator": lazy(() => import("./tdee-calculator")),
+  "body-fat-calculator": lazy(() => import("./body-fat-calculator")),
+  "heart-rate-zones": lazy(() => import("./heart-rate-zones")),
+  "blood-pressure-calculator": lazy(() => import("./blood-pressure-calculator")),
+  "pregnancy-due-date": lazy(() => import("./pregnancy-due-date")),
+  "ovulation-calculator": lazy(() => import("./ovulation-calculator")),
 };
