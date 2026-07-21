@@ -25,6 +25,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   accounting: "Accounting Tool",
   health: "Health Calculator",
   education: "Education Tool",
+  units: "Unit Converter",
 };
 
 // Category-specific copy fragments used to weave tool-specific detail
