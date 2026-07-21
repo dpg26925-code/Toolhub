@@ -4,82 +4,117 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { fmt, copy } from "./_acc";
-
-type Bracket = { up: number | null; rate: number };
-const REGIMES: Record<string, Bracket[]> = {
-  "US Federal 2024 (single)": [
-    { up: 11600, rate: 10 }, { up: 47150, rate: 12 }, { up: 100525, rate: 22 },
-    { up: 191950, rate: 24 }, { up: 243725, rate: 32 }, { up: 609350, rate: 35 }, { up: null, rate: 37 },
-  ],
-  "UK 2024/25": [
-    { up: 12570, rate: 0 }, { up: 50270, rate: 20 }, { up: 125140, rate: 40 }, { up: null, rate: 45 },
-  ],
-  "Vietnam PIT (resident)": [
-    { up: 60_000_000, rate: 5 }, { up: 120_000_000, rate: 10 }, { up: 216_000_000, rate: 15 },
-    { up: 384_000_000, rate: 20 }, { up: 624_000_000, rate: 25 }, { up: 960_000_000, rate: 30 }, { up: null, rate: 35 },
-  ],
-};
-
-function calc(taxable: number, br: Bracket[]) {
-  const rows: { from: number; to: number; rate: number; tax: number }[] = [];
-  let prev = 0, total = 0;
-  for (const b of br) {
-    const cap = b.up ?? Infinity;
-    if (taxable <= prev) break;
-    const inThis = Math.min(taxable, cap) - prev;
-    const tax = (inThis * b.rate) / 100;
-    rows.push({ from: prev, to: cap === Infinity ? taxable : cap, rate: b.rate, tax });
-    total += tax;
-    prev = cap;
-    if (taxable <= cap) break;
-  }
-  return { rows, total };
-}
+import { US_FEDERAL_BRACKETS, US_STATE_RATE, FilingStatus, calcProgressive } from "./_tax";
 
 export default function PayrollTaxCalculator() {
   const [gross, setGross] = useState(90000);
-  const [deductions, setDeductions] = useState(0);
-  const [regime, setRegime] = useState<keyof typeof REGIMES>("US Federal 2024 (single)");
+  const [year, setYear] = useState<"2024" | "2025">("2024");
+  const [status, setStatus] = useState<FilingStatus>("single");
+  const [state, setState] = useState<keyof typeof US_STATE_RATE>("CA");
+  const [allowances, setAllowances] = useState(0);
+
   const r = useMemo(() => {
-    const taxable = Math.max(0, gross - deductions);
-    const c = calc(taxable, REGIMES[regime]);
-    const net = gross - c.total;
-    const eff = gross > 0 ? (c.total / gross) * 100 : 0;
-    return { taxable, ...c, net, eff };
-  }, [gross, deductions, regime]);
+    const allowanceValue = allowances * 4700; // approximate personal allowance
+    const taxable = Math.max(0, gross - allowanceValue);
+    const federal = calcProgressive(taxable, US_FEDERAL_BRACKETS[year][status]);
+    const stateRate = US_STATE_RATE[state] ?? 0;
+    const stateTax = taxable * (stateRate / 100);
+    const ss = Math.min(gross, 168600) * 0.062;
+    const medicare = gross * 0.0145 + Math.max(0, gross - 200000) * 0.009;
+    const fica = ss + medicare;
+    const total = federal.total + stateTax + fica;
+    const net = gross - total;
+    const eff = gross > 0 ? (total / gross) * 100 : 0;
+    return { taxable, federal, stateTax, ss, medicare, fica, total, net, eff };
+  }, [gross, year, status, state, allowances]);
+
+  const pieces = [
+    { label: "Net pay", v: r.net, color: "hsl(var(--primary))" },
+    { label: "Federal", v: r.federal.total, color: "hsl(220 70% 55%)" },
+    { label: "State", v: r.stateTax, color: "hsl(180 60% 50%)" },
+    { label: "Social Security", v: r.ss, color: "hsl(30 90% 55%)" },
+    { label: "Medicare", v: r.medicare, color: "hsl(340 70% 60%)" },
+  ].filter((p) => p.v > 0);
+  const sum = pieces.reduce((a, b) => a + b.v, 0) || 1;
+
+  // build conic-gradient
+  let acc = 0;
+  const stops = pieces.map((p) => {
+    const start = (acc / sum) * 360;
+    acc += p.v;
+    const end = (acc / sum) * 360;
+    return `${p.color} ${start}deg ${end}deg`;
+  }).join(", ");
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div><Label>Gross salary (annual)</Label><Input type="number" value={gross} onChange={(e) => setGross(+e.target.value)} className="mt-1" /></div>
-        <div><Label>Pre-tax deductions</Label><Input type="number" value={deductions} onChange={(e) => setDeductions(+e.target.value)} className="mt-1" /></div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div><Label>Gross salary ($)</Label><Input type="number" min={0} value={gross} onChange={(e) => setGross(Math.max(0, +e.target.value))} className="mt-1" /></div>
         <div>
-          <Label>Tax regime</Label>
-          <select value={regime} onChange={(e) => setRegime(e.target.value as keyof typeof REGIMES)} className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-            {Object.keys(REGIMES).map((k) => <option key={k}>{k}</option>)}
+          <Label>Tax year</Label>
+          <select value={year} onChange={(e) => setYear(e.target.value as any)} className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
           </select>
         </div>
+        <div>
+          <Label>Filing status</Label>
+          <select value={status} onChange={(e) => setStatus(e.target.value as FilingStatus)} className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+            <option value="single">Single</option>
+            <option value="married">Married filing jointly</option>
+            <option value="hoh">Head of household</option>
+          </select>
+        </div>
+        <div>
+          <Label>State</Label>
+          <select value={state} onChange={(e) => setState(e.target.value as any)} className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+            {Object.keys(US_STATE_RATE).map((k) => <option key={k} value={k}>{k}</option>)}
+          </select>
+        </div>
+        <div><Label>Allowances</Label><Input type="number" min={0} value={allowances} onChange={(e) => setAllowances(Math.max(0, +e.target.value))} className="mt-1" /></div>
       </div>
-      <div className="rounded-xl border border-border bg-secondary/40 p-4 grid gap-3 sm:grid-cols-4 text-sm">
-        <S label="Taxable" v={fmt(r.taxable, 0)} />
-        <S label="Tax total" v={fmt(r.total, 0)} />
-        <S label="Net" v={fmt(r.net, 0)} h />
-        <S label="Effective" v={`${fmt(r.eff, 2)}%`} />
-      </div>
-      <div className="overflow-x-auto rounded-xl border border-border">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-xs uppercase text-muted-foreground"><tr><th className="p-2 text-left">Bracket</th><th className="p-2 text-right">Rate</th><th className="p-2 text-right">Tax</th></tr></thead>
-          <tbody>
-            {r.rows.map((row, i) => (
-              <tr key={i} className="border-t border-border"><td className="p-2">{fmt(row.from, 0)} – {fmt(row.to, 0)}</td><td className="p-2 text-right">{row.rate}%</td><td className="p-2 text-right">{fmt(row.tax, 0)}</td></tr>
+
+      <div className="grid gap-4 lg:grid-cols-[1fr_260px]">
+        <div className="rounded-xl border border-border bg-secondary/40 p-4 space_y-3">
+          <div className="grid gap-3 sm:grid-cols-2 text-sm">
+            <Row label="Gross pay" v={r.gross ?? gross} />
+            <Row label="Federal tax" v={r.federal.total} neg />
+            <Row label={`State tax (${US_STATE_RATE[state]}%)`} v={r.stateTax} neg />
+            <Row label="Social Security (6.2%)" v={r.ss} neg />
+            <Row label="Medicare (1.45%)" v={r.medicare} neg />
+            <div className="col-span-full border-t border-border pt-2 grid grid-cols-2 gap-3">
+              <Row label="Total deductions" v={r.total} bold />
+              <Row label="Net pay" v={r.net} bold hi />
+            </div>
+          </div>
+          <div className="mt-3 text-xs text-muted-foreground">Effective rate: <span className="font-semibold text-foreground">{fmt(r.eff, 2)}%</span></div>
+        </div>
+        <div className="rounded-xl border border-border p-4 flex flex-col items-center gap-3">
+          <div className="text-xs uppercase tracking-wide text-muted-foreground">Breakdown</div>
+          <div className="w-40 h-40 rounded-full" style={{ background: `conic-gradient(${stops})` }} />
+          <div className="w-full space-y-1 text-xs">
+            {pieces.map((p) => (
+              <div key={p.label} className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 rounded" style={{ background: p.color }} />
+                <span className="flex-1">{p.label}</span>
+                <span className="font-mono">${fmt(p.v, 0)}</span>
+              </div>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
-      <Button size="sm" onClick={() => { copy(`Gross ${fmt(gross, 0)} → Net ${fmt(r.net, 0)} (tax ${fmt(r.total, 0)})`); toast.success("Copied"); }}>Copy</Button>
+
+      <p className="text-xs text-muted-foreground">For estimation only. Actual withholdings depend on W-4, local taxes and benefits — consult a tax professional.</p>
+      <Button size="sm" onClick={() => { copy(`Gross $${fmt(gross, 0)} → Net $${fmt(r.net, 0)} (tax $${fmt(r.total, 0)}, ${fmt(r.eff, 1)}% eff.)`); toast.success("Copied"); }}>Copy summary</Button>
     </div>
   );
 }
-function S({ label, v, h }: { label: string; v: string; h?: boolean }) {
-  return <div><div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div><div className={`mt-1 font-semibold ${h ? "text-primary text-lg" : ""}`}>{v}</div></div>;
+
+function Row({ label, v, neg, bold, hi }: { label: string; v: number; neg?: boolean; bold?: boolean; hi?: boolean }) {
+  return (
+    <div className="flex justify-between">
+      <span className="text-muted-foreground">{label}</span>
+      <span className={`${bold ? "font-semibold" : ""} ${hi ? "text-primary text-lg" : ""} font-mono`}>{neg ? "−" : ""}${fmt(v, 0)}</span>
+    </div>
+  );
 }
