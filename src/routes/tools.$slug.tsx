@@ -13,6 +13,8 @@ export const Route = createFileRoute("/tools/$slug")({
     if (!tool) {
       const redirects: Record<string, string> = {
         "ut-builder": "utm-builder",
+        "salary-to-hourly": "salary-to-hourly-converter",
+        "hourly-to-salary": "hourly-to-salary-converter",
       };
       const target = redirects[params.slug];
       if (target) throw redirect({ to: "/tools/$slug", params: { slug: target } });
