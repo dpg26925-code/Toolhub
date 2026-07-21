@@ -172,4 +172,12 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "privacy-policy-generator": lazy(() => import("./privacy-policy-generator")),
   "terms-of-service-generator": lazy(() => import("./terms-of-service-generator")),
   "affiliate-disclosure-generator": lazy(() => import("./affiliate-disclosure-generator")),
+  "length-converter": lazy(() => import("./length-converter")),
+  "weight-converter": lazy(() => import("./weight-converter")),
+  "temperature-converter": lazy(() => import("./temperature-converter")),
+  "speed-converter": lazy(() => import("./speed-converter")),
+  "area-converter": lazy(() => import("./area-converter")),
+  "volume-converter": lazy(() => import("./volume-converter")),
+  "data-storage-converter": lazy(() => import("./data-storage-converter")),
+  "time-zone-converter": lazy(() => import("./time-zone-converter")),
 };

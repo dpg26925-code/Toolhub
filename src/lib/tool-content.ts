@@ -25,6 +25,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   accounting: "Accounting Tool",
   health: "Health Calculator",
   education: "Education Tool",
+  units: "Unit Converter",
 };
 
 // Category-specific copy fragments used to weave tool-specific detail
@@ -229,6 +230,18 @@ const CATEGORY_COPY: Record<string, CategoryCopy> = {
     extraFaq: (t) => ({
       q: `Is ${t.name} a substitute for a lawyer?`,
       a: `No. ${t.name} produces a solid starting template based on common industry practice, but every jurisdiction and business is different. For binding contracts, disputes or regulated industries (health, finance, children's services), have a qualified attorney review the document before publishing.`,
+    }),
+  },
+  units: {
+    audience: "Engineers, scientists, students, travellers and remote teams",
+    input: "a numeric value and the source and target units",
+    output: "an exact converted value with the formula and a real-world comparison",
+    companions: "Length Converter, Weight Converter and Time Zone Converter",
+    limits: "No credit cost and no per-day cap — every unit converter runs 100% in your browser using exact SI conversion factors, so numbers never leave your device.",
+    commercial: "Yes — engineers, teachers and content creators can use the converted values and formulas in reports, worksheets and commercial products without attribution.",
+    extraFaq: (t) => ({
+      q: `How accurate is ${t.name}?`,
+      a: `${t.name} uses the exact SI/NIST conversion factors (for example 1 inch = 25.4 mm and 1 pound = 0.45359237 kg), so results are precise to JavaScript's 15–17 significant digits — well beyond any real-world measurement.`,
     }),
   },
 };
