@@ -32,6 +32,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "health", name: "Health", description: "Educational medical & health calculators — BMI, BMR, TDEE, body fat, heart rate, blood pressure and more. Not medical advice.", icon: "❤️" },
   { slug: "education", name: "Education", description: "GPA, grade conversion, citation generator, essay stats, Pomodoro study timer and more — for students and teachers.", icon: "🎓" },
   { slug: "real-estate", name: "Real Estate", description: "Mortgage, rent vs buy, property tax, home affordability and amortization calculators — 100% in-browser.", icon: "🏠" },
+  { slug: "legal", name: "Legal & Business", description: "Privacy policy, terms of service, affiliate disclosure and invoice generators — all client-side.", icon: "⚖️" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -896,3 +897,11 @@ const EDUCATION: Tool[] = [
 ];
 
 TOOLS.push(...EDUCATION);
+
+const LEGAL: Tool[] = [
+  { slug: "privacy-policy-generator", name: "Privacy Policy Generator", shortDescription: "Create a GDPR/CCPA-aware privacy policy for your blog, SaaS, ecommerce or app in seconds.", categorySlug: "legal", icon: "🛡️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "terms-of-service-generator", name: "Terms of Service Generator", shortDescription: "Draft a Terms of Service with acceptance, IP, liability, termination and governing law clauses.", categorySlug: "legal", icon: "📜", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "affiliate-disclosure-generator", name: "Affiliate Disclosure Generator (FTC)", shortDescription: "FTC-compliant affiliate disclosure blocks for blog, YouTube, Instagram, TikTok or email — with network mentions.", categorySlug: "legal", icon: "📢", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...LEGAL);
