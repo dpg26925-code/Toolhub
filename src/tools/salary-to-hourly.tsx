@@ -9,30 +9,46 @@ export default function SalaryToHourly() {
   const [annual, setAnnual] = useState(60000);
   const [hpw, setHpw] = useState(40);
   const [wpy, setWpy] = useState(52);
+  const [vacation, setVacation] = useState(10);
   const r = useMemo(() => {
-    const total = hpw * wpy;
-    const hourly = total > 0 ? annual / total : 0;
-    return { hourly, daily: hourly * 8, weekly: hourly * hpw, monthly: annual / 12 };
-  }, [annual, hpw, wpy]);
+    const totalHours = Math.max(0, hpw * wpy);
+    const hourly = totalHours > 0 ? annual / totalHours : 0;
+    const workedHours = Math.max(0, totalHours - vacation * 8);
+    const effective = workedHours > 0 ? annual / workedHours : 0;
+    const daily = hourly * (hpw / 5);
+    return {
+      hourly,
+      effective,
+      daily,
+      weekly: hourly * hpw,
+      biweekly: hourly * hpw * 2,
+      monthly: annual / 12,
+    };
+  }, [annual, hpw, wpy, vacation]);
   return (
     <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div><Label>Annual salary</Label><Input type="number" value={annual} onChange={(e) => setAnnual(+e.target.value)} className="mt-1" /></div>
-        <div><Label>Hours / week</Label><Input type="number" step="0.5" value={hpw} onChange={(e) => setHpw(+e.target.value)} className="mt-1" /></div>
-        <div><Label>Weeks / year</Label><Input type="number" value={wpy} onChange={(e) => setWpy(+e.target.value)} className="mt-1" /></div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div><Label>Annual salary ($)</Label><Input type="number" min={0} value={annual} onChange={(e) => setAnnual(Math.max(0, +e.target.value))} className="mt-1" /></div>
+        <div><Label>Hours / week</Label><Input type="number" min={1} max={168} step="0.5" value={hpw} onChange={(e) => setHpw(Math.max(1, +e.target.value))} className="mt-1" /></div>
+        <div><Label>Weeks / year</Label><Input type="number" min={1} max={52} value={wpy} onChange={(e) => setWpy(Math.max(1, +e.target.value))} className="mt-1" /></div>
+        <div><Label>Paid vacation days</Label><Input type="number" min={0} value={vacation} onChange={(e) => setVacation(Math.max(0, +e.target.value))} className="mt-1" /></div>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button size="sm" variant="outline" onClick={() => setHpw(40)}>40h/wk</Button>
-        <Button size="sm" variant="outline" onClick={() => setHpw(37.5)}>37.5h/wk</Button>
-        <Button size="sm" variant="outline" onClick={() => { setHpw(40); setWpy(48); }}>48 wk (seasonal)</Button>
+        <Button size="sm" variant="outline" onClick={() => setHpw(40)}>40h / week</Button>
+        <Button size="sm" variant="outline" onClick={() => setHpw(37.5)}>37.5h / week</Button>
+        <Button size="sm" variant="outline" onClick={() => setHpw(35)}>35h / week</Button>
+        <Button size="sm" variant="outline" onClick={() => setWpy(52)}>52 weeks</Button>
       </div>
-      <div className="rounded-xl border border-border bg-secondary/40 p-4 grid gap-3 sm:grid-cols-4 text-sm">
-        <S label="Hourly" v={fmt(r.hourly)} h />
-        <S label="Daily (8h)" v={fmt(r.daily)} />
-        <S label="Weekly" v={fmt(r.weekly)} />
-        <S label="Monthly" v={fmt(r.monthly)} />
+      <div className="rounded-xl border border-border bg-secondary/40 p-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-6 text-sm">
+        <S label="Hourly" v={`$${fmt(r.hourly)}`} h />
+        <S label="Effective (after vacation)" v={`$${fmt(r.effective)}`} />
+        <S label="Daily" v={`$${fmt(r.daily)}`} />
+        <S label="Weekly" v={`$${fmt(r.weekly)}`} />
+        <S label="Biweekly" v={`$${fmt(r.biweekly)}`} />
+        <S label="Monthly" v={`$${fmt(r.monthly)}`} />
       </div>
-      <Button size="sm" onClick={() => { copy(`${fmt(annual)} / yr = ${fmt(r.hourly)} / hr`); toast.success("Copied"); }}>Copy</Button>
+      <p className="text-xs text-muted-foreground">For estimation only. Consult a tax or payroll professional for legally binding calculations.</p>
+      <Button size="sm" onClick={() => { copy(`$${fmt(annual)} / yr = $${fmt(r.hourly)} / hr (effective $${fmt(r.effective)}/hr after ${vacation} vacation days)`); toast.success("Copied"); }}>Copy summary</Button>
     </div>
   );
 }
