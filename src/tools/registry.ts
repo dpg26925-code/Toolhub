@@ -158,4 +158,12 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "blood-pressure-calculator": lazy(() => import("./blood-pressure-calculator")),
   "pregnancy-due-date": lazy(() => import("./pregnancy-due-date")),
   "ovulation-calculator": lazy(() => import("./ovulation-calculator")),
+  "gpa-calculator": lazy(() => import("./gpa-calculator")),
+  "grade-converter": lazy(() => import("./grade-converter")),
+  "citation-generator": lazy(() => import("./citation-generator")),
+  "percentage-calculator": lazy(() => import("./percentage-calculator")),
+  "essay-word-count": lazy(() => import("./essay-word-count")),
+  "final-grade-calculator": lazy(() => import("./final-grade-calculator")),
+  "study-timer": lazy(() => import("./study-timer")),
+  "grade-point-average": lazy(() => import("./grade-point-average")),
 };

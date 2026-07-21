@@ -24,6 +24,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   trader: "Trader Tool",
   accounting: "Accounting Tool",
   health: "Health Calculator",
+  education: "Education Tool",
 };
 
 // Category-specific copy fragments used to weave tool-specific detail
@@ -192,6 +193,18 @@ const CATEGORY_COPY: Record<string, CategoryCopy> = {
     extraFaq: (t) => ({
       q: `Can I rely on ${t.name} for medical decisions?`,
       a: `No. ${t.name} implements a widely published formula and is provided for general education. Always consult a qualified physician or health provider before making changes to diet, exercise, medication or a treatment plan.`,
+    }),
+  },
+  education: {
+    audience: "High-school, undergraduate and graduate students, plus teachers and tutors",
+    input: "your courses, grades, essay text or study preferences",
+    output: "a calculated grade, formatted citation, essay report or focus schedule",
+    companions: "GPA Calculator, Essay Word Count and Study Timer",
+    limits: "No credit cost and no per-day cap — every education tool runs 100% in your browser, so grades, essays and citation data stay on your device.",
+    commercial: "Yes — tutors, teachers and course creators can use the outputs in paid lessons, worksheets and reports without attribution.",
+    extraFaq: (t) => ({
+      q: `Does ${t.name} store my grades or essay text?`,
+      a: `No. ${t.name} runs entirely in your browser. Anything that persists between visits (GPA history, focus time) is kept in your browser's localStorage and never uploaded to Nexatools.`,
     }),
   },
 };

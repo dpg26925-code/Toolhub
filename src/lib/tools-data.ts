@@ -30,6 +30,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "trader", name: "Trader", description: "Forex position size, risk/reward, pip, margin, pivot, Fibonacci, RSI, MACD, Bollinger and backtesting — all in-browser.", icon: "📉" },
   { slug: "accounting", name: "Accounting", description: "Invoices, receipts, VAT, payroll, ROI, depreciation, mortgages and business calculators — 100% in-browser.", icon: "🧾" },
   { slug: "health", name: "Health", description: "Educational medical & health calculators — BMI, BMR, TDEE, body fat, heart rate, blood pressure and more. Not medical advice.", icon: "❤️" },
+  { slug: "education", name: "Education", description: "GPA, grade conversion, citation generator, essay stats, Pomodoro study timer and more — for students and teachers.", icon: "🎓" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -878,3 +879,16 @@ const HEALTH: Tool[] = [
 ];
 
 TOOLS.push(...HEALTH);
+
+const EDUCATION: Tool[] = [
+  { slug: "gpa-calculator", name: "GPA Calculator", shortDescription: "Compute your GPA on a 4.0 or 5.0 scale with add/remove course rows and a grade breakdown chart.", categorySlug: "education", icon: "🎓", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "grade-converter", name: "Grade Converter", shortDescription: "Convert between percentage, letter grade, 4.0 GPA, UK, India (10-point) and Germany scales.", categorySlug: "education", icon: "🔁", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "citation-generator", name: "Citation Generator", shortDescription: "Generate APA 7, MLA 9, Chicago, Harvard and BibTeX citations for books, websites, journals and videos.", categorySlug: "education", icon: "📚", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "percentage-calculator", name: "Percentage Calculator", shortDescription: "What is X% of Y, X is what % of Y, percent change, add/subtract percent — with formulas shown.", categorySlug: "education", icon: "％", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "essay-word-count", name: "Essay Word Count", shortDescription: "Word, character, sentence and paragraph counts plus keyword density and Flesch-Kincaid readability.", categorySlug: "education", icon: "📝", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "final-grade-calculator", name: "Final Grade Calculator", shortDescription: "Find the exam score you need to reach your target final grade.", categorySlug: "education", icon: "🎯", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "study-timer", name: "Study Timer (Pomodoro)", shortDescription: "Focus with a customisable Pomodoro timer, session counter and daily focus time — with sound alerts.", categorySlug: "education", icon: "⏱️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "grade-point-average", name: "Semester GPA Tracker", shortDescription: "Track semester and cumulative GPA across multiple semesters with a trend chart and CSV export.", categorySlug: "education", icon: "📈", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...EDUCATION);
