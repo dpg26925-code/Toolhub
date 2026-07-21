@@ -932,3 +932,13 @@ const FITNESS: Tool[] = [
 ];
 
 TOOLS.push(...FITNESS);
+
+const FUN: Tool[] = [
+  { slug: "dice-roller", name: "Dice Roller", shortDescription: "Roll d4–d100 with modifiers, D&D / Craps / Shadowrun presets and crit detection.", categorySlug: "fun", icon: "🎲", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "coin-flip", name: "Coin Flip", shortDescription: "Flip 1–1000 coins with heads/tails stats, distribution chart and 'until heads' mode.", categorySlug: "fun", icon: "🪙", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "random-number-generator", name: "Random Number Generator", shortDescription: "Generate unique random numbers with exclude list, lottery / Powerball presets and history.", categorySlug: "fun", icon: "🔢", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "random-name-generator", name: "Random Name Generator", shortDescription: "First + last names across 8 origins with gender filter, copy and favourites.", categorySlug: "fun", icon: "🪪", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ascii-art-generator", name: "ASCII Art Generator", shortDescription: "Convert text into ASCII banners in 6 fonts — copy or download as .txt.", categorySlug: "fun", icon: "🅰️", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...FUN);
