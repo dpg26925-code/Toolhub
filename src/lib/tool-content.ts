@@ -207,6 +207,18 @@ const CATEGORY_COPY: Record<string, CategoryCopy> = {
       a: `No. ${t.name} runs entirely in your browser. Anything that persists between visits (GPA history, focus time) is kept in your browser's localStorage and never uploaded to Nexatools.`,
     }),
   },
+  "real-estate": {
+    audience: "Home buyers, renters, real estate agents and personal finance planners",
+    input: "the home price, income, rate and term figures for your scenario",
+    output: "a monthly payment, affordability range or comparison chart you can save",
+    companions: "Mortgage Calculator, Rent vs Buy and Loan Amortization",
+    limits: "No credit cost and no per-day cap — every real estate calculator runs 100% in your browser, so income, price and loan details never leave your device.",
+    commercial: "Yes — agents, lenders and financial coaches can use the outputs in client conversations. Results are estimates, not a loan offer or financial advice.",
+    extraFaq: (t) => ({
+      q: `Does ${t.name} account for taxes, insurance and HOA?`,
+      a: `Where the field is offered, ${t.name} includes property tax, home insurance, HOA dues and PMI (when down payment is under 20%). Local tax rates vary — use the Property Tax Calculator for a city-level estimate.`,
+    }),
+  },
 };
 
 const DEFAULT_CATEGORY_COPY: CategoryCopy = {

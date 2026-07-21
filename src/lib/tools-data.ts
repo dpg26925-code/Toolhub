@@ -31,6 +31,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "accounting", name: "Accounting", description: "Invoices, receipts, VAT, payroll, ROI, depreciation, mortgages and business calculators — 100% in-browser.", icon: "🧾" },
   { slug: "health", name: "Health", description: "Educational medical & health calculators — BMI, BMR, TDEE, body fat, heart rate, blood pressure and more. Not medical advice.", icon: "❤️" },
   { slug: "education", name: "Education", description: "GPA, grade conversion, citation generator, essay stats, Pomodoro study timer and more — for students and teachers.", icon: "🎓" },
+  { slug: "real-estate", name: "Real Estate", description: "Mortgage, rent vs buy, property tax, home affordability and amortization calculators — 100% in-browser.", icon: "🏠" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -833,9 +834,12 @@ const ACCOUNTING: Tool[] = [
   { slug: "roi-calculator", name: "ROI Calculator", shortDescription: "ROI, annualised return and net profit for any investment or campaign.", categorySlug: "accounting", icon: "📈", isFree: true, creditCost: 0, clientSide: true },
   { slug: "npv-calculator", name: "NPV / IRR Calculator", shortDescription: "Discount a series of cash flows, get NPV, approximate IRR and accept/reject signal.", categorySlug: "accounting", icon: "🧮", isFree: true, creditCost: 0, clientSide: true },
   { slug: "depreciation-calculator", name: "Depreciation Calculator", shortDescription: "Year-by-year schedule using straight-line, double-declining or sum-of-years methods.", categorySlug: "accounting", icon: "📉", isFree: true, creditCost: 0, clientSide: true },
-  { slug: "loan-amortization", name: "Loan Amortization Schedule", shortDescription: "Full month-by-month table with extra payment impact and CSV download.", categorySlug: "accounting", icon: "📅", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "loan-amortization", name: "Loan Amortization Schedule", shortDescription: "Full month-by-month table with extra payment impact, balance chart and CSV download.", categorySlug: "real-estate", icon: "📅", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
   { slug: "loan-calculator", name: "Loan Calculator", shortDescription: "Monthly payment, total interest and principal/interest split for any loan.", categorySlug: "accounting", icon: "🏦", isFree: true, creditCost: 0, clientSide: true },
-  { slug: "mortgage-calculator", name: "Mortgage Calculator", shortDescription: "Full PITI + HOA monthly payment with tax, insurance and payment breakdown.", categorySlug: "accounting", icon: "🏠", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "mortgage-calculator", name: "Mortgage Calculator", shortDescription: "Full PITI + HOA + PMI monthly payment with pie chart and yearly amortization summary.", categorySlug: "real-estate", icon: "🏠", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "rent-vs-buy-calculator", name: "Rent vs Buy Calculator", shortDescription: "Compare 5- and 10-year cost of renting vs buying with wealth chart and break-even point.", categorySlug: "real-estate", icon: "⚖️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "property-tax-calculator", name: "Property Tax Calculator", shortDescription: "Estimate annual and monthly property tax with US city presets and homestead exemptions.", categorySlug: "real-estate", icon: "🏛️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "home-affordability-calculator", name: "Home Affordability Calculator", shortDescription: "Find the max home price you can afford using the 28/36 DTI rule with an affordability gauge.", categorySlug: "real-estate", icon: "💰", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
   { slug: "startup-cost-calculator", name: "Startup Cost Calculator", shortDescription: "Total startup budget, cost-by-category breakdown and 6-month cash reserve.", categorySlug: "accounting", icon: "🚀", isFree: true, creditCost: 0, clientSide: true },
   { slug: "profit-margin-calculator", name: "Profit Margin Calculator", shortDescription: "Gross, operating and net margin from revenue, COGS and expenses — with industry benchmarks.", categorySlug: "accounting", icon: "💹", isFree: true, creditCost: 0, clientSide: true },
 ];

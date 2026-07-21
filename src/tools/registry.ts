@@ -166,4 +166,7 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "final-grade-calculator": lazy(() => import("./final-grade-calculator")),
   "study-timer": lazy(() => import("./study-timer")),
   "grade-point-average": lazy(() => import("./grade-point-average")),
+  "rent-vs-buy-calculator": lazy(() => import("./rent-vs-buy-calculator")),
+  "property-tax-calculator": lazy(() => import("./property-tax-calculator")),
+  "home-affordability-calculator": lazy(() => import("./home-affordability-calculator")),
 };
