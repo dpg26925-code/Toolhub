@@ -187,4 +187,9 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "calorie-burn-calculator": lazy(() => import("./calorie-burn-calculator")),
   "one-rep-max-calculator": lazy(() => import("./one-rep-max-calculator")),
   "body-surface-area": lazy(() => import("./body-surface-area")),
+  "dice-roller": lazy(() => import("./dice-roller")),
+  "coin-flip": lazy(() => import("./coin-flip")),
+  "random-number-generator": lazy(() => import("./random-number-generator")),
+  "random-name-generator": lazy(() => import("./random-name-generator")),
+  "ascii-art-generator": lazy(() => import("./ascii-art-generator")),
 };
