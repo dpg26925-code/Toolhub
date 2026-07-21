@@ -77,7 +77,7 @@ export default function PayrollTaxCalculator() {
       <div className="grid gap-4 lg:grid-cols-[1fr_260px]">
         <div className="rounded-xl border border-border bg-secondary/40 p-4 space_y-3">
           <div className="grid gap-3 sm:grid-cols-2 text-sm">
-            <Row label="Gross pay" v={r.gross ?? gross} />
+            <Row label="Gross pay" v={gross} />
             <Row label="Federal tax" v={r.federal.total} neg />
             <Row label={`State tax (${US_STATE_RATE[state]}%)`} v={r.stateTax} neg />
             <Row label="Social Security (6.2%)" v={r.ss} neg />
