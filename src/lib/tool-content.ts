@@ -219,6 +219,18 @@ const CATEGORY_COPY: Record<string, CategoryCopy> = {
       a: `Where the field is offered, ${t.name} includes property tax, home insurance, HOA dues and PMI (when down payment is under 20%). Local tax rates vary — use the Property Tax Calculator for a city-level estimate.`,
     }),
   },
+  legal: {
+    audience: "Founders, bloggers, freelancers and small business owners",
+    input: "your business details, jurisdiction and the sections that apply to you",
+    output: "a ready-to-publish policy, disclosure or PDF invoice you can copy or download",
+    companions: "Privacy Policy Generator, Terms of Service Generator and Invoice Generator",
+    limits: "No credit cost and no per-day cap — every legal & business generator runs 100% in your browser, so business details never leave your device.",
+    commercial: "Yes — the generated text and documents are yours to publish, send to clients or use in commercial products. Templates are provided as-is and are not a substitute for legal advice.",
+    extraFaq: (t) => ({
+      q: `Is ${t.name} a substitute for a lawyer?`,
+      a: `No. ${t.name} produces a solid starting template based on common industry practice, but every jurisdiction and business is different. For binding contracts, disputes or regulated industries (health, finance, children's services), have a qualified attorney review the document before publishing.`,
+    }),
+  },
 };
 
 const DEFAULT_CATEGORY_COPY: CategoryCopy = {
