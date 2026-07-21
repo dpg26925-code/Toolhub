@@ -922,3 +922,12 @@ const UNITS: Tool[] = [
 ];
 
 TOOLS.push(...UNITS);
+
+const FITNESS: Tool[] = [
+  { slug: "pace-calculator", name: "Pace Calculator", shortDescription: "Running pace, speed, splits and predicted 5K / 10K / half / marathon finish times.", categorySlug: "health", icon: "🏃", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "calorie-burn-calculator", name: "Calorie Burn Calculator", shortDescription: "Estimate calories burned by activity, duration and weight using MET values.", categorySlug: "health", icon: "🔥", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "one-rep-max-calculator", name: "One Rep Max Calculator", shortDescription: "Estimate 1RM with Epley, Brzycki, Lombardi and O'Conner plus training load table.", categorySlug: "health", icon: "🏋️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "body-surface-area", name: "Body Surface Area (BSA)", shortDescription: "BSA with Mosteller, Du Bois, Haycock and Gehan & George plus BMI and ideal weight.", categorySlug: "health", icon: "🧍", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...FITNESS);

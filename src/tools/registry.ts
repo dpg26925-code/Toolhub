@@ -183,4 +183,8 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "volume-converter": lazy(() => import("./volume-converter")),
   "data-storage-converter": lazy(() => import("./data-storage-converter")),
   "time-zone-converter": lazy(() => import("./time-zone-converter")),
+  "pace-calculator": lazy(() => import("./pace-calculator")),
+  "calorie-burn-calculator": lazy(() => import("./calorie-burn-calculator")),
+  "one-rep-max-calculator": lazy(() => import("./one-rep-max-calculator")),
+  "body-surface-area": lazy(() => import("./body-surface-area")),
 };
