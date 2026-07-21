@@ -865,3 +865,16 @@ const NEW_BATCH: Tool[] = [
 ];
 
 TOOLS.push(...NEW_BATCH);
+
+const HEALTH: Tool[] = [
+  { slug: "bmi-calculator", name: "BMI Calculator", shortDescription: "Body Mass Index with category, healthy weight range and metric/imperial units.", categorySlug: "health", icon: "⚖️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "bmr-calculator", name: "BMR Calculator", shortDescription: "Basal Metabolic Rate using the Mifflin–St Jeor equation.", categorySlug: "health", icon: "🔥", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tdee-calculator", name: "TDEE Calculator", shortDescription: "Total Daily Energy Expenditure with maintain / gain / lose calorie targets.", categorySlug: "health", icon: "🍎", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "body-fat-calculator", name: "Body Fat Calculator (Navy)", shortDescription: "Estimate body fat % using the US Navy circumference method.", categorySlug: "health", icon: "💪", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "heart-rate-zones", name: "Heart Rate Zones", shortDescription: "Compute HRmax and training zones 1–5 with fat-burn range.", categorySlug: "health", icon: "❤️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "blood-pressure-calculator", name: "Blood Pressure Calculator", shortDescription: "MAP, pulse pressure and AHA category from systolic / diastolic readings.", categorySlug: "health", icon: "🩺", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pregnancy-due-date", name: "Pregnancy Due Date Calculator", shortDescription: "Estimated due date, current week, trimester and milestones from LMP or conception date.", categorySlug: "health", icon: "🤰", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ovulation-calculator", name: "Ovulation Calculator", shortDescription: "Predict ovulation date, fertile window and next period from LMP and cycle length.", categorySlug: "health", icon: "🌸", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...HEALTH);
