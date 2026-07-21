@@ -23,6 +23,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   tiktok: "TikTok Creator Tool",
   trader: "Trader Tool",
   accounting: "Accounting Tool",
+  health: "Health Calculator",
 };
 
 // Category-specific copy fragments used to weave tool-specific detail
