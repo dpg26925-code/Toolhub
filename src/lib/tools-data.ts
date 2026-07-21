@@ -31,6 +31,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "accounting", name: "Accounting", description: "Invoices, receipts, VAT, payroll, ROI, depreciation, mortgages and business calculators — 100% in-browser.", icon: "🧾" },
   { slug: "health", name: "Health", description: "Educational medical & health calculators — BMI, BMR, TDEE, body fat, heart rate, blood pressure and more. Not medical advice.", icon: "❤️" },
   { slug: "education", name: "Education", description: "GPA, grade conversion, citation generator, essay stats, Pomodoro study timer and more — for students and teachers.", icon: "🎓" },
+  { slug: "real-estate", name: "Real Estate", description: "Mortgage, rent vs buy, property tax, home affordability and amortization calculators — 100% in-browser.", icon: "🏠" },
 ];
 
 export const TOOLS: Tool[] = [
