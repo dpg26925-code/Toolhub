@@ -26,6 +26,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   health: "Health Calculator",
   education: "Education Tool",
   units: "Unit Converter",
+  fun: "Random & Fun Tool",
 };
 
 // Category-specific copy fragments used to weave tool-specific detail
@@ -242,6 +243,18 @@ const CATEGORY_COPY: Record<string, CategoryCopy> = {
     extraFaq: (t) => ({
       q: `How accurate is ${t.name}?`,
       a: `${t.name} uses the exact SI/NIST conversion factors (for example 1 inch = 25.4 mm and 1 pound = 0.45359237 kg), so results are precise to JavaScript's 15–17 significant digits — well beyond any real-world measurement.`,
+    }),
+  },
+  fun: {
+    audience: "Gamers, teachers, streamers, TTRPG groups and anyone who needs a quick random pick",
+    input: "your parameters — dice count, coin flips, number range, name origin or text",
+    output: "a cryptographically random result plus a visual preview and optional history",
+    companions: "Dice Roller, Coin Flip, Random Number Generator and QR Code Generator",
+    limits: "No credit cost and no per-day cap — every random & fun tool runs 100% in your browser using the Web Crypto API, so nothing you enter or generate is transmitted or stored.",
+    commercial: "Yes — the generated names, numbers, QR codes and ASCII art are yours to use in streams, videos, games and commercial projects without attribution.",
+    extraFaq: (t) => ({
+      q: `Is the randomness in ${t.name} truly random?`,
+      a: `${t.name} uses the browser's Web Crypto API (crypto.getRandomValues) which provides cryptographically strong pseudo-random numbers — the same source used for password and key generation. This is dramatically better than Math.random() and suitable for games, giveaways and draws.`,
     }),
   },
 };
