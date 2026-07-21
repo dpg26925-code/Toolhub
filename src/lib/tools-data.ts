@@ -33,6 +33,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "education", name: "Education", description: "GPA, grade conversion, citation generator, essay stats, Pomodoro study timer and more — for students and teachers.", icon: "🎓" },
   { slug: "real-estate", name: "Real Estate", description: "Mortgage, rent vs buy, property tax, home affordability and amortization calculators — 100% in-browser.", icon: "🏠" },
   { slug: "legal", name: "Legal & Business", description: "Privacy policy, terms of service, affiliate disclosure and invoice generators — all client-side.", icon: "⚖️" },
+  { slug: "units", name: "Unit Converters", description: "Length, weight, temperature, speed, area, volume, data storage and time zone converters — 100% in-browser.", icon: "📐" },
 ];
 
 export const TOOLS: Tool[] = [
