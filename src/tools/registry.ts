@@ -169,4 +169,7 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "rent-vs-buy-calculator": lazy(() => import("./rent-vs-buy-calculator")),
   "property-tax-calculator": lazy(() => import("./property-tax-calculator")),
   "home-affordability-calculator": lazy(() => import("./home-affordability-calculator")),
+  "privacy-policy-generator": lazy(() => import("./privacy-policy-generator")),
+  "terms-of-service-generator": lazy(() => import("./terms-of-service-generator")),
+  "affiliate-disclosure-generator": lazy(() => import("./affiliate-disclosure-generator")),
 };
