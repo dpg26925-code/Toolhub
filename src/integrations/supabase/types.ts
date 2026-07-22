@@ -682,6 +682,13 @@ export type Database = {
       attach_referral: { Args: { _code: string }; Returns: boolean }
       consume_credits: { Args: { _amount: number }; Returns: number }
       generate_referral_code: { Args: never; Returns: string }
+      get_referred_emails: {
+        Args: { _ids: string[] }
+        Returns: {
+          email: string
+          id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

@@ -57,15 +57,12 @@ export const getMyReferralStats = createServerFn({ method: "GET" })
 
     const referrals = (refs ?? []) as ReferralRow[];
 
-    // Enrich with referred user email (best-effort; RLS-safe since profiles has appropriate policies)
+    // Enrich with referred user email via security-definer RPC (RLS on profiles hides other users' rows)
     const ids = referrals.map((r) => r.referred_user_id);
     let emailMap = new Map<string, string>();
     if (ids.length) {
-      const { data: profs } = await supabase
-        .from("profiles")
-        .select("id, email")
-        .in("id", ids);
-      emailMap = new Map((profs ?? []).map((p: { id: string; email: string | null }) => [p.id, p.email ?? ""]));
+      const { data: profs } = await supabase.rpc("get_referred_emails", { _ids: ids });
+      emailMap = new Map(((profs ?? []) as Array<{ id: string; email: string | null }>).map((p) => [p.id, p.email ?? ""]));
     }
     for (const r of referrals) r.referred_email = emailMap.get(r.referred_user_id) ?? null;
 
