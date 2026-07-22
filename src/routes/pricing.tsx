@@ -1,7 +1,12 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { abs } from "@/lib/site";
 import { SiteLayout } from "@/components/site-layout";
 import { useAuth } from "@/hooks/use-auth";
+import { createLemonCheckout } from "@/lib/lemonsqueezy.functions";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -25,11 +30,27 @@ const PLANS = [
 
 function PricingPage() {
   const { user } = useAuth();
-  const ctaFor = (kind: "free" | "pro" | "enterprise") => {
-    if (kind === "enterprise") return "/about";
-    if (kind === "pro") return user ? "/dashboard/subscription" : "/auth/signup";
-    return user ? "/dashboard" : "/auth/signup";
+  const navigate = useNavigate();
+  const checkout = useServerFn(createLemonCheckout);
+  const [loadingPro, setLoadingPro] = useState(false);
+
+  const handlePro = async () => {
+    if (!user) {
+      navigate({ to: "/auth/signup", search: { next: "/pricing" } as never });
+      return;
+    }
+    setLoadingPro(true);
+    try {
+      const { url } = await checkout();
+      window.location.href = url;
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to start checkout");
+      setLoadingPro(false);
+    }
   };
+
+  const linkFor = (kind: "free" | "enterprise") =>
+    kind === "enterprise" ? "/about" : user ? "/dashboard" : "/auth/signup";
   return (
     <SiteLayout>
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
@@ -55,9 +76,21 @@ function PricingPage() {
                   <li key={f} className="flex gap-2"><span className="text-primary">✓</span><span className="text-muted-foreground">{f}</span></li>
                 ))}
               </ul>
-              <Link to={ctaFor(p.kind)} className={`mt-8 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition ${p.highlight ? "bg-gradient-brand text-primary-foreground hover:opacity-95" : "border border-border bg-card hover:bg-secondary"}`}>
-                {p.ctaLabel}
-              </Link>
+              {p.kind === "pro" ? (
+                <button
+                  type="button"
+                  onClick={handlePro}
+                  disabled={loadingPro}
+                  className="mt-8 inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-brand px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-95 disabled:opacity-70"
+                >
+                  {loadingPro && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {loadingPro ? "Redirecting…" : p.ctaLabel}
+                </button>
+              ) : (
+                <Link to={linkFor(p.kind)} className={`mt-8 inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition ${p.highlight ? "bg-gradient-brand text-primary-foreground hover:opacity-95" : "border border-border bg-card hover:bg-secondary"}`}>
+                  {p.ctaLabel}
+                </Link>
+              )}
             </div>
           ))}
         </div>
