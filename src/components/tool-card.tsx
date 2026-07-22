@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { Tool } from "@/lib/tools-data";
 import { CATEGORIES } from "@/lib/tools-data";
+import { CategoryIcon, CategoryBadge } from "@/components/category-icon";
 
 export function ToolCard({ tool }: { tool: Tool }) {
   const category = CATEGORIES.find((c) => c.slug === tool.categorySlug);
@@ -11,14 +12,8 @@ export function ToolCard({ tool }: { tool: Tool }) {
       className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg"
     >
       <div className="flex items-start justify-between">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-base text-primary-foreground">
-          {tool.icon}
-        </div>
-        {category && (
-          <span className="rounded bg-brand/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-brand">
-            {category.name}
-          </span>
-        )}
+        <CategoryIcon slug={tool.categorySlug} size={40} />
+        {category && <CategoryBadge slug={category.slug} label={category.name} />}
       </div>
       <h3 className="mt-4 text-lg font-bold text-foreground">
         {tool.name}
