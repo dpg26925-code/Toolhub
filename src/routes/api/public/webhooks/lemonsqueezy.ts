@@ -86,14 +86,24 @@ export const Route = createFileRoute("/api/public/webhooks/lemonsqueezy")({
             if (referrer && referrer !== userId) {
               const { data: existing } = await supabaseAdmin
                 .from("referrals")
-                .select("id")
+                .select("id, status")
                 .eq("referred_user_id", userId)
                 .maybeSingle();
-              if (!existing) {
-                const pct = Number(process.env.REFERRAL_COMMISSION_PCT ?? "30");
-                const flat = Number(process.env.REFERRAL_COMMISSION_CENTS ?? "600");
-                // Default Pro is $20/mo; use pct if we know a base price, else flat
-                const commission = Number.isFinite(pct) && pct > 0 ? Math.round(2000 * pct / 100) : flat;
+              const pct = Number(process.env.REFERRAL_COMMISSION_PCT ?? "30");
+              const flat = Number(process.env.REFERRAL_COMMISSION_CENTS ?? "600");
+              const commission = Number.isFinite(pct) && pct > 0 ? Math.round(2000 * pct / 100) : flat;
+              if (existing && existing.status !== "converted" && existing.status !== "paid") {
+                await supabaseAdmin
+                  .from("referrals")
+                  .update({
+                    status: "converted",
+                    commission_cents: commission,
+                    currency: "USD",
+                    subscription_id: subId,
+                    converted_at: new Date().toISOString(),
+                  })
+                  .eq("id", existing.id);
+              } else if (!existing) {
                 await supabaseAdmin.from("referrals").insert({
                   referrer_id: referrer,
                   referred_user_id: userId,
