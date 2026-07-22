@@ -542,6 +542,160 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "How many credits does a translation cost?", a: "1 credit per translation, regardless of length or language pair." },
     ],
   },
+  "url-encoder": {
+    longDescription: "URL encoding trips up more APIs than any other single formatting rule — a stray space, plus sign or unicode character is enough to break OAuth callbacks, tracking parameters and REST endpoints. This tool applies RFC 3986 percent-encoding correctly, treating reserved characters (: / ? # [ ] @ ! $ & ' ( ) * + , ; =) differently from unreserved ones, and preserving UTF-8 byte sequences for non-ASCII input.\n\nIt supports both encode and decode modes with a query-component switch so you can encode a single parameter value without escaping the & separators that make up the query string. That distinction matters when composing dynamic URLs in code, building Google Analytics campaign links, or debugging redirect chains that mangle non-Latin characters.\n\nPair it with the UTM Builder for campaign links and Base64 when a payload is Base64-then-URL wrapped.",
+    howToUse: [
+      "Paste the string or URL fragment you want to convert.",
+      "Choose Encode or Decode — Query mode escapes = and & inside parameter values.",
+      "Copy the result straight into your code, browser bar or config file.",
+    ],
+    faqs: [
+      { q: "Why does + become %2B when I encode?", a: "In URL query strings, + is interpreted as a literal space. If your value legitimately contains a plus sign it must be encoded as %2B or receiving servers will read it back as a space." },
+      { q: "Does the tool handle emoji and non-Latin characters?", a: "Yes. Input is first converted to UTF-8 bytes, then percent-encoded — so 東京 and 🎉 round-trip cleanly through encode → decode." },
+      { q: "What is the difference between encodeURI and encodeURIComponent?", a: "encodeURI leaves reserved URL characters like : / ? # alone (for full URLs), while encodeURIComponent escapes them (for a single parameter value). Query mode in this tool mirrors encodeURIComponent." },
+      { q: "Can I decode a whole log line at once?", a: "Yes. Paste the entire line and the decoder will replace every percent-encoded sequence in place, leaving the surrounding text untouched." },
+    ],
+  },
+  "hash-generator": {
+    longDescription: "A hash function turns any input into a fixed-length fingerprint — useful for file integrity checks, deduplication and password storage strategies, but easy to misuse. This tool computes MD5, SHA-1, SHA-256, SHA-384 and SHA-512 digests entirely in your browser using the Web Crypto API, so files and secrets are never uploaded.\n\nUse SHA-256 or SHA-512 for anything security-relevant: MD5 and SHA-1 remain in the UI because you still need to verify legacy artefacts (older Linux ISOs, git object IDs), but they are considered broken for authentication and should not protect new systems. For passwords, hash alone is not enough — you need a slow, salted KDF like bcrypt, scrypt or Argon2.\n\nEverything runs client-side, so it is safe to hash internal build artefacts, license keys and access tokens without exposing them to a third-party service.",
+    howToUse: [
+      "Paste text or drop a file into the input area.",
+      "All five digests (MD5, SHA-1, SHA-256, SHA-384, SHA-512) are computed instantly.",
+      "Copy any digest for verification, or download the checksum list as a .txt.",
+    ],
+    faqs: [
+      { q: "Is MD5 still safe to use?", a: "Only for non-security purposes such as file deduplication or ETag generation. MD5 is not collision-resistant and must not be used for signatures, authentication or password storage." },
+      { q: "Are my files uploaded when I hash them?", a: "No. Hashing runs in your browser via the SubtleCrypto API — the file bytes never leave your device." },
+      { q: "Which algorithm should I use for a password?", a: "Do not use a raw hash. Passwords need a slow, salted key-derivation function like bcrypt, scrypt or Argon2. Use SHA-256 only inside a proper KDF or HMAC construction." },
+      { q: "Why do my SHA-256 digests differ between tools?", a: "Different tools may add or trim trailing newlines, or use different text encodings. This tool hashes the exact UTF-8 bytes you paste, without adding a trailing newline." },
+    ],
+  },
+  "uuid-generator": {
+    longDescription: "UUIDs (also called GUIDs) give distributed systems a way to mint identifiers without a central authority. This tool generates v4 UUIDs using crypto.getRandomValues() — 122 bits of entropy, effectively zero collision risk for any real-world workload — and also supports v1 (timestamp + node) and v7 (timestamp-ordered, ideal for database indexes) for teams that need sortable IDs.\n\nBatch mode outputs up to 1,000 UUIDs at a time in your choice of formatting: standard (with hyphens), no-hyphen compact, Base64URL, uppercase, or wrapped as SQL VALUES for direct paste into a seed script.\n\nUse it to bootstrap primary keys, generate correlation IDs for logs, seed test fixtures, or mint idempotency keys for API calls. Everything runs in your browser — no telemetry, no server round-trip.",
+    howToUse: [
+      "Choose the UUID version (v4 is the safe default for most apps).",
+      "Set how many UUIDs to generate and pick a formatting style.",
+      "Click Generate, then Copy all — the batch is ready to paste into your database seed, config or test fixture.",
+    ],
+    faqs: [
+      { q: "When should I pick v7 over v4?", a: "v7 encodes a millisecond timestamp in the leading bits, so IDs are naturally sorted by creation time. That improves B-tree index locality in databases like Postgres and MySQL. Use v4 when you need unpredictability instead of ordering." },
+      { q: "Are v4 UUIDs really unique?", a: "The collision probability is astronomically small — roughly 1 in a billion after 103 trillion UUIDs. For every practical workload you can treat them as globally unique without coordination." },
+      { q: "Can I use UUIDs as public URL slugs?", a: "You can, but they are long. For public URLs prefer short, human-readable slugs or shortIDs (like NanoID) and keep UUIDs as internal primary keys." },
+      { q: "What is the difference between UUID and GUID?", a: "GUID is Microsoft's name for the same 128-bit identifier standard. The generated bytes are interchangeable — only the surrounding brace notation sometimes differs." },
+    ],
+  },
+  "regex-tester": {
+    longDescription: "Regex is a compact language for pattern matching, and it earns its reputation for being cryptic when you write it without a live sandbox. This tool runs your pattern against sample text in real time, highlighting every match and capture group inline, so you can iterate on a rule without a compile-test-fail loop.\n\nIt supports the JavaScript flavour (compatible with most modern languages), all standard flags (g, i, m, s, u, y), named capture groups and backreferences. A cheat-sheet panel documents the character classes and quantifiers you reach for most often, and a shareable link encodes both the pattern and the test string in the URL for pairing with a colleague.\n\nAll matching happens in your browser — logs, PII sample data and internal identifiers stay on your device.",
+    howToUse: [
+      "Type your regular expression into the pattern box and pick the flags you need.",
+      "Paste sample text — matches and capture groups are highlighted instantly.",
+      "Copy the pattern, the extracted matches or the shareable URL when you're happy with the result.",
+    ],
+    faqs: [
+      { q: "Which regex flavour does this use?", a: "The JavaScript RegExp engine, which is close to PCRE. Lookbehinds, named groups (?<name>...) and unicode property escapes (\\p{...}) are supported in modern browsers." },
+      { q: "Why does my pattern match too much?", a: "Quantifiers like * and + are greedy by default. Add ? (for example .*?) to make them non-greedy, or anchor the pattern with ^ and $ to constrain the match." },
+      { q: "Can I test against multi-line input?", a: "Yes. Enable the m (multiline) flag so ^ and $ match line boundaries instead of the whole string." },
+      { q: "Does the tool save my patterns?", a: "Only in your browser (via the shareable URL parameter). Nothing is stored on our servers." },
+    ],
+  },
+  "csv-to-json": {
+    longDescription: "CSV is the lingua franca of spreadsheets and exports, but every downstream API expects JSON. This converter parses CSV strictly — quoted fields, embedded commas, escaped quotes, CRLF line endings — and emits either an array of objects (using the header row as keys) or a plain array of arrays for schemaless data.\n\nType inference is opt-in: numbers, booleans and ISO dates are detected and converted automatically, or you can force every field to stay as strings when you need lossless round-tripping. A live preview shows the first ten records so you can catch header typos or off-by-one shifts before exporting the full file.\n\nEverything happens locally — perfect for internal exports, personal finance CSVs and one-off data-migration jobs that must never touch a third-party server.",
+    howToUse: [
+      "Paste your CSV or drop the .csv file into the upload area.",
+      "Choose the delimiter (comma, semicolon or tab) and whether to treat the first row as headers.",
+      "Copy the resulting JSON or download it as a .json file.",
+    ],
+    faqs: [
+      { q: "Does the tool handle semicolon-separated files from European Excel?", a: "Yes. Set the delimiter to semicolon; the parser also handles the UTF-8 BOM that Excel prepends to exported files." },
+      { q: "How are dates handled?", a: "By default dates are kept as strings. Enable Type inference to convert ISO 8601 date strings into JSON date-formatted strings; other formats stay as strings to avoid ambiguous coercions." },
+      { q: "What happens to empty fields?", a: "Empty fields become an empty string by default, or null when Type inference is on. Rows with a mismatched column count are flagged in the preview so you can fix the source file." },
+      { q: "Is there a file-size limit?", a: "In-browser parsing is comfortable up to about 20 MB of CSV. For larger exports, split the file first with a text editor or process it in your own script." },
+    ],
+  },
+  "markdown-to-html": {
+    longDescription: "This converter turns Markdown into clean, semantic HTML you can paste into a CMS, an email template or a component library. It supports CommonMark plus GitHub Flavoured Markdown extensions — tables, task lists, strikethrough, fenced code blocks with language hints and auto-linked URLs — and escapes raw HTML by default so pasting untrusted input can't produce a stored XSS.\n\nThe output is deliberately minimal: no inline styles, no wrapper div, no editor-specific class names. That makes it easy to drop into any design system, style with your own CSS or hand to a static-site generator.\n\nA live split-pane preview updates as you type, and a Copy HTML button gives you the raw markup for pasting into WordPress, Notion, Ghost or your own React components.",
+    howToUse: [
+      "Type or paste Markdown into the left pane.",
+      "The right pane shows the rendered HTML preview in real time.",
+      "Click Copy HTML for the source markup, or Copy rendered to grab the styled output.",
+    ],
+    faqs: [
+      { q: "Which Markdown dialect is supported?", a: "CommonMark plus GitHub Flavoured Markdown extensions — tables, task lists, strikethrough, fenced code blocks and auto-linking." },
+      { q: "Is raw HTML inside the Markdown preserved?", a: "By default it is escaped for safety. Enable the Allow HTML toggle only if the input comes from a trusted source." },
+      { q: "Does the tool add CSS classes to the output?", a: "No. Output is semantic HTML with no inline styles and no custom classes, so you can style it with your own design system." },
+      { q: "How do I get syntax highlighting on code blocks?", a: "The Markdown fenced-code language hint (```ts, ```python) is preserved as a class on the <code> element. Pair the output with a highlighter such as Prism or Shiki in your target page." },
+    ],
+  },
+  "invoice-generator": {
+    longDescription: "Freelancers and small businesses lose real money to missing tax fields, unclear payment terms and unprofessional PDFs. This invoice generator produces a clean, print-ready PDF with the fields accountants actually look for: seller and buyer details, unique invoice number, issue and due dates, itemised lines with quantity and unit price, tax rate, subtotal, tax amount and grand total.\n\nYou can upload a logo, pick from major currencies (USD, EUR, GBP, JPY, AUD, CAD, VND and more), add payment instructions or bank details, and mark an invoice as paid. Everything is saved as a local draft, so a browser refresh will not lose work in progress, and no invoice data is uploaded anywhere.\n\nUse it for one-off freelance projects, recurring retainers, deposit invoices and credit notes. Pair it with the Receipt Generator when a client asks for a formal paid receipt after payment clears.",
+    howToUse: [
+      "Fill in your business details, the client's details and the invoice number.",
+      "Add line items with quantity, description and unit price — subtotal and tax update automatically.",
+      "Preview the PDF and click Download to save it, or Copy invoice as a shareable link.",
+    ],
+    faqs: [
+      { q: "Is the invoice legally valid?", a: "The output includes every field required by most jurisdictions (seller, buyer, invoice number, dates, itemised amounts and tax). Check your local tax authority for country-specific requirements like a VAT number or e-invoicing schema." },
+      { q: "Can I save an invoice for later?", a: "Yes. Drafts are stored in your browser's local storage, so you can close the tab and return later. Nothing is uploaded to a server." },
+      { q: "Which currencies are supported?", a: "USD, EUR, GBP, JPY, AUD, CAD, CHF, CNY, INR, VND, SGD, HKD and 20+ more — with correct symbol placement and locale-aware number formatting." },
+      { q: "Can I add my logo?", a: "Yes. Upload a PNG or JPG logo (up to 2 MB) and it will be embedded in the PDF header. The image is resized locally in your browser." },
+    ],
+  },
+  "mortgage-calculator": {
+    longDescription: "A mortgage payment is more than principal and interest — property tax, homeowners insurance and PMI can add hundreds of dollars a month and change what you can actually afford. This calculator uses the standard amortization formula (M = P × r(1+r)^n / ((1+r)^n − 1)) and lets you layer in taxes, insurance and HOA fees to show a realistic monthly PITI figure.\n\nThe amortization schedule breaks down every payment into principal and interest, so you can see when you cross the tipping point where most of each payment starts building equity. Extra-payment scenarios show how one extra payment per year can shave years off a 30-year loan.\n\nEverything runs in your browser — no lead-capture form, no sales calls, and you can save scenarios as shareable URLs to compare offers with a partner or agent.",
+    howToUse: [
+      "Enter the home price, down payment, loan term and interest rate.",
+      "Optionally add property tax, insurance, HOA and extra monthly payments.",
+      "Review the monthly payment, total interest and full amortization schedule — download it as CSV if you need to share.",
+    ],
+    faqs: [
+      { q: "Does this account for PMI?", a: "Yes. When your down payment is less than 20%, the calculator adds an estimated private mortgage insurance premium (typically 0.5–1.5% of the loan annually). You can override the default rate if your lender quoted a specific figure." },
+      { q: "How much can extra payments really save?", a: "One extra monthly payment per year on a 30-year fixed loan typically shortens the term by 4–6 years and cuts total interest by 15–25%, depending on the rate. The scenario panel shows exact numbers for your inputs." },
+      { q: "Is the amortization schedule accurate for adjustable-rate loans?", a: "The schedule assumes a fixed rate for the full term. For an ARM, calculate the initial period with the intro rate, then re-run the tool for the remaining balance at the adjusted rate." },
+      { q: "Are my inputs saved or shared?", a: "No. Everything is calculated in your browser. Scenario links only encode the inputs in the URL you choose to copy." },
+    ],
+  },
+  "qr-code-generator": {
+    longDescription: "A QR code is a two-dimensional barcode that any modern phone camera can scan without a dedicated app. This generator produces standards-compliant QR codes for URLs, plain text, Wi-Fi credentials, vCards and calendar events, with configurable error-correction level (L, M, Q, H) so the code keeps scanning even when part of it is obscured by a logo, sticker or print smudge.\n\nYou can adjust size, foreground and background colours to match a brand — just keep the contrast ratio above 3:1 or the code will fail to scan on older phones. Add a centred logo (up to 25% of the code's area) at error-correction level H and the redundant data blocks compensate for the covered pixels.\n\nEverything runs locally, so you can safely encode private Wi-Fi passwords, staff-only URLs and internal document links without exposing them to a third party. Download as PNG or SVG for print, packaging, business cards and signage.",
+    howToUse: [
+      "Pick the content type (URL, text, Wi-Fi, vCard) and fill in the fields.",
+      "Optionally tweak size, colours and add a centre logo — error-correction jumps to H automatically.",
+      "Download the QR as a PNG or SVG, or copy the image directly to your clipboard.",
+    ],
+    faqs: [
+      { q: "What error-correction level should I pick?", a: "Level M (15% recovery) is a safe default for screen and clean print. Bump to Q or H when you add a logo or when the code will be printed on packaging that may crease, scuff or reflect." },
+      { q: "Are there character limits for a QR code?", a: "Yes. A single QR can hold up to roughly 4,296 alphanumeric characters at the largest size and lowest error-correction level. For URLs, keep them short — long URLs increase the density and reduce scan reliability at small print sizes." },
+      { q: "Can I track scans of a QR code?", a: "The QR itself is static. To track scans, encode a URL that goes through a link shortener or campaign redirect you control (pair with the UTM Builder tool)." },
+      { q: "Is the Wi-Fi QR safe to print for guests?", a: "Yes — it just embeds the SSID, encryption type and password in a standard string. Anyone with the QR can join the network, so treat the printout with the same care as the password itself." },
+    ],
+  },
+  "image-converter": {
+    longDescription: "Every format is a trade-off between file size, quality and browser support: JPG is best for photos, PNG for graphics with sharp edges or transparency, WebP for the best of both on modern browsers, and AVIF for the smallest files where support allows. This converter transcodes between JPG, PNG, WebP and AVIF entirely in your browser using the Canvas API and native codecs.\n\nQuality is adjustable for lossy formats (JPG, WebP, AVIF), and PNG conversion preserves transparency losslessly. A live before/after size readout lets you dial in the sweet spot between file weight and visual quality for Core Web Vitals.\n\nNo image is uploaded anywhere, which matters for unreleased product shots, personal photos and any asset under NDA. Pair with Image Compressor when you already have the right format but need to shave more kilobytes.",
+    howToUse: [
+      "Drop one or more images into the upload area.",
+      "Pick the target format and (for lossy formats) a quality level.",
+      "Preview the before/after size and download each converted image.",
+    ],
+    faqs: [
+      { q: "Which format should I convert my photos to?", a: "WebP is the current sweet spot — 25–35% smaller than JPG at the same quality, and supported by every modern browser. Reach for AVIF when file size is critical and your audience is on up-to-date devices." },
+      { q: "Does converting from JPG to PNG improve quality?", a: "No. PNG only preserves what is already in the source. Since JPG is lossy, the artefacts baked in during the original compression stay in the PNG — you just get a larger file." },
+      { q: "Is transparency preserved?", a: "Yes when the target format supports it (PNG, WebP, AVIF). Converting to JPG fills transparent pixels with a solid colour (default white) because JPG has no alpha channel." },
+      { q: "Are my images uploaded to a server?", a: "No. Conversion runs in your browser via the Canvas API — the file bytes never leave your device." },
+    ],
+  },
+  "utm-builder": {
+    longDescription: "UTM parameters are how Google Analytics, Mixpanel, Amplitude and every other web analytics tool attribute a visit to a specific campaign, ad set or channel. This builder assembles a properly-encoded URL from the five standard fields — source, medium, campaign, term and content — and validates each one against common mistakes: spaces (converted to underscores or hyphens), uppercase inconsistencies, and reserved characters.\n\nA campaign templates panel gives you a starting point for the most common playbooks: paid social (Meta, TikTok, LinkedIn), Google Ads, email newsletters, influencer partnerships and QR-code print campaigns. Saved presets keep your team's naming convention consistent, so reports don't fragment into 'facebook', 'Facebook', and 'FB'.\n\nEverything runs locally and links can be shortened via an integration with your preferred URL shortener. Pair it with the QR Code Generator for print or with the Link Checker before launching a paid campaign.",
+    howToUse: [
+      "Paste the destination URL you want to track.",
+      "Fill in source, medium and campaign — the tool encodes and normalises each field.",
+      "Copy the tagged URL, or generate a QR code for print and offline campaigns.",
+    ],
+    faqs: [
+      { q: "What's the difference between utm_source and utm_medium?", a: "Source identifies WHERE the visit came from (facebook, newsletter, partner_x). Medium identifies HOW (cpc, email, referral, social). Keep both consistent across campaigns for clean reporting." },
+      { q: "Should UTM values be lowercase?", a: "Yes. Analytics tools are case-sensitive, so 'Facebook' and 'facebook' become two separate rows in your reports. This tool lowercases values by default; disable that toggle only if a downstream system requires camelCase." },
+      { q: "Do UTM parameters affect SEO?", a: "No — search engines ignore UTM parameters when consolidating link equity, and Google Search Console de-duplicates them in performance reports. Just avoid using them on internal links, which would overwrite the original attribution." },
+      { q: "How long can a UTM-tagged URL be?", a: "Practical limit is around 2,000 characters (browser and server URL limits). Keep individual UTM values under 50 characters for readability in reports." },
+    ],
+  },
 };
 
 export function getToolContent(tool: Tool): ToolContent {
