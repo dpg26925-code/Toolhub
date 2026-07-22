@@ -3,6 +3,7 @@ import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
 import { CATEGORIES, TOOLS, featuredTools } from "@/lib/tools-data";
 import { SITE_URL, abs } from "@/lib/site";
+import { CategoryIcon } from "@/components/category-icon";
 
 const TITLE = "Nexatools — 30+ Free Online Tools Powered by AI";
 const DESCRIPTION =
@@ -149,7 +150,7 @@ function Index() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {CATEGORIES.map((c) => (
             <Link key={c.slug} to="/categories/$slug" params={{ slug: c.slug }} className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-brand/40 hover:shadow-lg">
-              <div className="text-3xl">{c.icon}</div>
+              <CategoryIcon slug={c.slug} size={44} />
               <h3 className="mt-4 text-lg font-semibold group-hover:text-brand">{c.name}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{c.description}</p>
             </Link>
