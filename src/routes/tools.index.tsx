@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
 import { CATEGORIES, TOOLS } from "@/lib/tools-data";
+import { CategoryDot } from "@/components/category-icon";
 
 export const Route = createFileRoute("/tools/")({
   head: () => ({
