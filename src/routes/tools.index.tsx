@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { SiteLayout } from "@/components/site-layout";
 import { ToolCard } from "@/components/tool-card";
 import { CATEGORIES, TOOLS } from "@/lib/tools-data";
+import { CategoryDot } from "@/components/category-icon";
 
 export const Route = createFileRoute("/tools/")({
   head: () => ({
@@ -46,7 +47,8 @@ function ToolsIndex() {
             </button>
             {CATEGORIES.map((c) => (
               <button key={c.slug} onClick={() => setCat(c.slug)} className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium transition ${cat === c.slug ? "bg-primary text-primary-foreground" : "hover:bg-secondary text-muted-foreground"}`}>
-                <span>{c.icon}</span><span>{c.name}</span>
+                <CategoryDot slug={c.slug} size={20} />
+                <span>{c.name}</span>
               </button>
             ))}
             <Link to="/categories/$slug" params={{ slug: "developer" }} className="mt-3 block text-xs text-muted-foreground hover:text-primary">

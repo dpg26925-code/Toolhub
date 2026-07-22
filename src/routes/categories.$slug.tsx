@@ -4,6 +4,7 @@ import { ToolCard } from "@/components/tool-card";
 import { getCategory, toolsInCategory, CATEGORIES } from "@/lib/tools-data";
 import type { Tool } from "@/lib/tools-data";
 import { abs } from "@/lib/site";
+import { CategoryIcon, CategoryDot } from "@/components/category-icon";
 
 export const Route = createFileRoute("/categories/$slug")({
   loader: ({ params }) => {
@@ -89,8 +90,9 @@ function CategoryPage() {
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="mb-8">
           <Link to="/tools" className="text-sm text-muted-foreground hover:text-primary">← All tools</Link>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-            <span className="mr-2">{category.icon}</span>{category.name} tools
+          <h1 className="mt-2 flex items-center gap-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            <CategoryIcon slug={category.slug} size={44} />
+            <span>{category.name} tools</span>
           </h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">{category.description}</p>
         </div>
@@ -113,9 +115,10 @@ function CategoryPage() {
                   <Link
                     to="/categories/$slug"
                     params={{ slug: c.slug }}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm text-foreground transition hover:border-primary/40 hover:text-primary"
+                    className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-sm text-foreground transition hover:border-primary/40 hover:text-primary"
                   >
-                    <span>{c.icon}</span>{c.name}
+                    <CategoryDot slug={c.slug} size={18} />
+                    {c.name}
                   </Link>
                 </li>
               ))}
