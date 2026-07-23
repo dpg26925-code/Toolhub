@@ -198,4 +198,6 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "text-reverser": lazy(() => import("./text-reverser")),
   "line-sorter": lazy(() => import("./line-sorter")),
   "pdf-protect": lazy(() => import("./pdf-protect")),
+  "sql-formatter": lazy(() => import("./sql-formatter")),
+  "html-beautifier": lazy(() => import("./html-beautifier")),
 };
