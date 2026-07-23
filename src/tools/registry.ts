@@ -200,4 +200,8 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "pdf-protect": lazy(() => import("./pdf-protect")),
   "sql-formatter": lazy(() => import("./sql-formatter")),
   "html-beautifier": lazy(() => import("./html-beautifier")),
+  "webp-converter": lazy(() => import("./webp-converter")),
+  "image-watermark": lazy(() => import("./image-watermark")),
+  "image-pixelate": lazy(() => import("./image-pixelate")),
+  "image-to-heic": lazy(() => import("./image-to-heic")),
 };

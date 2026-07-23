@@ -960,3 +960,12 @@ const DEV_FORMATTERS: Tool[] = [
 ];
 
 TOOLS.push(...DEV_FORMATTERS);
+
+const IMG_BATCH: Tool[] = [
+  { slug: "webp-converter", name: "WebP Converter", shortDescription: "Convert WebP images to PNG or JPG in your browser with quality control.", categorySlug: "image", icon: "🖼", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "image-watermark", name: "Image Watermark", shortDescription: "Add text or logo watermarks with opacity, rotation and 9-point positioning.", categorySlug: "image", icon: "💧", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "image-pixelate", name: "Image Pixelate", shortDescription: "Pixelate or mosaic any image with 8-bit, Minecraft and blur presets.", categorySlug: "image", icon: "🟩", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "image-to-heic", name: "Image to HEIC (WebP)", shortDescription: "Convert JPG/PNG/WebP to a HEIC-equivalent high-efficiency WebP in-browser.", categorySlug: "image", icon: "📷", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...IMG_BATCH);
