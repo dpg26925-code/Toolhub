@@ -217,3 +217,14 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "sitemap-xml-generator": lazy(() => import("./sitemap-xml-generator")),
   "htaccess-generator": lazy(() => import("./htaccess-generator")),
 };
+
+Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
+  "instagram-hashtag-generator": lazy(() => import("./instagram-hashtag-generator")),
+  "tiktok-caption-generator": lazy(() => import("./tiktok-caption-generator")),
+  "social-media-title-generator": lazy(() => import("./social-media-title-generator")),
+  "javascript-minifier": lazy(() => import("./javascript-minifier")),
+  "css-minifier": lazy(() => import("./css-minifier")),
+  "markdown-preview": lazy(() => import("./markdown-preview")),
+  "yaml-to-toml": lazy(() => import("./yaml-to-toml")),
+  "toml-to-yaml": lazy(() => import("./toml-to-yaml")),
+});
