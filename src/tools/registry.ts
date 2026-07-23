@@ -228,3 +228,12 @@ Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "yaml-to-toml": lazy(() => import("./yaml-to-toml")),
   "toml-to-yaml": lazy(() => import("./toml-to-yaml")),
 });
+
+Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
+  "travel-budget-calculator": lazy(() => import("./travel-budget-calculator")),
+  "currency-converter-travel": lazy(() => import("./currency-converter-travel")),
+  "tip-calculator-travel": lazy(() => import("./tip-calculator-travel")),
+  "packing-list-generator": lazy(() => import("./packing-list-generator")),
+  "timezone-converter-travel": lazy(() => import("./timezone-converter-travel")),
+  "driving-distance-calculator": lazy(() => import("./driving-distance-calculator")),
+});
