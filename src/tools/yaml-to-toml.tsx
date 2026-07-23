@@ -1,5 +1,5 @@
 import { useState } from "react";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import TOML from "@iarna/toml";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
