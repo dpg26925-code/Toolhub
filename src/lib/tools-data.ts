@@ -942,3 +942,14 @@ const FUN: Tool[] = [
 ];
 
 TOOLS.push(...FUN);
+
+const EXTRA_BATCH: Tool[] = [
+  { slug: "csv-viewer", name: "CSV Viewer", shortDescription: "Open, sort, search and filter CSV files in a fast in-browser table.", categorySlug: "converter", icon: "📊", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "duplicate-line-remover", name: "Duplicate Line Remover", shortDescription: "Remove duplicate lines with case-sensitivity and optional sort — 100% local.", categorySlug: "developer", icon: "≡", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "whitespace-remover", name: "Whitespace Remover", shortDescription: "Strip extra spaces, tabs, or newlines and compact whitespace in any text.", categorySlug: "developer", icon: "␣", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "text-reverser", name: "Text Reverser", shortDescription: "Reverse text by character, word order, or line order in your browser.", categorySlug: "developer", icon: "↔", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "line-sorter", name: "Line Sorter", shortDescription: "Sort lines A→Z or Z→A with natural sort, dedupe and trim options.", categorySlug: "developer", icon: "⇅", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-protect", name: "PDF Protect (Password)", shortDescription: "Add a password to a PDF with AES encryption — encrypts in your browser.", categorySlug: "pdf", icon: "🔒", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...EXTRA_BATCH);

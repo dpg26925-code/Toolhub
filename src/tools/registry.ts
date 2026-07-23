@@ -192,4 +192,10 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "random-number-generator": lazy(() => import("./random-number-generator")),
   "random-name-generator": lazy(() => import("./random-name-generator")),
   "ascii-art-generator": lazy(() => import("./ascii-art-generator")),
+  "csv-viewer": lazy(() => import("./csv-viewer")),
+  "duplicate-line-remover": lazy(() => import("./duplicate-line-remover")),
+  "whitespace-remover": lazy(() => import("./whitespace-remover")),
+  "text-reverser": lazy(() => import("./text-reverser")),
+  "line-sorter": lazy(() => import("./line-sorter")),
+  "pdf-protect": lazy(() => import("./pdf-protect")),
 };
