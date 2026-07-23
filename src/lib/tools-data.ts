@@ -35,6 +35,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "legal", name: "Legal & Business", description: "Privacy policy, terms of service, affiliate disclosure and invoice generators — all client-side.", icon: "⚖️" },
   { slug: "units", name: "Unit Converters", description: "Length, weight, temperature, speed, area, volume, data storage and time zone converters — 100% in-browser.", icon: "📐" },
   { slug: "fun", name: "Random & Fun", description: "Dice rollers, coin flips, random numbers, name generators, QR codes and ASCII art — 100% in-browser.", icon: "🎲" },
+  { slug: "social", name: "Social Media", description: "Hashtag, caption and title generators for Instagram, TikTok, YouTube, Twitter/X and LinkedIn — 100% in-browser.", icon: "📣" },
 ];
 
 export const TOOLS: Tool[] = [
