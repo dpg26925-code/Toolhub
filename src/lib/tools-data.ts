@@ -35,6 +35,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "legal", name: "Legal & Business", description: "Privacy policy, terms of service, affiliate disclosure and invoice generators — all client-side.", icon: "⚖️" },
   { slug: "units", name: "Unit Converters", description: "Length, weight, temperature, speed, area, volume, data storage and time zone converters — 100% in-browser.", icon: "📐" },
   { slug: "fun", name: "Random & Fun", description: "Dice rollers, coin flips, random numbers, name generators, QR codes and ASCII art — 100% in-browser.", icon: "🎲" },
+  { slug: "social", name: "Social Media", description: "Hashtag, caption and title generators for Instagram, TikTok, YouTube, Twitter/X and LinkedIn — 100% in-browser.", icon: "📣" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -989,3 +990,15 @@ const YT_VIDEO_BATCH: Tool[] = [
   { slug: "video-to-images", name: "Video to Images", shortDescription: "Extract PNG or JPEG frames from any video and download them as a ZIP.", categorySlug: "video", icon: "🖼️", isFree: true, creditCost: 0, clientSide: true },
 ];
 TOOLS.push(...YT_VIDEO_BATCH);
+
+const SOCIAL_DEV_BATCH: Tool[] = [
+  { slug: "instagram-hashtag-generator", name: "Instagram Hashtag Generator", shortDescription: "Generate grouped hashtag sets (trending, general, niche) for Instagram, TikTok, Twitter/X and LinkedIn.", categorySlug: "social", icon: "#️⃣", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tiktok-caption-generator", name: "TikTok Caption Generator", shortDescription: "Write TikTok captions with tone and template presets, hashtags and a 2200-char counter.", categorySlug: "social", icon: "🎬", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "social-media-title-generator", name: "Social Media Title Generator", shortDescription: "Generate 10 title options for YouTube, blog, Twitter/X or Instagram — with SEO mode and per-platform length limits.", categorySlug: "social", icon: "✍️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "javascript-minifier", name: "JavaScript Minifier", shortDescription: "Minify JS with optional comment preservation and variable mangling — see original vs minified size.", categorySlug: "developer", icon: "📉", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "css-minifier", name: "CSS Minifier", shortDescription: "Minify CSS with comment removal, whitespace stripping and hex shortening — see savings percentage.", categorySlug: "developer", icon: "🎨", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "markdown-preview", name: "Markdown Preview", shortDescription: "Live GitHub-flavored Markdown preview with side-by-side rendered HTML — copy or download.", categorySlug: "developer", icon: "📝", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "yaml-to-toml", name: "YAML to TOML", shortDescription: "Convert YAML config to TOML with data-type preservation and file upload.", categorySlug: "developer", icon: "🔁", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "toml-to-yaml", name: "TOML to YAML", shortDescription: "Convert TOML config to YAML — preserves integers, floats, booleans and arrays.", categorySlug: "developer", icon: "🔁", isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...SOCIAL_DEV_BATCH);

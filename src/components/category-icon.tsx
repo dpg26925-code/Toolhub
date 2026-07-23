@@ -17,6 +17,7 @@ import {
   Ruler,
   Dices,
   LayoutGrid,
+  Megaphone,
   type LucideIcon,
 } from "lucide-react";
 
@@ -40,6 +41,7 @@ const META: Record<string, CategoryMeta> = {
   legal: { Icon: Scale, color: "#778ca3" },
   units: { Icon: Ruler, color: "#4b7bec" },
   fun: { Icon: Dices, color: "#a55eea" },
+  social: { Icon: Megaphone, color: "#e1306c" },
 };
 
 const FALLBACK: CategoryMeta = { Icon: LayoutGrid, color: "#64748b" };
