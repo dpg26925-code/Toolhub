@@ -191,6 +191,7 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "coin-flip": lazy(() => import("./coin-flip")),
   "random-number-generator": lazy(() => import("./random-number-generator")),
   "random-name-generator": lazy(() => import("./random-name-generator")),
+  "random-name-country": lazy(() => import("./random-name-country")),
   "ascii-art-generator": lazy(() => import("./ascii-art-generator")),
   "csv-viewer": lazy(() => import("./csv-viewer")),
   "duplicate-line-remover": lazy(() => import("./duplicate-line-remover")),
