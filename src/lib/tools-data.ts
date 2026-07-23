@@ -41,6 +41,8 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "language", name: "Language", description: "Character counters, phonetics, plagiarism check, language detection and readability scores — 100% in-browser.", icon: "🌐" },
   { slug: "date-time", name: "Date & Time", description: "Date difference, age calculator, countdown timer, calendar generator and historical events — all client-side.", icon: "📅" },
   { slug: "betting", name: "Sports & Betting", description: "Odds, parlays, bankroll and record tracking — for entertainment and statistical analysis only.", icon: "🎲" },
+  { slug: "security", name: "Security & Privacy", description: "Password strength, encryption, hashing, ciphers, fake data and secure notes — 100% client-side.", icon: "🔐" },
+  { slug: "games", name: "Games & Entertainment", description: "Memory match, Sudoku, tic-tac-toe, dice, reaction time and other browser mini-games.", icon: "🎮" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -1065,3 +1067,42 @@ const TINYWOW_GAP: Tool[] = [
   { slug: "twitter-thread-generator", name: "Twitter Thread Generator", shortDescription: "Split long text into numbered X/Twitter tweets under 280 chars — copy the whole thread in one click.", categorySlug: "social", icon: "🧵", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
 ];
 TOOLS.push(...TINYWOW_GAP);
+
+const NEW_BATCHES: Tool[] = [
+  // Security & Privacy
+  { slug: "password-strength-tester", name: "Password Strength Tester", shortDescription: "Analyse password entropy, patterns and estimated crack time — 100% in-browser.", categorySlug: "security", icon: "🛡️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "encryption-tool", name: "Encryption Tool", shortDescription: "Encrypt/decrypt text with AES-GCM, AES-CBC, XOR or Base64 using WebCrypto.", categorySlug: "security", icon: "🔒", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "hash-generator-advanced", name: "Hash Generator (Advanced)", shortDescription: "SHA-1/256/384/512, MD5 and HMAC hashes with file support — all client-side.", categorySlug: "security", icon: "🔑", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "cipher-tool", name: "Cipher Tool", shortDescription: "Encode with Caesar, ROT13, Atbash and Vigenère classic ciphers.", categorySlug: "security", icon: "🗝️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "secure-note-generator", name: "Secure Note Generator", shortDescription: "Create encrypted self-destructing note URLs — key never leaves your browser.", categorySlug: "security", icon: "🤐", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "fake-data-generator", name: "Fake Data Generator", shortDescription: "Generate realistic test data — people, companies, addresses and cards across locales.", categorySlug: "security", icon: "🧪", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ssl-certificate-checker", name: "SSL Certificate Checker", shortDescription: "Validate domains and generate one-click certificate lookup links.", categorySlug: "security", icon: "📜", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "password-generator-advanced", name: "Password Generator (Advanced)", shortDescription: "Generate high-entropy passwords with per-set rules and entropy readout.", categorySlug: "security", icon: "🔐", isFree: true, creditCost: 0, clientSide: true },
+  // Games & Entertainment
+  { slug: "memory-game", name: "Memory Match Game", shortDescription: "Classic memory matching game with themes and difficulty levels.", categorySlug: "games", icon: "🧠", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "sudoku-generator", name: "Sudoku Generator", shortDescription: "Generate and solve Sudoku puzzles with hint and difficulty controls.", categorySlug: "games", icon: "🔢", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tic-tac-toe", name: "Tic-Tac-Toe", shortDescription: "Play tic-tac-toe vs a friend or an unbeatable Minimax AI.", categorySlug: "games", icon: "❌", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "rock-paper-scissors", name: "Rock Paper Scissors", shortDescription: "Play rock-paper-scissors with score tracking and best-of rounds.", categorySlug: "games", icon: "✊", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "dice-roller-advanced", name: "Dice Roller (Advanced)", shortDescription: "Roll any dice expression (2d6+3, 4d20) with sound effects and history.", categorySlug: "games", icon: "🎲", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "random-quote-generator", name: "Random Quote Generator", shortDescription: "Inspirational, funny and philosophical quotes with one-click share.", categorySlug: "games", icon: "💬", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "color-game", name: "Color Guess Game", shortDescription: "Guess RGB/HSL from a color swatch — train your color intuition.", categorySlug: "games", icon: "🎨", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "reaction-time-test", name: "Reaction Time Test", shortDescription: "Measure your reaction time in milliseconds with 5-trial averaging.", categorySlug: "games", icon: "⚡", isFree: true, creditCost: 0, clientSide: true },
+  // Data Format Converters
+  { slug: "csv-to-xml", name: "CSV to XML", shortDescription: "Convert CSV data into structured XML with custom root/row element names.", categorySlug: "converter", icon: "📄", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "xml-to-csv", name: "XML to CSV", shortDescription: "Flatten XML records into CSV rows with automatic header detection.", categorySlug: "converter", icon: "📑", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "json-to-yaml", name: "JSON to YAML", shortDescription: "Convert JSON to clean, indented YAML — great for config files.", categorySlug: "converter", icon: "🔁", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "yaml-to-json", name: "YAML to JSON", shortDescription: "Convert YAML config to JSON with syntax validation.", categorySlug: "converter", icon: "🔄", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "toml-to-json", name: "TOML to JSON", shortDescription: "Convert TOML config files (like Cargo.toml) into structured JSON.", categorySlug: "converter", icon: "🗃️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "html-to-markdown", name: "HTML to Markdown", shortDescription: "Convert HTML pages or fragments to clean Markdown with Turndown.", categorySlug: "converter", icon: "📝", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ini-to-json", name: "INI to JSON", shortDescription: "Parse Windows-style INI files with sections into JSON.", categorySlug: "converter", icon: "⚙️", isFree: true, creditCost: 0, clientSide: true },
+  // More Developer Tools
+  { slug: "cron-generator", name: "Cron Expression Generator", shortDescription: "Build cron expressions with a visual editor and plain-English description.", categorySlug: "developer", icon: "⏰", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "jwt-encoder", name: "JWT Encoder & Decoder", shortDescription: "Encode and decode HS256/384/512 JWT tokens with signature validation.", categorySlug: "developer", icon: "🎟️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "markdown-table-generator", name: "Markdown Table Generator", shortDescription: "Create Markdown / HTML tables with per-column alignment and live preview.", categorySlug: "developer", icon: "📊", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "regex-tester-advanced", name: "Regex Tester (Advanced)", shortDescription: "Test regex with all flags, capture groups, highlights and a cheatsheet.", categorySlug: "developer", icon: "🔍", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "cors-checker", name: "CORS Checker", shortDescription: "Explain expected preflight headers for any origin/target and generate a curl command.", categorySlug: "developer", icon: "🌐", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ports-scanner-simulator", name: "Ports Reference / Scanner Simulator", shortDescription: "Look up well-known TCP/UDP ports in a range — plus a ready-to-run nmap command.", categorySlug: "developer", icon: "🔌", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "string-escaper", name: "String Escaper", shortDescription: "Escape/unescape strings for JS, JSON, Python, PHP, Java, XML, URL and SQL.", categorySlug: "developer", icon: "🔤", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "lorem-ipsum-generator-advanced", name: "Lorem Ipsum Generator (Advanced)", shortDescription: "Generate paragraphs, sentences or words in plain text, HTML or Markdown.", categorySlug: "developer", icon: "📝", isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...NEW_BATCHES);

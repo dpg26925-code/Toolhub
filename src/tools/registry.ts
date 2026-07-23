@@ -279,3 +279,41 @@ Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "youtube-tag-generator": lazy(() => import("./youtube-tag-generator")),
   "twitter-thread-generator": lazy(() => import("./twitter-thread-generator")),
 });
+
+Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
+  // Security & Privacy
+  "password-strength-tester": lazy(() => import("./password-strength-tester")),
+  "encryption-tool": lazy(() => import("./encryption-tool")),
+  "hash-generator-advanced": lazy(() => import("./hash-generator-advanced")),
+  "cipher-tool": lazy(() => import("./cipher-tool")),
+  "secure-note-generator": lazy(() => import("./secure-note-generator")),
+  "fake-data-generator": lazy(() => import("./fake-data-generator")),
+  "ssl-certificate-checker": lazy(() => import("./ssl-certificate-checker")),
+  "password-generator-advanced": lazy(() => import("./password-generator-advanced")),
+  // Games & Entertainment
+  "memory-game": lazy(() => import("./memory-game")),
+  "sudoku-generator": lazy(() => import("./sudoku-generator")),
+  "tic-tac-toe": lazy(() => import("./tic-tac-toe")),
+  "rock-paper-scissors": lazy(() => import("./rock-paper-scissors")),
+  "dice-roller-advanced": lazy(() => import("./dice-roller-advanced")),
+  "random-quote-generator": lazy(() => import("./random-quote-generator")),
+  "color-game": lazy(() => import("./color-game")),
+  "reaction-time-test": lazy(() => import("./reaction-time-test")),
+  // Data Format Converters
+  "csv-to-xml": lazy(() => import("./csv-to-xml")),
+  "xml-to-csv": lazy(() => import("./xml-to-csv")),
+  "json-to-yaml": lazy(() => import("./json-to-yaml")),
+  "yaml-to-json": lazy(() => import("./yaml-to-json")),
+  "toml-to-json": lazy(() => import("./toml-to-json")),
+  "html-to-markdown": lazy(() => import("./html-to-markdown")),
+  "ini-to-json": lazy(() => import("./ini-to-json")),
+  // More Developer Tools
+  "cron-generator": lazy(() => import("./cron-generator")),
+  "jwt-encoder": lazy(() => import("./jwt-encoder")),
+  "markdown-table-generator": lazy(() => import("./markdown-table-generator")),
+  "regex-tester-advanced": lazy(() => import("./regex-tester-advanced")),
+  "cors-checker": lazy(() => import("./cors-checker")),
+  "ports-scanner-simulator": lazy(() => import("./ports-scanner-simulator")),
+  "string-escaper": lazy(() => import("./string-escaper")),
+  "lorem-ipsum-generator-advanced": lazy(() => import("./lorem-ipsum-generator-advanced")),
+});
