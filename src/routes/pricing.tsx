@@ -36,7 +36,7 @@ function PricingPage() {
 
   const handlePro = async () => {
     if (!user) {
-      navigate({ to: "/auth/signup", search: { next: "/pricing" } as never });
+      window.location.href = "/auth/signup?next=/pricing";
       return;
     }
     setLoadingPro(true);
