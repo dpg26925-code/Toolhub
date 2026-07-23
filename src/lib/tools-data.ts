@@ -1003,3 +1003,13 @@ const SOCIAL_DEV_BATCH: Tool[] = [
   { slug: "toml-to-yaml", name: "TOML to YAML", shortDescription: "Convert TOML config to YAML — preserves integers, floats, booleans and arrays.", categorySlug: "developer", icon: "🔁", isFree: true, creditCost: 0, clientSide: true },
 ];
 TOOLS.push(...SOCIAL_DEV_BATCH);
+
+const TRAVEL_BATCH: Tool[] = [
+  { slug: "travel-budget-calculator", name: "Travel Budget Calculator", shortDescription: "Estimate total trip cost by destination, duration, travelers and tier — with category breakdown.", categorySlug: "travel", icon: "💰", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "currency-converter-travel", name: "Currency Converter", shortDescription: "Convert between 50+ currencies with offline fallback rates and a 30-day trend chart.", categorySlug: "travel", icon: "💱", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "tip-calculator-travel", name: "Tip Calculator", shortDescription: "Country-aware tip presets, bill splitting and rounding options for travelers.", categorySlug: "travel", icon: "🧾", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "packing-list-generator", name: "Packing List Generator", shortDescription: "Beach, city, hiking, business or ski packing checklists with progress tracking — saves to your browser.", categorySlug: "travel", icon: "🧳", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "timezone-converter-travel", name: "Timezone Converter & Jet Lag", shortDescription: "Convert departure to arrival local time and get jet lag recovery tips by direction and hours crossed.", categorySlug: "travel", icon: "🕒", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "driving-distance-calculator", name: "Driving Distance Calculator", shortDescription: "Distance, drive time and fuel cost between two points with OpenStreetMap preview.", categorySlug: "travel", icon: "🚗", isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...TRAVEL_BATCH);
