@@ -969,3 +969,13 @@ const IMG_BATCH: Tool[] = [
 ];
 
 TOOLS.push(...IMG_BATCH);
+
+const DEV_SEO_BATCH: Tool[] = [
+  { slug: "slug-generator", name: "Slug Generator", shortDescription: "Turn titles into clean URL-safe slugs with custom separators and length limits.", categorySlug: "developer", icon: "🔗", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "html-entity-encoder", name: "HTML Entity Encoder / Decoder", shortDescription: "Encode or decode HTML entities with minimal or numeric modes for full UTF-8.", categorySlug: "developer", icon: "🔣", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "text-diff-checker", name: "Text Diff Checker", shortDescription: "Compare two texts side-by-side with line, word or character diffs.", categorySlug: "developer", icon: "🆚", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "robots-txt-generator", name: "robots.txt Generator", shortDescription: "Build robots.txt rules for any crawler with WordPress and Shopify presets.", categorySlug: "developer", icon: "🤖", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "sitemap-xml-generator", name: "Sitemap XML Generator", shortDescription: "Generate a valid XML sitemap from a URL list with priority and changefreq.", categorySlug: "developer", icon: "🗺️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "htaccess-generator", name: ".htaccess Generator", shortDescription: "Build Apache .htaccess with HTTPS, www, redirects, cache and security presets.", categorySlug: "developer", icon: "⚙️", isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...DEV_SEO_BATCH);
