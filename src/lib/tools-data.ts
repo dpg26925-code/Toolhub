@@ -37,6 +37,9 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "fun", name: "Random & Fun", description: "Dice rollers, coin flips, random numbers, name generators, QR codes and ASCII art — 100% in-browser.", icon: "🎲" },
   { slug: "social", name: "Social Media", description: "Hashtag, caption and title generators for Instagram, TikTok, YouTube, Twitter/X and LinkedIn — 100% in-browser.", icon: "📣" },
   { slug: "travel", name: "Travel", description: "Trip budget, currency, tips, packing lists, jet lag and driving distance — 100% in-browser.", icon: "✈️" },
+  { slug: "science", name: "Science", description: "Periodic table, chemistry balancer, pH, gas laws and scientific converters — for educational purposes.", icon: "⚗️" },
+  { slug: "language", name: "Language", description: "Character counters, phonetics, plagiarism check, language detection and readability scores — 100% in-browser.", icon: "🌐" },
+  { slug: "date-time", name: "Date & Time", description: "Date difference, age calculator, countdown timer, calendar generator and historical events — all client-side.", icon: "📅" },
   { slug: "betting", name: "Sports & Betting", description: "Odds, parlays, bankroll and record tracking — for entertainment and statistical analysis only.", icon: "🎲" },
 ];
 
@@ -1023,3 +1026,23 @@ const BETTING_BATCH: Tool[] = [
   { slug: "betting-bankroll-manager", name: "Betting Bankroll Manager", shortDescription: "Recommended unit size, Kelly Criterion and growth projection over N bets.", categorySlug: "betting", icon: "💼", isFree: true, creditCost: 0, clientSide: true },
 ];
 TOOLS.push(...BETTING_BATCH);
+const SCIENCE_LANG_DATE: Tool[] = [
+  { slug: "periodic-table", name: "Periodic Table", shortDescription: "Interactive periodic table with search by name, symbol or atomic number.", categorySlug: "science", icon: "⚛️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "chemistry-balancer", name: "Chemistry Equation Balancer", shortDescription: "Balance simple chemical equations with stoichiometric coefficients.", categorySlug: "science", icon: "⚖️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ph-calculator", name: "pH Calculator", shortDescription: "Calculate pH, pOH, [H+] and [OH-] for strong and weak acids or bases.", categorySlug: "science", icon: "🧪", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "molality-molarity-calculator", name: "Molarity & Molality Calculator", shortDescription: "Compute molarity, molality and mole fraction from mass and volume.", categorySlug: "science", icon: "🧫", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "ideal-gas-law-calculator", name: "Ideal Gas Law Calculator", shortDescription: "Solve PV = nRT for any variable — pressure, volume, moles or temperature.", categorySlug: "science", icon: "💨", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "scientific-converter", name: "Scientific Unit Converter", shortDescription: "Convert between pressure units (atm, Pa, mmHg, torr, bar, psi) and temperature scales.", categorySlug: "science", icon: "📊", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "character-counter-lang", name: "Multilingual Character Counter", shortDescription: "Character, word, sentence and paragraph counts with CJK-aware logic.", categorySlug: "language", icon: "🔤", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pronunciation-phonetics", name: "Pronunciation & Phonetics", shortDescription: "IPA transcription, syllable count and stress markers for common English words.", categorySlug: "language", icon: "🗣️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "plagiarism-checker-local", name: "Local Plagiarism Checker", shortDescription: "Compare two texts for 5-gram overlap and similarity score — 100% offline.", categorySlug: "language", icon: "🔍", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "language-detector", name: "Language Detector", shortDescription: "Detect language via Unicode script and stopword frequency — supports 50+ languages.", categorySlug: "language", icon: "🌍", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "readability-score", name: "Readability Score Calculator", shortDescription: "Flesch-Kincaid, Gunning Fog, SMOG and Coleman-Liau readability grades.", categorySlug: "language", icon: "📖", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "date-difference-calculator", name: "Date Difference Calculator", shortDescription: "Days, weeks, months and years between two dates — with optional weekday-only mode.", categorySlug: "date-time", icon: "📆", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "age-calculator", name: "Age Calculator", shortDescription: "Exact age in years/months/days, zodiac, birthstone and age on other planets.", categorySlug: "date-time", icon: "🎂", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "timer-countdown", name: "Countdown Timer", shortDescription: "Pomodoro, tea and meeting presets with visual progress and pause/reset.", categorySlug: "date-time", icon: "⏱️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "day-of-week-finder", name: "Day of Week Finder", shortDescription: "Find the day of week, week number and day of year for any date.", categorySlug: "date-time", icon: "🗓️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "calendar-generator", name: "Calendar Generator", shortDescription: "Generate monthly calendars with US/UK/VN holidays and download as SVG.", categorySlug: "date-time", icon: "📅", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "historical-events-finder", name: "Historical Events Finder", shortDescription: "Find famous births, discoveries and events on any date in history.", categorySlug: "date-time", icon: "🏛️", isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...SCIENCE_LANG_DATE);

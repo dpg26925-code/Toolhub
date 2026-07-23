@@ -20,6 +20,9 @@ import {
   Megaphone,
   Plane,
   Dice5,
+  Atom,
+  Languages,
+  CalendarDays,
   type LucideIcon,
 } from "lucide-react";
 
@@ -46,6 +49,9 @@ const META: Record<string, CategoryMeta> = {
   social: { Icon: Megaphone, color: "#e1306c" },
   travel: { Icon: Plane, color: "#0ea5e9" },
   betting: { Icon: Dice5, color: "#dc2626" },
+  science: { Icon: Atom, color: "#8b5cf6" },
+  language: { Icon: Languages, color: "#0891b2" },
+  "date-time": { Icon: CalendarDays, color: "#f59e0b" },
 };
 
 const FALLBACK: CategoryMeta = { Icon: LayoutGrid, color: "#64748b" };

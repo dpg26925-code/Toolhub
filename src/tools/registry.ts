@@ -245,3 +245,22 @@ Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "sports-record-tracker": lazy(() => import("./sports-record-tracker")),
   "betting-bankroll-manager": lazy(() => import("./betting-bankroll-manager")),
 });
+Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
+  "periodic-table": lazy(() => import("./periodic-table")),
+  "chemistry-balancer": lazy(() => import("./chemistry-balancer")),
+  "ph-calculator": lazy(() => import("./ph-calculator")),
+  "molality-molarity-calculator": lazy(() => import("./molality-molarity-calculator")),
+  "ideal-gas-law-calculator": lazy(() => import("./ideal-gas-law-calculator")),
+  "scientific-converter": lazy(() => import("./scientific-converter")),
+  "character-counter-lang": lazy(() => import("./character-counter-lang")),
+  "pronunciation-phonetics": lazy(() => import("./pronunciation-phonetics")),
+  "plagiarism-checker-local": lazy(() => import("./plagiarism-checker-local")),
+  "language-detector": lazy(() => import("./language-detector")),
+  "readability-score": lazy(() => import("./readability-score")),
+  "date-difference-calculator": lazy(() => import("./date-difference-calculator")),
+  "age-calculator": lazy(() => import("./age-calculator")),
+  "timer-countdown": lazy(() => import("./timer-countdown")),
+  "day-of-week-finder": lazy(() => import("./day-of-week-finder")),
+  "calendar-generator": lazy(() => import("./calendar-generator")),
+  "historical-events-finder": lazy(() => import("./historical-events-finder")),
+});
