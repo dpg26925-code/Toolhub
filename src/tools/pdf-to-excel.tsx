@@ -48,7 +48,9 @@ export default function PdfToExcelTool() {
       for (let i = 1; i <= doc.numPages; i++) {
         const page = await doc.getPage(i);
         const tc = await page.getTextContent();
-        const items = tc.items.map((it: { str: string; transform: number[] }) => ({ str: it.str, x: it.transform[4], y: it.transform[5] }));
+        const items = (tc.items as Array<{ str?: string; transform?: number[] }>)
+          .filter((it) => typeof it.str === "string" && Array.isArray(it.transform))
+          .map((it) => ({ str: it.str as string, x: (it.transform as number[])[4], y: (it.transform as number[])[5] }));
         result.push({ page: i, rows: clusterToRows(items) });
       }
       setSheets(result);
