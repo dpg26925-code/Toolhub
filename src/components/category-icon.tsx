@@ -19,6 +19,7 @@ import {
   LayoutGrid,
   Megaphone,
   Plane,
+  Dice5,
   type LucideIcon,
 } from "lucide-react";
 
@@ -44,6 +45,7 @@ const META: Record<string, CategoryMeta> = {
   fun: { Icon: Dices, color: "#a55eea" },
   social: { Icon: Megaphone, color: "#e1306c" },
   travel: { Icon: Plane, color: "#0ea5e9" },
+  betting: { Icon: Dice5, color: "#dc2626" },
 };
 
 const FALLBACK: CategoryMeta = { Icon: LayoutGrid, color: "#64748b" };
