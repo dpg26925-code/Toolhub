@@ -403,7 +403,6 @@ Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "keyword-density-checker": lazy(() => import("./keyword-density-checker")),
   "readability-checker": lazy(() => import("./readability-checker")),
   "schema-markup-generator": lazy(() => import("./schema-markup-generator")),
-  "robots-txt-generator": lazy(() => import("./robots-txt-generator")),
   "sitemap-generator": lazy(() => import("./sitemap-generator")),
   "canonical-tag-generator": lazy(() => import("./canonical-tag-generator")),
   "hreflang-tag-generator": lazy(() => import("./hreflang-tag-generator")),
