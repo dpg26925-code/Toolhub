@@ -979,3 +979,13 @@ const DEV_SEO_BATCH: Tool[] = [
   { slug: "htaccess-generator", name: ".htaccess Generator", shortDescription: "Build Apache .htaccess with HTTPS, www, redirects, cache and security presets.", categorySlug: "developer", icon: "⚙️", isFree: true, creditCost: 0, clientSide: true },
 ];
 TOOLS.push(...DEV_SEO_BATCH);
+
+const YT_VIDEO_BATCH: Tool[] = [
+  { slug: "youtube-thumbnail-downloader", name: "YouTube Thumbnail Downloader", shortDescription: "Grab every available YouTube thumbnail resolution with one click.", categorySlug: "youtube", icon: "🖼️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "youtube-embed-generator", name: "YouTube Embed Generator", shortDescription: "Build a YouTube iframe with autoplay, loop, start/end and privacy options.", categorySlug: "youtube", icon: "▶️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "youtube-timestamp-generator", name: "YouTube Timestamp Generator", shortDescription: "Turn a chapter list into YouTube-friendly timestamps and clickable links.", categorySlug: "youtube", icon: "⏱️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "youtube-channel-id-finder", name: "YouTube Channel ID Finder", shortDescription: "Extract channel ID, @handle, custom URL or video ID from any YouTube link.", categorySlug: "youtube", icon: "🆔", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "video-metadata-viewer", name: "Video Metadata Viewer", shortDescription: "Inspect resolution, duration, bitrate and track info from any video file.", categorySlug: "video", icon: "🎞️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "video-to-images", name: "Video to Images", shortDescription: "Extract PNG or JPEG frames from any video and download them as a ZIP.", categorySlug: "video", icon: "🖼️", isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...YT_VIDEO_BATCH);
