@@ -1185,7 +1185,6 @@ const BATCHES_29_37 = [
   { slug: "keyword-density-checker", name: 'Keyword Density Checker', shortDescription: 'Word frequency and density warnings.', categorySlug: "developer", icon: "🔠", isFree: true, creditCost: 0, clientSide: true },
   { slug: "readability-checker", name: 'Readability Checker', shortDescription: 'Flesch reading ease and grade level.', categorySlug: "developer", icon: "📚", isFree: true, creditCost: 0, clientSide: true },
   { slug: "schema-markup-generator", name: 'Schema Markup Generator', shortDescription: 'JSON-LD for Article, Product, FAQPage, Organization.', categorySlug: "developer", icon: "🧩", isFree: true, creditCost: 0, clientSide: true },
-  { slug: "robots-txt-generator", name: 'robots.txt Generator', shortDescription: 'Build a robots.txt with allow, disallow and sitemap.', categorySlug: "developer", icon: "🤖", isFree: true, creditCost: 0, clientSide: true },
   { slug: "sitemap-generator", name: 'XML Sitemap Generator', shortDescription: 'Generate a sitemap.xml from a URL list.', categorySlug: "developer", icon: "🗺️", isFree: true, creditCost: 0, clientSide: true },
   { slug: "canonical-tag-generator", name: 'Canonical Tag Generator', shortDescription: 'Rel-canonical link tag from a URL.', categorySlug: "developer", icon: "🔗", isFree: true, creditCost: 0, clientSide: true },
   { slug: "hreflang-tag-generator", name: 'Hreflang Tag Generator', shortDescription: 'Multi-language alternate tags in one paste.', categorySlug: "developer", icon: "🌐", isFree: true, creditCost: 0, clientSide: true },
