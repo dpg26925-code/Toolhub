@@ -237,3 +237,11 @@ Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "timezone-converter-travel": lazy(() => import("./timezone-converter-travel")),
   "driving-distance-calculator": lazy(() => import("./driving-distance-calculator")),
 });
+
+Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
+  "odds-calculator": lazy(() => import("./odds-calculator")),
+  "parlay-calculator": lazy(() => import("./parlay-calculator")),
+  "martingale-calculator": lazy(() => import("./martingale-calculator")),
+  "sports-record-tracker": lazy(() => import("./sports-record-tracker")),
+  "betting-bankroll-manager": lazy(() => import("./betting-bankroll-manager")),
+});

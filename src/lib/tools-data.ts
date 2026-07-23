@@ -37,6 +37,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "fun", name: "Random & Fun", description: "Dice rollers, coin flips, random numbers, name generators, QR codes and ASCII art — 100% in-browser.", icon: "🎲" },
   { slug: "social", name: "Social Media", description: "Hashtag, caption and title generators for Instagram, TikTok, YouTube, Twitter/X and LinkedIn — 100% in-browser.", icon: "📣" },
   { slug: "travel", name: "Travel", description: "Trip budget, currency, tips, packing lists, jet lag and driving distance — 100% in-browser.", icon: "✈️" },
+  { slug: "betting", name: "Sports & Betting", description: "Odds, parlays, bankroll and record tracking — for entertainment and statistical analysis only.", icon: "🎲" },
 ];
 
 export const TOOLS: Tool[] = [
@@ -1013,3 +1014,12 @@ const TRAVEL_BATCH: Tool[] = [
   { slug: "driving-distance-calculator", name: "Driving Distance Calculator", shortDescription: "Distance, drive time and fuel cost between two points with OpenStreetMap preview.", categorySlug: "travel", icon: "🚗", isFree: true, creditCost: 0, clientSide: true },
 ];
 TOOLS.push(...TRAVEL_BATCH);
+
+const BETTING_BATCH: Tool[] = [
+  { slug: "odds-calculator", name: "Odds Calculator", shortDescription: "Convert American, Fractional and Decimal odds. See implied probability, payout and profit.", categorySlug: "betting", icon: "🎯", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "parlay-calculator", name: "Parlay Calculator", shortDescription: "Combine up to 10 legs into a parlay with combined odds, implied probability and payout.", categorySlug: "betting", icon: "🧮", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "martingale-calculator", name: "Martingale Calculator", shortDescription: "See bet progression, required bankroll and bust probability for a Martingale system.", categorySlug: "betting", icon: "📈", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "sports-record-tracker", name: "Sports Record Tracker", shortDescription: "Track W-L-T record, win %, streaks and cumulative wins over time. Saves to your browser.", categorySlug: "betting", icon: "🏆", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "betting-bankroll-manager", name: "Betting Bankroll Manager", shortDescription: "Recommended unit size, Kelly Criterion and growth projection over N bets.", categorySlug: "betting", icon: "💼", isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...BETTING_BATCH);
