@@ -204,4 +204,10 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "image-watermark": lazy(() => import("./image-watermark")),
   "image-pixelate": lazy(() => import("./image-pixelate")),
   "image-to-heic": lazy(() => import("./image-to-heic")),
+  "slug-generator": lazy(() => import("./slug-generator")),
+  "html-entity-encoder": lazy(() => import("./html-entity-encoder")),
+  "text-diff-checker": lazy(() => import("./text-diff-checker")),
+  "robots-txt-generator": lazy(() => import("./robots-txt-generator")),
+  "sitemap-xml-generator": lazy(() => import("./sitemap-xml-generator")),
+  "htaccess-generator": lazy(() => import("./htaccess-generator")),
 };
