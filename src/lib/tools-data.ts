@@ -1047,3 +1047,21 @@ const SCIENCE_LANG_DATE: Tool[] = [
   { slug: "historical-events-finder", name: "Historical Events Finder", shortDescription: "Find famous births, discoveries and events on any date in history.", categorySlug: "date-time", icon: "🏛️", isFree: true, creditCost: 0, clientSide: true },
 ];
 TOOLS.push(...SCIENCE_LANG_DATE);
+
+const TINYWOW_GAP: Tool[] = [
+  { slug: "mp4-converter", name: "MP4 Converter", shortDescription: "Convert videos to MP4, WebM, MOV or MKV with quality controls — 100% in-browser.", categorySlug: "video", icon: "🎞️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "image-upscaler", name: "Image Upscaler", shortDescription: "Upscale images 2×–4× with sharpening — client-side, no signup.", categorySlug: "image", icon: "🔍", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "image-unblur", name: "Image Unblur", shortDescription: "Sharpen slightly blurry photos with an adjustable Laplacian filter.", categorySlug: "image", icon: "✨", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "image-collage-maker", name: "Image Collage Maker", shortDescription: "Combine up to 9 images into a grid collage with custom columns, gap and background.", categorySlug: "image", icon: "🧩", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-to-jpg", name: "PDF to JPG", shortDescription: "Convert each PDF page to a JPG image and download individually or as a ZIP.", categorySlug: "pdf", icon: "🖼️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-to-png", name: "PDF to PNG", shortDescription: "Render each PDF page as a lossless PNG image with 1× to 3× resolution.", categorySlug: "pdf", icon: "🖼️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-create", name: "PDF Creator", shortDescription: "Create blank, lined or grid-paper PDFs with a title and body text.", categorySlug: "pdf", icon: "📝", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-to-excel", name: "PDF to Excel", shortDescription: "Extract tabular data from a PDF and download as XLSX or CSV.", categorySlug: "pdf", icon: "📊", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "pdf-sign", name: "PDF Sign", shortDescription: "Draw or upload a signature and stamp it onto any PDF page — never leaves your device.", categorySlug: "pdf", icon: "✍️", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "csv-to-excel", name: "CSV to Excel", shortDescription: "Convert CSV data to an XLSX workbook with proper types — paste or upload.", categorySlug: "converter", icon: "📈", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "excel-to-xml", name: "Excel to XML", shortDescription: "Convert every sheet of an Excel workbook into a clean, well-formed XML document.", categorySlug: "converter", icon: "🗂️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "zip-unzip", name: "ZIP Unzip", shortDescription: "Extract files from a ZIP archive locally and download individually or repack.", categorySlug: "converter", icon: "🗜️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "youtube-tag-generator", name: "YouTube Tag Generator", shortDescription: "Generate keyword-rich YouTube tags from a title, topic and description — within the 500-char limit.", categorySlug: "youtube", icon: "🏷️", isFree: true, creditCost: 0, clientSide: true },
+  { slug: "twitter-thread-generator", name: "Twitter Thread Generator", shortDescription: "Split long text into numbered X/Twitter tweets under 280 chars — copy the whole thread in one click.", categorySlug: "social", icon: "🧵", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+];
+TOOLS.push(...TINYWOW_GAP);

@@ -75,6 +75,7 @@
     "js-yaml": "^5.2.1",
     "jsbarcode": "^3.12.3",
     "jspdf": "^4.2.1",
+    "jszip": "^3.10.1",
     "lucide-react": "^0.575.0",
     "marked": "^18.0.6",
     "media-chrome": "^4.19.2",
