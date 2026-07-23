@@ -953,3 +953,10 @@ const EXTRA_BATCH: Tool[] = [
 ];
 
 TOOLS.push(...EXTRA_BATCH);
+
+const DEV_FORMATTERS: Tool[] = [
+  { slug: "sql-formatter", name: "SQL Formatter", shortDescription: "Format and beautify SQL for MySQL, PostgreSQL, SQLite and SQL Server.", categorySlug: "developer", icon: "🗄", isFeatured: true, isFree: true, creditCost: 0, clientSide: true },
+  { slug: "html-beautifier", name: "HTML Beautifier & Minifier", shortDescription: "Beautify or minify HTML side-by-side with size savings — 100% local.", categorySlug: "developer", icon: "</>", isFree: true, creditCost: 0, clientSide: true },
+];
+
+TOOLS.push(...DEV_FORMATTERS);
