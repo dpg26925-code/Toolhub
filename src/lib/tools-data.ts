@@ -37,6 +37,7 @@ export const CATEGORIES: ToolCategory[] = [
   { slug: "fun", name: "Random & Fun", description: "Dice rollers, coin flips, random numbers, name generators, QR codes and ASCII art — 100% in-browser.", icon: "🎲" },
   { slug: "social", name: "Social Media", description: "Hashtag, caption and title generators for Instagram, TikTok, YouTube, Twitter/X and LinkedIn — 100% in-browser.", icon: "📣" },
   { slug: "travel", name: "Travel", description: "Trip budget, currency, tips, packing lists, jet lag and driving distance — 100% in-browser.", icon: "✈️" },
+  { slug: "betting", name: "Sports & Betting", description: "Odds, parlays, bankroll and record tracking — for entertainment and statistical analysis only.", icon: "🎲" },
 ];
 
 export const TOOLS: Tool[] = [
