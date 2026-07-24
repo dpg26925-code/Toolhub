@@ -15,15 +15,20 @@ export const Route = createFileRoute("/categories/$slug")({
   head: ({ loaderData, params }) => {
     if (!loaderData) return { meta: [{ title: "Category not found — Nexatools" }, { name: "robots", content: "noindex" }] };
     const { category, tools } = loaderData;
-    const title = `${category.name} Tools — Free Online ${category.name} Utilities | Nexatools`;
+    const title = `${category.name} Tools — ${tools.length} Free Online ${category.name} Utilities | Nexatools`;
+    const metaDesc = `${category.description} ${tools.length} free, browser-based ${category.name.toLowerCase()} tools — no sign-up, no uploads to the cloud.`.slice(0, 160);
     const url = abs(`/categories/${params.slug}`);
     return {
       meta: [
         { title },
-        { name: "description", content: category.description },
+        { name: "description", content: metaDesc },
         { property: "og:title", content: title },
-        { property: "og:description", content: category.description },
+        { property: "og:description", content: metaDesc },
         { property: "og:url", content: url },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: metaDesc },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [

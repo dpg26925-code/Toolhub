@@ -82,6 +82,25 @@ export const Route = createFileRoute("/tools/$slug")({
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: `How to use ${tool.name}`,
+            description: description,
+            totalTime: "PT1M",
+            supply: [{ "@type": "HowToSupply", name: "A modern web browser" }],
+            tool: [{ "@type": "HowToTool", name: tool.name }],
+            step: content.howToUse.map((text, i) => ({
+              "@type": "HowToStep",
+              position: i + 1,
+              name: `Step ${i + 1}`,
+              text,
+              url: `${url}#step-${i + 1}`,
+            })),
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: abs("/") },

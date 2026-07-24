@@ -171,6 +171,17 @@ export const Route = createFileRoute("/blog/$slug")({
             author: { "@type": "Organization", name: "Nexatools" },
             publisher: { "@type": "Organization", name: "Nexatools", url: BASE },
           }),
+        }, {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+              { "@type": "ListItem", position: 2, name: "Blog", item: `${BASE}/blog` },
+              { "@type": "ListItem", position: 3, name: post.title, item: url },
+            ],
+          }),
         }]
       : undefined;
     return {

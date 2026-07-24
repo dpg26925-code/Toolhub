@@ -62,10 +62,10 @@ function Index() {
         <div className="mx-auto max-w-3xl px-4 pb-16 pt-20 text-center sm:px-6 sm:pt-28">
           <div className="animate-fade-in-up">
             <span className="inline-flex items-center rounded-full bg-brand/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-brand">
-              {TOOLS.length}+ Professional Utilities
+              {TOOLS.length} Professional Utilities
             </span>
             <h1 className="mt-6 text-5xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl">
-              Streamline your workflow with{" "}
+              <span>Streamline your workflow with </span>
               <span className="text-brand">Nexatools</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
@@ -126,9 +126,9 @@ function Index() {
         <h2 id="stats" className="sr-only">Platform stats</h2>
         <dl className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-4 text-center sm:grid-cols-4 sm:px-6">
           {[
-            { k: "100K+", v: "Users" },
-            { k: "500K+", v: "Tools used" },
-            { k: `${TOOLS.length}+`, v: "Tools available" },
+            { k: `${TOOLS.length}`, v: "Free tools" },
+            { k: "100%", v: "In-browser" },
+            { k: "0", v: "Sign-ups required" },
             { k: "99.9%", v: "Uptime" },
           ].map((s) => (
             <div key={s.v}>
