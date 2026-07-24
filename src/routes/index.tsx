@@ -127,9 +127,9 @@ function Index() {
         <dl className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-4 text-center sm:grid-cols-4 sm:px-6">
           {[
             { k: `${TOOLS.length}`, v: "Free tools" },
-            { k: "100%", v: "In-browser" },
-            { k: "0", v: "Sign-ups required" },
-            { k: "99.9%", v: "Uptime" },
+            { k: `${CATEGORIES.length}`, v: "Categories" },
+            { k: "100%", v: "Runs in your browser" },
+            { k: "$0", v: "Forever free tier" },
           ].map((s) => (
             <div key={s.v}>
               <dt className="text-3xl font-bold text-brand sm:text-4xl">{s.k}</dt>

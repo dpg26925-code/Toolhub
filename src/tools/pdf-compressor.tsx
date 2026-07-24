@@ -22,7 +22,10 @@ export default function PdfCompressorTool() {
   }, [result?.url]);
 
   const compress = async (target = file) => {
-    if (!target) return;
+    if (!target) {
+      toast.error("Choose a PDF file first");
+      return;
+    }
     if (target.size > 50 * 1024 * 1024) {
       setError("File too large. Max 50MB.");
       setResult(null);
@@ -52,6 +55,13 @@ export default function PdfCompressorTool() {
     ? `${file.name.replace(/\.pdf$/i, "")}-compressed.pdf`
     : "compressed.pdf";
 
+  const handleDownload = (e: React.MouseEvent) => {
+    if (!result) {
+      e.preventDefault();
+      toast.error("Compress a PDF first");
+    }
+  };
+
   return (
     <div className="grid gap-5 lg:grid-cols-[1fr_22rem]">
       <div className="space-y-4">
@@ -79,11 +89,13 @@ export default function PdfCompressorTool() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button onClick={() => compress()} disabled={!file || busy}>
+          <Button onClick={() => compress()} disabled={busy}>
             {busy ? "Compressing…" : result ? "Compress again" : "Compress PDF"}
           </Button>
-          <Button asChild variant="outline" aria-disabled={!result} className={!result ? "pointer-events-none opacity-50" : undefined}>
-            <a href={result?.url ?? "#"} download={downloadName}>Download {downloadName}</a>
+          <Button asChild variant="outline">
+            <a href={result?.url ?? "#"} download={downloadName} onClick={handleDownload}>
+              Download {downloadName}
+            </a>
           </Button>
         </div>
       </div>
