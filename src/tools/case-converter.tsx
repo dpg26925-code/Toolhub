@@ -47,6 +47,10 @@ export default function CaseConverterTool() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const copy = async (key: string, v: string) => {
+    if (!v) {
+      toast.error("Type some text first");
+      return;
+    }
     await navigator.clipboard.writeText(v);
     setCopiedKey(key);
     toast.success("Copied to clipboard");
@@ -54,7 +58,10 @@ export default function CaseConverterTool() {
   };
 
   const copyAll = async () => {
-    if (!text) return;
+    if (!text) {
+      toast.error("Type some text first");
+      return;
+    }
     const all = cases.map((c) => `${c.label}: ${c.fn(text)}`).join("\n");
     await copy("__all", all);
   };
@@ -68,7 +75,7 @@ export default function CaseConverterTool() {
         className="min-h-[160px]"
       />
       <div className="flex justify-end">
-        <Button size="sm" variant="secondary" disabled={!text} onClick={copyAll}>
+        <Button size="sm" variant="secondary" onClick={copyAll}>
           {copiedKey === "__all" ? "Copied!" : "Copy all"}
         </Button>
       </div>
@@ -81,7 +88,7 @@ export default function CaseConverterTool() {
                 <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {c.label}
                 </div>
-                <Button size="sm" variant="ghost" disabled={!value} onClick={() => copy(c.label, value)}>
+                <Button size="sm" variant="ghost" onClick={() => copy(c.label, value)}>
                   {copiedKey === c.label ? "Copied!" : "Copy"}
                 </Button>
               </div>
