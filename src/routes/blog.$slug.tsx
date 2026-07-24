@@ -157,7 +157,10 @@ export const Route = createFileRoute("/blog/$slug")({
       meta.push({ name: "twitter:image", content: post.cover_image });
     }
     const scripts = post
-      ? [{
+      ? (() => {
+          const words = (post.content ?? "").trim().split(/\s+/).filter(Boolean).length;
+          const minutes = Math.max(1, Math.round(words / 200));
+          return [{
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
@@ -167,6 +170,9 @@ export const Route = createFileRoute("/blog/$slug")({
             image: post.cover_image ? [post.cover_image] : undefined,
             datePublished: post.published_at ?? post.created_at,
             dateModified: post.updated_at,
+            wordCount: words,
+            timeRequired: `PT${minutes}M`,
+            inLanguage: "en",
             mainEntityOfPage: { "@type": "WebPage", "@id": url },
             author: { "@type": "Organization", name: "Nexatools" },
             publisher: { "@type": "Organization", name: "Nexatools", url: BASE },
@@ -182,7 +188,8 @@ export const Route = createFileRoute("/blog/$slug")({
               { "@type": "ListItem", position: 3, name: post.title, item: url },
             ],
           }),
-        }]
+          }];
+        })()
       : undefined;
     return {
       meta,
