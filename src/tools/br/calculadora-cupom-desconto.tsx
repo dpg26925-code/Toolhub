@@ -111,13 +111,6 @@ export default function CalculadoraCupomDesconto() {
             {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
             Copiar Resumo
           </Button>
-              </BarChart>
-            </ResponsiveContainer>
-
-          <Button className="w-full" onClick={copyResults}>
-            {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-            Copiar Resumo
-          </Button>
         </CardContent>
       </Card>
     </div>
