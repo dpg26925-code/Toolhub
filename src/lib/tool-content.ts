@@ -259,6 +259,7 @@ const CATEGORY_COPY: Record<string, CategoryCopy> = {
   },
 };
 
+
 const DEFAULT_CATEGORY_COPY: CategoryCopy = {
   audience: "Product, engineering and operations teams",
   input: "the input shown in the form above (text, file or URL)",
@@ -695,6 +696,35 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Do UTM parameters affect SEO?", a: "No — search engines ignore UTM parameters when consolidating link equity, and Google Search Console de-duplicates them in performance reports. Just avoid using them on internal links, which would overwrite the original attribution." },
       { q: "How long can a UTM-tagged URL be?", a: "Practical limit is around 2,000 characters (browser and server URL limits). Keep individual UTM values under 50 characters for readability in reports." },
     ],
+  },
+  "13th-month-pay-calculator": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "The 13th month pay is a mandatory benefit in the Philippines, as stipulated under Presidential Decree No. 851. It is equivalent to one-twelfth (1/12) of the total basic salary earned by an employee within a calendar year. All rank-and-file employees who have worked for at least one month are eligible to receive this benefit, regardless of their employment status. \n\nOur Philippines 13th Month Pay Calculator helps you estimate your year-end bonus by accounting for your monthly basic salary, regular allowances, and any unpaid absences. Under the current BIR (Bureau of Internal Revenue) rules, the 13th month pay and other benefits are tax-exempt up to PHP 90,000 (though some agreements may involve higher thresholds like PHP 300,000). Any amount exceeding this threshold is considered part of your taxable income. The benefit must be paid to employees no later than December 24 of each year.",
+    howToUse: [
+      "Enter your monthly basic salary in Philippine Pesos (₱).",
+      "Specify the number of months you worked during the current calendar year (prorated if less than 12).",
+      "Input any unpaid absences (days) to deduct from the base calculation.",
+      "Add any regular monthly allowances that form part of your basic pay.",
+      "Review the breakdown to see your gross, taxable portion, and estimated net 13th month pay."
+    ],
+    faqs: [
+      {
+        q: "How is 13th month pay calculated in the Philippines?",
+        a: "It is calculated by taking the total basic salary earned during the calendar year and dividing it by 12. It is essentially prorated based on the number of months you worked."
+      },
+      {
+        q: "Is 13th month pay taxable?",
+        a: "The first PHP 90,000 of the 13th month pay and other productivity benefits are tax-exempt. Any amount above this threshold is added to your taxable income for the year."
+      },
+      {
+        q: "What if I didn't work for a full year?",
+        a: "You are still eligible as long as you worked for at least one month. The amount will be prorated: (Total Basic Salary earned) / 12."
+      },
+      {
+        q: "Are bonuses and overtime included in the 13th month pay?",
+        a: "No. According to labor laws, the 13th month pay is based on the 'basic salary', which excludes overtime pay, night shift differentials, holiday pay, and profit-sharing bonuses unless they are integrated into the basic salary by company policy."
+      }
+    ]
   },
 };
 
