@@ -348,6 +348,16 @@ export const TOOLS: Tool[] = [
     clientSide: true,
   },
   {
+    slug: "13th-month-pay-calculator",
+    name: "13th Month Pay Calculator Philippines",
+    shortDescription: "Calculate your 13th month pay online. Free, instant, and accurate for Philippine employees.",
+    categorySlug: "accounting",
+    icon: "🇵🇭",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
     slug: "summarize",
     name: "AI Text Summarizer",
     shortDescription: "Summarise long text with adjustable length and style.",
