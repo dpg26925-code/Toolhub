@@ -225,6 +225,13 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "holiday-pay-calculator-ph": lazy(() => import("./ph/holiday-pay-calculator-ph")),
   "night-shift-differential-calculator": lazy(() => import("./ph/night-shift-differential-calculator")),
   "tiktok-shop-fee-calculator": lazy(() => import("./br/tiktok-shop-fee-calculator")),
+  "calculadora-margem-lucro": lazy(() => import("./br/calculadora-margem-lucro")),
+  "calculadora-frete-gratis": lazy(() => import("./br/calculadora-frete-gratis")),
+  "calculadora-cupom-desconto": lazy(() => import("./br/calculadora-cupom-desconto")),
+  "calculadora-ponto-equilibrio": lazy(() => import("./br/calculadora-ponto-equilibrio")),
+  "calculadora-roi-marketing": lazy(() => import("./br/calculadora-roi-marketing")),
+  "calculadora-estoque-minimo": lazy(() => import("./br/calculadora-estoque-minimo")),
+  "calculadora-preco-venda": lazy(() => import("./br/calculadora-preco-venda")),
 };
 
 
