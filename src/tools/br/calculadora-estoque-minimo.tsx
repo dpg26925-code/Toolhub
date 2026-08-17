@@ -97,8 +97,6 @@ export default function CalculadoraEstoqueMinimo() {
             </CardContent>
           </Card>
 
-          </Card>
-
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium">Projeção de Consumo</CardTitle>
