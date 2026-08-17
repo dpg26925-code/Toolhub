@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { BarChart3, TrendingUp, Info, DollarSign, Copy, Check } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +28,14 @@ export default function CalculadoraROIMarketing() {
     const roas = inv > 0 ? (rev / inv) : 0;
     const cpa = conv > 0 ? (inv / conv) : 0;
 
-    return { netProfit, roi, roas, cpa };
+    const chartData = [
+      { name: "Lucro Líquido", value: Math.max(0, netProfit), fill: "#10b981" },
+      { name: "Investimento Ads", value: inv, fill: "#3b82f6" },
+      { name: "Custo Produtos", value: cost, fill: "#f59e0b" },
+      { name: "Outros Custos", value: other, fill: "#94a3b8" }
+    ];
+
+    return { netProfit, roi, roas, cpa, chartData };
   }, [investment, revenue, productCost, otherCosts, conversions]);
 
   const copyResults = () => {
@@ -109,6 +117,28 @@ export default function CalculadoraROIMarketing() {
                 </div>
               </div>
               
+              <div className="h-[250px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={results.chartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {results.chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(v: number) => formatBRL(v)} />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
               <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded">
                 <p><strong>Dica:</strong> Um ROAS acima de 4x é geralmente considerado bom no e-commerce brasileiro, mas o que importa é o lucro líquido final no bolso.</p>
               </div>
