@@ -726,15 +726,6 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       }
     ]
   },
-};
-
-export function getToolContent(tool: Tool): ToolContent {
-  const override = OVERRIDES[tool.slug] ?? {};
-  return {
-    categoryLabel: CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool",
-    longDescription: override.longDescription ?? defaultLongDescription(tool),
-    howToUse: override.howToUse ?? defaultHowToUse(tool),
-    faqs: override.faqs ?? defaultFaqs(tool),
   "pag-ibig-contribution-calculator": {
     categoryLabel: "Accounting Tool",
     longDescription: "The Pag-IBIG Contribution Calculator helps Filipino employees and employers estimate their mandatory monthly contributions to the Home Development Mutual Fund (HDMF). Based on the 2024 contribution schedule, it calculates both the employee and employer shares, ensuring you stay compliant with national housing fund requirements.",
@@ -856,7 +847,16 @@ export function getToolContent(tool: Tool): ToolContent {
   }
 };
 
+export function getToolContent(tool: Tool): ToolContent {
+  const override = OVERRIDES[tool.slug] ?? {};
+  return {
+    categoryLabel: CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool",
+    longDescription: override.longDescription ?? defaultLongDescription(tool),
+    howToUse: override.howToUse ?? defaultHowToUse(tool),
+    faqs: override.faqs ?? defaultFaqs(tool),
+  };
 }
+
 
 export function toolPageTitle(tool: Tool): string {
   const label = CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool";
