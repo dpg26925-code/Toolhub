@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
-import { Calculator, Truck, Info, Copy, Check } from "lucide-react";
+import { Calculator, Truck, Info, Copy, Check, BarChart3 } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
