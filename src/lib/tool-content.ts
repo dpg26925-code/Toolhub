@@ -726,6 +726,125 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       }
     ]
   },
+  "pag-ibig-contribution-calculator": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "The Pag-IBIG Contribution Calculator helps Filipino employees and employers estimate their mandatory monthly contributions to the Home Development Mutual Fund (HDMF). Based on the 2024 contribution schedule, it calculates both the employee and employer shares, ensuring you stay compliant with national housing fund requirements.",
+    howToUse: [
+      "Enter your Monthly Basic Salary in PHP.",
+      "Select your Employment Type (Private or Government).",
+      "Choose your Membership Type (New or Old).",
+      "View the breakdown of employee and employer shares.",
+      "Copy or print the summary for your records."
+    ],
+    faqs: [
+      { q: "What is the maximum contribution for Pag-IBIG in 2024?", a: "As of 2024, the monthly salary ceiling for Pag-IBIG contributions is PHP 10,000, resulting in a maximum contribution of PHP 200 for the employee and PHP 200 for the employer." },
+      { q: "How are the contribution rates determined?", a: "For those earning PHP 1,500 and below, the employee rate is 1%. For those earning above PHP 1,500, it is 2%. Employers always contribute 2%." },
+      { q: "Is this calculator official?", a: "This is a reference tool for estimation. Always verify your actual deductions with your HR department or the Pag-IBIG Fund office." },
+      { q: "Does employment type affect the amount?", a: "The basic calculation remains the same for most sectors, but specific government agencies may have internal variations." }
+    ]
+  },
+  "sss-contribution-calculator": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "Stay on top of your Social Security System (SSS) contributions with this specialized calculator for Philippine workers. It incorporates the 2024 contribution brackets, including the mandatory provident fund (WISP) and the Employees' Compensation Commission (ECC) shares. Perfect for freelancers, HR staff, and business owners.",
+    howToUse: [
+      "Input your Monthly Basic Salary.",
+      "Select your status: Employed, Self-Employed, or OFW.",
+      "Check the calculated shares for SSS and ECC.",
+      "See which salary bracket you fall into.",
+      "Copy the results for your payroll documentation."
+    ],
+    faqs: [
+      { q: "What is the SSS contribution rate for 2024?", a: "The current total contribution rate is 14% of the monthly salary credit, with the employer paying 9.5% and the employee paying 4.5%." },
+      { q: "What is WISP?", a: "WISP stands for Workers' Investment and Savings Program, a mandatory provident fund for SSS members with a monthly salary credit exceeding PHP 20,000." },
+      { q: "Do self-employed members pay both shares?", a: "Yes, self-employed and voluntary members are responsible for the full 14% contribution as they act as both employer and employee." },
+      { q: "How often do SSS rates change?", a: "SSS rates are subject to periodic increases based on the Social Security Act of 2018. The current schedule reflects the 2024 update." }
+    ]
+  },
+  "philhealth-calculator": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "The PhilHealth Calculator provides an instant estimate of your monthly health insurance premiums in the Philippines. Using the 5.5% premium rate for 2024, it helps you understand the split between your personal contribution and your employer's share, ensuring you are prepared for universal healthcare coverage.",
+    howToUse: [
+      "Enter your Monthly Basic Salary.",
+      "The tool automatically applies the floor (PHP 10k) and ceiling (PHP 100k) limits.",
+      "Review the employee and employer shares (2.75% each).",
+      "Check your annual total health insurance cost.",
+      "Download or print the summary if needed."
+    ],
+    faqs: [
+      { q: "What is the PhilHealth rate for 2024?", a: "The premium rate is 5.5% of the monthly basic salary, split equally (2.75% each) between the employee and the employer." },
+      { q: "What is the maximum PhilHealth contribution?", a: "With a salary ceiling of PHP 100,000, the maximum total monthly premium is PHP 5,500 (PHP 2,750 each)." },
+      { q: "Does this apply to OFWs?", a: "Yes, though the payment frequency and specific rules for Overseas Filipino Workers may differ. Consult PhilHealth for official OFW guidelines." },
+      { q: "Is the calculation based on gross or basic pay?", a: "PhilHealth contributions are generally calculated based on the Monthly Basic Salary (MBS)." }
+    ]
+  },
+  "bir-withholding-tax-calculator": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "Calculate your take-home pay with precision using the BIR Withholding Tax Calculator. Built for the Philippine 2024 tax regime, this tool accounts for the revised TRAIN law tax brackets. It factors in your gross income and mandatory deductions to estimate exactly how much will be withheld by the Bureau of Internal Revenue.",
+    howToUse: [
+      "Enter your Gross Monthly Salary.",
+      "Subtract mandatory deductions (SSS, PhilHealth, Pag-IBIG).",
+      "Input any other tax-exempt benefits if applicable.",
+      "View your annual taxable income and monthly tax due.",
+      "Compare your gross vs. net pay."
+    ],
+    faqs: [
+      { q: "Who is exempt from withholding tax in the PH?", a: "Individuals with an annual taxable income of PHP 250,000 or below are exempt from paying personal income tax." },
+      { q: "How accurate is this tax calculator?", a: "It uses the official 2024 BIR withholding tax tables. However, year-end adjustments (taxization) may vary results slightly." },
+      { q: "Does it include the 13th month pay?", a: "13th month pay is tax-exempt up to PHP 90,000 (standard) or PHP 300,000 as specified in certain contexts. This tool focuses on monthly salary withholding." },
+      { q: "What are the tax brackets for 2024?", a: "Brackets range from 0% for those under 250k, up to 35% for those earning over 8 million PHP annually." }
+    ]
+  },
+  "overtime-calculator-philippines": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "Accurately compute your extra earnings with the Philippines Overtime Calculator. This tool follows the Philippine Labor Code, applying the correct multipliers for ordinary days, rest days, and holidays. It also includes the Night Shift Differential (NSD) for work performed during the graveyard shift.",
+    howToUse: [
+      "Enter your Hourly Rate (Monthly Basic / 176 or similar).",
+      "Select the Day Type (Ordinary, Rest Day, Holiday).",
+      "Input the number of Overtime Hours worked.",
+      "Add any hours worked between 10 PM and 6 AM for Night Differential.",
+      "Review the total overtime compensation."
+    ],
+    faqs: [
+      { q: "What is the OT rate for an ordinary day?", a: "Overtime work on a regular workday is paid at an additional 25% of the hourly rate (1.25x)." },
+      { q: "How much is holiday overtime?", a: "Work on a regular holiday is paid at 200% of the daily rate. Overtime on that day adds another 30% of that 200% rate." },
+      { q: "When does Night Shift Differential apply?", a: "NSD applies to work performed between 10:00 PM and 6:00 AM, providing an additional 10% premium on the hourly rate." },
+      { q: "Is rest day pay different from holiday pay?", a: "Yes. Rest day work is generally paid at 130% of the daily rate, while regular holiday work is 200%." }
+    ]
+  },
+  "holiday-pay-calculator-ph": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "The Holiday Pay Calculator for the Philippines simplifies the complex rules of 'No Work, No Pay' and premium rates. Whether it is a Regular Holiday or a Special Non-Working Day, this tool helps employees and HR professionals calculate the correct daily compensation based on the latest DOLE guidelines.",
+    howToUse: [
+      "Input your Daily Rate.",
+      "Specify the number of Regular Holidays in the period.",
+      "Add Special Non-Working Days or Rest Days worked.",
+      "The tool calculates the total holiday premiums.",
+      "View your effective daily rate for the period."
+    ],
+    faqs: [
+      { q: "What is the difference between Regular and Special holidays?", a: "Regular holidays are paid even if you don't work (100%), and 200% if you do. Special holidays follow 'no work, no pay' but provide a 30% premium if worked." },
+      { q: "What happens if a holiday falls on my rest day?", a: "If you work on a regular holiday that is also your rest day, you are entitled to an additional 30% premium on top of the 200% holiday pay (total 260%)." },
+      { q: "Do I get paid if I am absent before a holiday?", a: "Under DOLE rules, you must be present or on leave with pay on the workday immediately preceding a regular holiday to be entitled to holiday pay." },
+      { q: "Are all workers entitled to holiday pay?", a: "Most private sector employees are, but exceptions include managerial staff, government employees, and those in small retail/service establishments with fewer than 10 workers." }
+    ]
+  },
+  "night-shift-differential-calculator": {
+    categoryLabel: "Accounting Tool",
+    longDescription: "Designed for BPO workers and night-shift employees, the Night Shift Differential Calculator ensures you are getting paid fairly for your graveyard hours. It computes the mandatory 10% premium for every hour worked between 10 PM and 6 AM, including multipliers for holidays and rest days.",
+    howToUse: [
+      "Enter your regular Hourly Rate.",
+      "Input the total number of hours worked within the 10 PM to 6 AM window.",
+      "Select if the work was on a regular day, rest day, or holiday.",
+      "Check the calculated premium amount.",
+      "Copy the result for your payslip verification."
+    ],
+    faqs: [
+      { q: "What are the night shift hours in the Philippines?", a: "By law, the night shift differential applies to work performed between 10:00 PM and 6:00 AM." },
+      { q: "How much is the night shift premium?", a: "The minimum night shift differential is 10% of the employee's regular hourly rate." },
+      { q: "Does it apply to overtime?", a: "Yes. If you work overtime during the 10 PM - 6 AM window, the NSD is calculated based on your overtime hourly rate." },
+      { q: "Who is exempt from Night Shift Differential?", a: "Exemptions include government employees, domestic helpers, and managerial employees." }
+    ]
+  }
 };
 
 export function getToolContent(tool: Tool): ToolContent {
@@ -737,6 +856,7 @@ export function getToolContent(tool: Tool): ToolContent {
     faqs: override.faqs ?? defaultFaqs(tool),
   };
 }
+
 
 export function toolPageTitle(tool: Tool): string {
   const label = CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool";
