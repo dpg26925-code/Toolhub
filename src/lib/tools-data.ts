@@ -411,6 +411,16 @@ export const TOOLS: Tool[] = [
     clientSide: true,
   },
   {
+    slug: "tiktok-shop-fee-calculator",
+    name: "Calculadora de Taxas TikTok Shop Brasil",
+    shortDescription: "Calcule taxas TikTok Shop, comissão e valor líquido das vendas para vendedores brasileiros.",
+    categorySlug: "tiktok",
+    icon: "🇧🇷",
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
     slug: "json-to-csv",
     name: "JSON to CSV Converter",
     shortDescription: "Turn a JSON array into a downloadable CSV file.",

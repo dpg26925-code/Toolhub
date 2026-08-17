@@ -844,6 +844,28 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Does it apply to overtime?", a: "Yes. If you work overtime during the 10 PM - 6 AM window, the NSD is calculated based on your overtime hourly rate." },
       { q: "Who is exempt from Night Shift Differential?", a: "Exemptions include government employees, domestic helpers, and managerial employees." }
     ]
+  },
+  "tiktok-shop-fee-calculator": {
+    categoryLabel: "TikTok Shop Tool",
+    longDescription: `A Calculadora de Taxas TikTok Shop Brasil é a ferramenta definitiva para vendedores que desejam entender a rentabilidade real de seus produtos na plataforma. O TikTok Shop expandiu rapidamente no Brasil, trazendo uma estrutura de taxas competitiva, mas que exige atenção aos detalhes para não comprometer a margem de lucro. Esta ferramenta permite simular vendas considerando a comissão por categoria (que varia entre 5% e 8%), as taxas fixas de transação (2%) e processamento de pagamento (2.5%), além de custos logísticos e taxas de saque.
+
+Vender no TikTok exige uma estratégia clara de precificação. Ao utilizar nossa calculadora, você pode comparar cenários com e sem frete grátis subsidiado, entender o impacto de cupons de desconto e visualizar exatamente quanto sobrará em sua conta após todos os descontos da plataforma. A transparência nos custos é o primeiro passo para escalar um negócio saudável no e-commerce social, evitando surpresas no fechamento do mês.
+
+Nossa interface intuitiva e gráficos em tempo real ajudam você a tomar decisões rápidas sobre quais produtos promover e qual o desconto máximo permitido para manter uma margem efetiva saudável. Seja você um grande lojista ou um criador começando agora, dominar as taxas do TikTok Shop é essencial para o sucesso a longo prazo no mercado brasileiro.`,
+    howToUse: [
+      "Insira o preço de venda do seu produto no campo 'Preço do Produto'.",
+      "Informe o custo de aquisição ou fabricação para calcular sua margem real.",
+      "Selecione a categoria correta (Moda, Beleza, Eletrônicos, etc.) para aplicar a comissão exata.",
+      "Ative a opção de 'Frete Grátis' se você for oferecer esse benefício e insira o custo do envio.",
+      "Escolha o seu método de saque preferido (PIX, TED ou Internacional) para incluir essa taxa fixa.",
+      "Analise o gráfico de pizza e o detalhamento lateral para ver o valor líquido final e a margem de lucro percentual."
+    ],
+    faqs: [
+      { q: "Quais são as taxas do TikTok Shop Brasil em 2024?", a: "A estrutura básica inclui comissão por categoria (5-8%), taxa de transação (2%) e taxa de processamento de pagamento (2.5%)." },
+      { q: "Como calcular o valor líquido de uma venda no TikTok?", a: "Subtraia do preço bruto a comissão da categoria, a taxa de transação, o processamento, custos de frete (se aplicável) e a taxa de saque." },
+      { q: "O frete grátis no TikTok Shop é pago pelo vendedor?", a: "Depende da campanha. Em muitos casos, o vendedor subsidia o frete para atrair mais clientes. Nossa calculadora permite simular esse custo." },
+      { q: "Vale a pena vender no TikTok Shop?", a: "Sim, especialmente para produtos com alto apelo visual e viral. No entanto, é crucial monitorar a margem efetiva para garantir que o volume de vendas compense as taxas." }
+    ]
   }
 };
 

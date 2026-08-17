@@ -224,6 +224,7 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "overtime-calculator-philippines": lazy(() => import("./ph/overtime-calculator-philippines")),
   "holiday-pay-calculator-ph": lazy(() => import("./ph/holiday-pay-calculator-ph")),
   "night-shift-differential-calculator": lazy(() => import("./ph/night-shift-differential-calculator")),
+  "tiktok-shop-fee-calculator": lazy(() => import("./tiktok-shop-fee-calculator")),
 };
 
 
