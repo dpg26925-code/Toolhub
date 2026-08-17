@@ -378,6 +378,32 @@ Margem Efetiva: ${results.margin.toFixed(2)}%`;
             </CardContent>
           </Card>
 
+          <Card>
+            <CardHeader>
+              <CardTitle>Comparação: Impacto do Frete Grátis</CardTitle>
+              <CardDescription>Veja como oferecer frete grátis afeta seu lucro final</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4">
+                <div className={`p-4 rounded-lg border ${!isFreeShipping ? 'bg-primary/5 border-primary/20' : ''}`}>
+                  <p className="text-sm font-medium mb-1">Sem Frete Grátis</p>
+                  <p className="text-2xl font-bold">{formatBRL(results.withoutFreeShipping.profit)}</p>
+                  <p className="text-xs text-muted-foreground">{results.withoutFreeShipping.margin.toFixed(2)}% de margem</p>
+                </div>
+                <div className={`p-4 rounded-lg border ${isFreeShipping ? 'bg-primary/5 border-primary/20' : ''}`}>
+                  <p className="text-sm font-medium mb-1">Com Frete Grátis</p>
+                  <p className="text-2xl font-bold">{formatBRL(results.profit)}</p>
+                  <p className="text-xs text-muted-foreground">{results.margin.toFixed(2)}% de margem</p>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mt-4 italic">
+                {isFreeShipping 
+                  ? `Oferecer frete grátis reduz seu lucro em ${formatBRL(results.sellerShipping)} por venda, mas pode aumentar consideravelmente o volume de pedidos.`
+                  : "Considere oferecer frete grátis para aumentar sua taxa de conversão, ajustando o preço do produto se necessário."}
+              </p>
+            </CardContent>
+          </Card>
+
           <Card className="bg-amber-500/5 border-amber-500/20">
             <CardHeader className="pb-2 pt-4 flex flex-row items-center gap-2">
               <Info className="w-4 h-4 text-amber-600" />
