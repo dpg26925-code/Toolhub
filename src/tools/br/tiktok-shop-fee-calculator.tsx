@@ -83,7 +83,13 @@ export default function TikTokShopFeeCalculator() {
       netRevenue,
       profit,
       margin,
-      commissionPercent: commissionRate * 100
+      commissionPercent: commissionRate * 100,
+      withoutFreeShipping: {
+        totalFees: commission + transactionFee + processingFee + withdrawalFee,
+        netRevenue: p - (commission + transactionFee + processingFee + withdrawalFee) - disc,
+        profit: (p - (commission + transactionFee + processingFee + withdrawalFee) - disc) - cost,
+        margin: p > 0 ? (((p - (commission + transactionFee + processingFee + withdrawalFee) - disc) - cost) / p) * 100 : 0
+      }
     };
   }, [price, productCost, category, shippingCost, discount, withdrawalMethod, isFreeShipping]);
 
