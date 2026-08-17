@@ -866,6 +866,177 @@ Nossa interface intuitiva e gráficos em tempo real ajudam você a tomar decisõ
       { q: "O frete grátis no TikTok Shop é pago pelo vendedor?", a: "Depende da campanha. Em muitos casos, o vendedor subsidia o frete para atrair mais clientes. Nossa calculadora permite simular esse custo." },
       { q: "Vale a pena vender no TikTok Shop?", a: "Sim, especialmente para produtos com alto apelo visual e viral. No entanto, é crucial monitorar a margem efetiva para garantir que o volume de vendas compense as taxas." }
     ]
+  },
+  "tiktok-shop-fee-calculator": {
+    categoryLabel: "TikTok Shop Tool",
+    longDescription: `A Calculadora de Taxas TikTok Shop Brasil é a ferramenta definitiva para vendedores que desejam entender a rentabilidade real de seus produtos na plataforma. O TikTok Shop expandiu rapidamente no Brasil, trazendo uma estrutura de taxas competitiva, mas que exige atenção aos detalhes para não comprometer a margem de lucro. Esta ferramenta permite simular vendas considerando a comissão por categoria (que varia entre 5% e 8%), as taxas fixas de transação (2%) e processamento de pagamento (2.5%), além de custos logísticos e taxas de saque.
+
+Vender no TikTok exige uma estratégia clara de precificação. Ao utilizar nossa calculadora, você pode comparar cenários com e sem frete grátis subsidiado, entender o impacto de cupons de desconto e visualizar exatamente quanto sobrará em sua conta após todos os descontos da plataforma. A transparência nos custos é o primeiro passo para escalar um negócio saudável no e-commerce social, evitando surpresas no fechamento do mês.
+
+Nossa interface intuitiva e gráficos em tempo real ajudam você a tomar decisões rápidas sobre quais produtos promover e qual o desconto máximo permitido para manter uma margem efetiva saudável. Seja você um grande lojista ou um criador começando agora, dominar as taxas do TikTok Shop é essencial para o sucesso a longo prazo no mercado brasileiro.`,
+    howToUse: [
+      "Insira o preço de venda do seu produto no campo 'Preço do Produto'.",
+      "Informe o custo de aquisição ou fabricação para calcular sua margem real.",
+      "Selecione a categoria correta (Moda, Beleza, Eletrônicos, etc.) para aplicar a comissão exata.",
+      "Ative a opção de 'Frete Grátis' se você for oferecer esse benefício e insira o custo do envio.",
+      "Escolha o seu método de saque preferido (PIX, TED ou Internacional) para incluir essa taxa fixa.",
+      "Analise o gráfico de pizza e o detalhamento lateral para ver o valor líquido final e a margem de lucro percentual."
+    ],
+    faqs: [
+      { q: "Quais são as taxas do TikTok Shop Brasil em 2024?", a: "A estrutura básica inclui comissão por categoria (5-8%), taxa de transação (2%) e taxa de processamento de pagamento (2.5%)." },
+      { q: "Como calcular o valor líquido de uma venda no TikTok?", a: "Subtraia do preço bruto a comissão da categoria, a taxa de transação, o processamento, custos de frete (se aplicável) e a taxa de saque." },
+      { q: "O frete grátis no TikTok Shop é pago pelo vendedor?", a: "Depende da campanha. Em muitos casos, o vendedor subsidia o frete para atrair mais clientes. Nossa calculadora permite simular esse custo." },
+      { q: "Vale a pena vender no TikTok Shop?", a: "Sim, especialmente para produtos com alto apelo visual e viral. No entanto, é crucial monitorar a margem efetiva para garantir que o volume de vendas compense as taxas." }
+    ]
+  },
+  "calculadora-margem-lucro": {
+    categoryLabel: "Calculadora de E-commerce",
+    longDescription: `A Calculadora de Margem de Lucro para E-commerce é uma ferramenta indispensável para lojistas que buscam precisão financeira. No comércio eletrônico, a diferença entre o sucesso e o fracasso muitas vezes reside em poucos pontos percentuais de margem. Esta calculadora permite inserir não apenas o custo do produto e o preço de venda, mas também fretes, impostos e custos fixos proporcionais, fornecendo uma visão clara da saúde financeira de cada item em seu catálogo.
+
+Entender a diferença entre margem bruta e margem líquida é crucial. Enquanto a margem bruta foca na relação entre custo e preço de venda, a margem líquida revela o que realmente sobra após todas as deduções operacionais. Com esta ferramenta, você também pode calcular o Markup, um multiplicador essencial para definir preços competitivos mantendo a sustentabilidade do negócio.
+
+Utilize os gráficos integrados para visualizar o peso de cada custo em sua operação. Identificar que os impostos ou o frete estão consumindo uma fatia muito grande da sua margem permite ajustes estratégicos rápidos, como a troca de fornecedores, alteração da transportadora ou renegociação de taxas com marketplaces.`,
+    howToUse: [
+      "Insira o preço de venda final que você pretende cobrar do cliente.",
+      "Adicione o custo unitário de aquisição ou produção do produto.",
+      "Informe o custo médio de frete por unidade vendida.",
+      "Coloque a alíquota de impostos (ex: Simples Nacional) que incide sobre a nota fiscal.",
+      "Inclua outros custos variáveis, como embalagem ou taxas de cartão.",
+      "Visualize instantaneamente sua margem líquida e lucro em reais."
+    ],
+    faqs: [
+      { q: "Qual é a margem de lucro ideal para e-commerce?", a: "Embora varie por nicho, uma margem líquida entre 10% e 20% é considerada saudável para a maioria das operações brasileiras." },
+      { q: "Qual a diferença entre margem e markup?", a: "Margem é a porcentagem do preço de venda que é lucro. Markup é quanto você adiciona ao custo para chegar ao preço de venda." },
+      { q: "Como a calculadora trata impostos?", a: "Os impostos são calculados sobre o preço de venda bruto, que é a regra geral para a maioria dos regimes tributários no Brasil." },
+      { q: "Custos de frete devem entrar no cálculo de margem?", a: "Sim, se você oferece frete grátis ou subsidia parte dele, esse valor é um custo variável que reduz diretamente seu lucro." }
+    ]
+  },
+  "calculadora-frete-gratis": {
+    categoryLabel: "Estratégia de Logística",
+    longDescription: `Oferecer frete grátis é uma das táticas mais poderosas para reduzir o abandono de carrinho e aumentar as vendas, mas pode ser perigoso para o lucro se não for bem calculado. A Calculadora de Frete Grátis ajuda você a encontrar o "equilíbrio mágico": o preço mínimo de venda necessário para absorver o custo de envio sem sacrificar sua margem de lucro desejada.
+
+Esta ferramenta é essencial para lojistas no Mercado Livre, Shopee e sites próprios que desejam ser competitivos. Ela simula o impacto do frete em diferentes níveis de preço, permitindo que você decida se deve aumentar o valor do produto, criar combos para aumentar o ticket médio ou restringir o benefício a certas faixas de preço.
+
+O frete no Brasil tem custos variados devido à dimensão continental do país. Usar esta calculadora permite definir políticas de frete regionalizadas ou nacionais com muito mais segurança, garantindo que o crescimento no volume de vendas venha acompanhado de crescimento na rentabilidade.`,
+    howToUse: [
+      "Insira o preço atual ou planejado do seu produto.",
+      "Informe o custo médio de frete que você precisará pagar à transportadora.",
+      "Defina qual a margem de lucro mínima que você aceita ter neste item.",
+      "Analise o preço sugerido pela calculadora para manter essa rentabilidade com frete grátis.",
+      "Use as dicas estratégicas abaixo dos resultados para refinar sua política de envio."
+    ],
+    faqs: [
+      { q: "Vale a pena oferecer frete grátis para todo o Brasil?", a: "Geralmente não. É mais seguro oferecer para regiões próximas (ex: Sul/Sudeste) e estabelecer um valor mínimo de compra para outras regiões." },
+      { q: "Como o frete grátis afeta a conversão?", a: "Estudos mostram que o frete grátis pode aumentar a taxa de conversão em até 30%, pois elimina a 'surpresa' negativa no checkout." },
+      { q: "Devo subir o preço do produto para dar frete grátis?", a: "Sim, em muitos casos essa é a estratégia correta. O cliente prefere pagar R$ 100 com frete grátis do que R$ 80 + R$ 20 de frete." },
+      { q: "O que é 'Frete Grátis acima de R$ X'?", a: "É uma técnica para aumentar o Ticket Médio, onde o cliente adiciona mais itens ao carrinho para não pagar o envio." }
+    ]
+  },
+  "calculadora-cupom-desconto": {
+    categoryLabel: "Marketing de Vendas",
+    longDescription: `Promoções e cupons são a alma do marketing digital, mas sem cálculo, podem levar ao prejuízo. A Calculadora de Cupom de Desconto permite simular qualquer oferta — seja ela um valor fixo em reais ou uma porcentagem — e visualizar instantaneamente como isso afeta seu lucro final e sua margem.
+
+Esta ferramenta é perfeita para planejar campanhas de Black Friday, promoções de influenciadores ou cupons de primeira compra. Ela ajuda a definir o "teto de desconto", garantindo que, mesmo em promoção, sua loja continue sendo um negócio lucrativo.
+
+Muitos lojistas esquecem que o desconto incide sobre o faturamento, mas o custo do produto permanece o mesmo. Isso faz com que a margem caia de forma desproporcional. Nossa calculadora evidencia esse efeito, ajudando você a tomar decisões baseadas em dados, não apenas em intuição.`,
+    howToUse: [
+      "Insira o preço original do produto sem descontos.",
+      "Adicione o custo unitário (compra + taxas) para sabermos a base de lucro.",
+      "Selecione se o desconto será em Porcentagem (%) ou Valor Fixo (R$).",
+      "Informe o valor do desconto planejado.",
+      "Confira o preço final, o lucro restante e se a margem ainda é aceitável."
+    ],
+    faqs: [
+      { q: "Qual o desconto máximo que posso dar?", a: "O limite é o seu lucro bruto. Nunca dê um desconto que resulte em lucro zero ou negativo, a menos que seja uma estratégia de aquisição de clientes." },
+      { q: "Desconto em reais ou porcentagem: qual o melhor?", a: "Depende do preço. Para itens caros, porcentagem soa melhor. Para itens baratos, um valor fixo (ex: R$ 10 OFF) costuma converter mais." },
+      { q: "Como cupons afetam a margem de lucro?", a: "Eles reduzem a margem de forma agressiva. Um desconto de 20% no preço pode significar uma redução de 50% ou mais no seu lucro líquido." },
+      { q: "Devo dar cupom de primeira compra?", a: "Sim, é uma ótima ferramenta de aquisição. Calcule o desconto como um custo de marketing para trazer o cliente para sua base." }
+    ]
+  },
+  "calculadora-ponto-equilibrio": {
+    categoryLabel: "Gestão Financeira",
+    longDescription: `O Ponto de Equilíbrio, ou Break-Even Point, é o número mágico que todo empresário deve conhecer. Ele representa o momento exato em que suas vendas igualam seus custos — a partir desse ponto, cada venda adicional gera lucro real. Esta calculadora simplifica o processo, permitindo que você visualize quanto precisa vender mensalmente para manter as portas abertas.
+
+Entender seus custos fixos (aluguel, sistemas, salários) e seus custos variáveis (impostos, custos do produto) é o primeiro passo para uma gestão profissional. A calculadora fornece não apenas o número de unidades, mas também o faturamento necessário e um gráfico intuitivo que mostra o cruzamento das linhas de custo e receita.
+
+Use esta ferramenta para planejar expansões, contratações ou para entender a viabilidade de um novo nicho. Se o seu ponto de equilíbrio está muito alto, você sabe que precisa aumentar seus preços, reduzir custos fixos ou buscar produtos com maior margem de contribuição.`,
+    howToUse: [
+      "Informe a soma de todos os seus custos fixos mensais.",
+      "Insira o preço médio de venda dos seus produtos.",
+      "Adicione o custo variável médio (produto + impostos + taxas por venda).",
+      "Analise o resultado em unidades e faturamento total.",
+      "Observe o gráfico para entender a distância entre sua situação atual e o lucro."
+    ],
+    faqs: [
+      { q: "O que é Ponto de Equilíbrio?", a: "É o nível de vendas onde a receita total é igual à soma de todos os custos fixos e variáveis. É o ponto de lucro zero." },
+      { q: "Como reduzir o ponto de equilíbrio?", a: "Você pode reduzir custos fixos, diminuir o custo de aquisição dos produtos ou aumentar o preço de venda." },
+      { q: "Por que o ponto de equilíbrio é importante?", a: "Ele ajuda a definir metas de vendas realistas e a entender o risco do negócio em meses de baixa demanda." },
+      { q: "O que é Margem de Contribuição?", a: "É o valor que sobra de cada venda após pagar os custos variáveis, que será usado para cobrir os custos fixos e gerar lucro." }
+    ]
+  },
+  "calculadora-roi-marketing": {
+    categoryLabel: "Marketing Digital",
+    longDescription: `No marketing digital para e-commerce, o ROI (Retorno sobre Investimento) e o ROAS (Retorno sobre Gasto em Anúncios) são os indicadores que separam amadores de profissionais. Nossa calculadora de ROI permite que você vá além das métricas de vaidade das plataformas de anúncios e veja o lucro real que sobrou no bolso após considerar todos os custos operacionais.
+
+Muitas vezes, uma campanha com ROAS alto no Facebook ou Google pode estar dando prejuízo se a margem do produto for baixa ou se o frete for caro. Esta ferramenta consolida investimento, faturamento e custos de produto, fornecendo uma visão 360º da performance das suas campanhas pagas.
+
+Calcular o ROI permite que você decida com segurança onde investir mais dinheiro e quais canais de aquisição devem ser pausados. É a ferramenta base para escalar seu tráfego pago de forma lucrativa e sustentável no mercado brasileiro.`,
+    howToUse: [
+      "Insira o valor total investido em anúncios no período.",
+      "Informe o faturamento total gerado diretamente por essas campanhas.",
+      "Adicione o custo dos produtos vendidos e outras taxas variáveis.",
+      "Informe o número de conversões (vendas) para calcular o CPA.",
+      "Confira o ROI percentual, o ROAS e o lucro líquido da campanha."
+    ],
+    faqs: [
+      { q: "Qual a diferença entre ROI e ROAS?", a: "O ROAS foca apenas no faturamento bruto sobre o gasto. O ROI considera todos os custos, revelando o lucro líquido real." },
+      { q: "O que é um ROI positivo?", a: "Qualquer ROI acima de 0% significa que você não perdeu dinheiro, mas idealmente você busca valores significativamente maiores para cobrir sua estrutura." },
+      { q: "Como calcular o CPA (Custo por Aquisição)?", a: "Divida o investimento total pelo número de vendas geradas pela campanha." },
+      { q: "Qual o ROAS ideal para e-commerce?", a: "Depende da margem. Para produtos com margem de 50%, um ROAS acima de 2x já começa a dar lucro. Para margens menores, o ROAS precisa ser maior." }
+    ]
+  },
+  "calculadora-estoque-minimo": {
+    categoryLabel: "Gestão de Estoque",
+    longDescription: `A falta de produto no estoque (ruptura) é uma das maiores causas de perda de vendas e queda de reputação em marketplaces. A Calculadora de Estoque Mínimo e Ponto de Reposição ajuda você a manter o equilíbrio perfeito: nem estoque demais (dinheiro parado), nem estoque de menos (venda perdida).
+
+Considerando sua demanda diária, o tempo que o fornecedor leva para entregar (Lead Time) e uma margem de segurança para imprevistos, nossa ferramenta diz exatamente quando você deve emitir um novo pedido de compra. É a ciência da logística aplicada ao seu pequeno ou médio e-commerce.
+
+Uma gestão de estoque eficiente libera fluxo de caixa para você investir em marketing e novos produtos. Use esta calculadora para seus itens mais vendidos (Curva A) e garanta que sua operação nunca pare por falta de mercadoria.`,
+    howToUse: [
+      "Insira a média de unidades vendidas por mês deste produto.",
+      "Informe quantos dias o fornecedor leva para entregar após o pedido.",
+      "Defina quantos dias de segurança você deseja ter (ex: 5 ou 10 dias).",
+      "Confira o Ponto de Reposição: quando seu estoque bater este número, peça mais.",
+      "Veja também o estoque de segurança, que é o seu limite crítico."
+    ],
+    faqs: [
+      { q: "O que é Ponto de Reposição?", a: "É o nível de estoque que, ao ser atingido, dispara a necessidade de um novo pedido de compra para que a mercadoria chegue antes do estoque acabar." },
+      { q: "O que é Lead Time?", a: "É o tempo total decorrido entre o pedido ao fornecedor e a entrada física do produto no seu estoque." },
+      { q: "Como definir o estoque de segurança?", a: "Depende da confiabilidade do fornecedor e da estabilidade da demanda. Para fornecedores instáveis, use um estoque de segurança maior." },
+      { q: "Dinheiro parado no estoque é prejuízo?", a: "Sim. Ter estoque excessivo aumenta seus custos de armazenagem e impede que esse dinheiro seja usado para gerar mais vendas em outras áreas." }
+    ]
+  },
+  "calculadora-preco-venda": {
+    categoryLabel: "Precificação de E-commerce",
+    longDescription: `Definir o preço de um produto no e-commerce brasileiro é um desafio que envolve múltiplas variáveis: custos de aquisição, frete, impostos em cascata e taxas agressivas de marketplaces. A Calculadora de Preço de Venda Sugerido resolve essa equação para você, garantindo que o preço final cubra todos os custos e ainda entregue a margem de lucro que seu negócio precisa.
+
+Utilizando a técnica de Markup baseada na margem desejada, a ferramenta projeta o preço ideal. Ela é fundamental para quem vende em canais como Mercado Livre, Amazon e Shopee, onde as taxas podem chegar a 20% ou mais do valor da venda. Sem um cálculo preciso, é fácil vender muito e acabar com saldo negativo.
+
+Ao simular diferentes cenários, você pode descobrir se um produto é viável para o mercado ou se o preço necessário para ter lucro está muito acima da concorrência, permitindo ajustes no seu modelo de negócio antes de investir em estoque.`,
+    howToUse: [
+      "Insira o custo de compra do produto.",
+      "Defina a margem de lucro líquida que você deseja ter sobre o preço final.",
+      "Informe a porcentagem de impostos que sua empresa paga sobre a venda.",
+      "Adicione a comissão cobrada pelo marketplace ou canal de venda.",
+      "Inclua o custo de frete que será embutido no preço.",
+      "Confira o preço de venda sugerido e o lucro real em reais."
+    ],
+    faqs: [
+      { q: "Como definir o preço de venda no e-commerce?", a: "O preço deve ser a soma do custo do produto, frete, impostos e taxas, dividida pelo complemento da margem de lucro desejada." },
+      { q: "O que fazer se o preço sugerido for maior que a concorrência?", a: "Você precisará reduzir seus custos (negociar com fornecedores), baixar sua margem de lucro ou agregar mais valor ao produto." },
+      { q: "Impostos incidem sobre o lucro ou faturamento?", a: "No e-commerce brasileiro, a maioria dos impostos (como o Simples Nacional) incide sobre o faturamento bruto." },
+      { q: "O que é Markup?", a: "É um índice aplicado sobre o custo do produto para formar o preço de venda. Ele deve ser suficiente para cobrir despesas e gerar o lucro desejado." }
+    ]
   }
 };
 
@@ -878,6 +1049,7 @@ export function getToolContent(tool: Tool): ToolContent {
     faqs: override.faqs ?? defaultFaqs(tool),
   };
 }
+
 
 
 export function toolPageTitle(tool: Tool): string {
