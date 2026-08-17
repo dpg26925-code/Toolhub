@@ -217,7 +217,15 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "robots-txt-generator": lazy(() => import("./robots-txt-generator")),
   "sitemap-xml-generator": lazy(() => import("./sitemap-xml-generator")),
   "htaccess-generator": lazy(() => import("./htaccess-generator")),
+  "pag-ibig-contribution-calculator": lazy(() => import("./ph/pag-ibig-contribution-calculator")),
+  "sss-contribution-calculator": lazy(() => import("./ph/sss-contribution-calculator")),
+  "philhealth-calculator": lazy(() => import("./ph/philhealth-calculator")),
+  "bir-withholding-tax-calculator": lazy(() => import("./ph/bir-withholding-tax-calculator")),
+  "overtime-calculator-philippines": lazy(() => import("./ph/overtime-calculator-philippines")),
+  "holiday-pay-calculator-ph": lazy(() => import("./ph/holiday-pay-calculator-ph")),
+  "night-shift-differential-calculator": lazy(() => import("./ph/night-shift-differential-calculator")),
 };
+
 
 Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "instagram-hashtag-generator": lazy(() => import("./instagram-hashtag-generator")),
