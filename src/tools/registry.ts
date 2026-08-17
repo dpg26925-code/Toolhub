@@ -338,7 +338,7 @@ Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "tiktok-affiliate-roi-calculator": lazy(() => import("./tiktok-affiliate-roi-calculator")),
   "tiktok-hashtag-finder": lazy(() => import("./tiktok-hashtag-finder")),
   "tiktok-video-hook-generator": lazy(() => import("./tiktok-video-hook-generator")),
-  "tiktok-shop-fee-calculator": lazy(() => import("./tiktok-shop-fee-calculator")),
+  
   "tiktok-commission-calculator": lazy(() => import("./tiktok-commission-calculator")),
   // Shopee
   "shopee-fee-calculator": lazy(() => import("./shopee-fee-calculator")),
