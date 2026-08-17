@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
-import { Calculator, Percent, Copy, Check, Info } from "lucide-react";
+import { Calculator, Percent, Copy, Check, Info, TrendingDown } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,7 +26,12 @@ export default function CalculadoraCupomDesconto() {
     const profit = finalPrice - c;
     const margin = finalPrice > 0 ? (profit / finalPrice) * 100 : 0;
 
-    return { discountAmount, finalPrice, profit, margin };
+    const chartData = [
+      { name: "Preço Original", value: p, color: "#94a3b8" },
+      { name: "Com Desconto", value: finalPrice, color: "#10b981" }
+    ];
+
+    return { discountAmount, finalPrice, profit, margin, chartData };
   }, [price, discountType, discountValue, cost]);
 
   const copyResults = () => {
@@ -85,6 +91,20 @@ export default function CalculadoraCupomDesconto() {
               <h3 className="text-2xl font-bold">{results.margin.toFixed(2)}%</h3>
             </div>
           </div>
+
+          <div className="h-[180px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={results.chartData} layout="vertical" margin={{ left: 30, right: 40 }}>
+                <XAxis type="number" hide />
+                <YAxis dataKey="name" type="category" width={120} tick={{ fontSize: 12 }} />
+                <Tooltip formatter={(v: number) => formatBRL(v)} />
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={35}>
+                  {results.chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
 
           <Button className="w-full" onClick={copyResults}>
             {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}

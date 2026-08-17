@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { BarChart3, TrendingUp, Info, DollarSign, Copy, Check } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -108,7 +109,30 @@ export default function CalculadoraROIMarketing() {
                   <p className="text-xl font-bold">{formatBRL(results.cpa)}</p>
                 </div>
               </div>
+              </div>
               
+              <div className="h-[250px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={results.chartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {results.chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(v: number) => formatBRL(v)} />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
               <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded">
                 <p><strong>Dica:</strong> Um ROAS acima de 4x é geralmente considerado bom no e-commerce brasileiro, mas o que importa é o lucro líquido final no bolso.</p>
               </div>

@@ -26,7 +26,12 @@ export default function CalculadoraFreteGratis() {
     const currentCost = p * (1 - m); 
     const minPriceForFreeShipping = (currentCost + s) / (1 - m);
 
-    return { minPriceForFreeShipping, impact: minPriceForFreeShipping - p };
+    const chartData = [
+      { name: "Preço Atual", value: p, color: "#94a3b8" },
+      { name: "Preço Sugerido (Frete Grátis)", value: minPriceForFreeShipping, color: "#10b981" }
+    ];
+
+    return { minPriceForFreeShipping, impact: minPriceForFreeShipping - p, chartData };
   }, [price, shippingCost, desiredMargin]);
 
   const copyResults = () => {
@@ -69,6 +74,22 @@ export default function CalculadoraFreteGratis() {
               {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
               Copiar
             </Button>
+          </div>
+
+          <div className="h-[200px] w-full mt-6">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={results.chartData} layout="vertical" margin={{ left: 40, right: 40 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                <XAxis type="number" hide />
+                <YAxis dataKey="name" type="category" width={150} tick={{ fontSize: 12 }} />
+                <Tooltip formatter={(v: number) => formatBRL(v)} />
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={40}>
+                  {results.chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
           <div className="text-sm text-muted-foreground border-t pt-4">

@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Package, RefreshCw, AlertTriangle, Info, ArrowDownCircle } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,7 +21,23 @@ export default function CalculadoraEstoqueMinimo() {
     const reorderPoint = Math.ceil((dailyDemand * lt) + safetyStock);
     const minimumStock = safetyStock;
 
-    return { safetyStock, reorderPoint, minimumStock, dailyDemand };
+    // Mock a depletion graph
+    const chartData = [];
+    let current = reorderPoint * 1.5;
+    for (let i = 0; i < 30; i++) {
+      chartData.push({
+        day: `Dia ${i + 1}`,
+        estoque: Math.max(0, Math.round(current)),
+        minimo: minimumStock,
+        reposicao: reorderPoint
+      });
+      current -= dailyDemand;
+      if (current < safetyStock) {
+        current = reorderPoint * 1.5; // Simulate a restock for visualization
+      }
+    }
+
+    return { safetyStock, reorderPoint, minimumStock, dailyDemand, chartData };
   }, [demand, leadTime, safetyDays]);
 
   return (
@@ -77,6 +94,27 @@ export default function CalculadoraEstoqueMinimo() {
               <p className="text-sm text-blue-700/80">
                 Quantidade mínima para não ficar sem produto (Ruptura).
               </p>
+            </CardContent>
+          </Card>
+
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">Projeção de Consumo</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[150px] w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={results.chartData}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="day" hide />
+                    <YAxis hide domain={[0, 'dataMax + 10']} />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="estoque" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.1} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
 
