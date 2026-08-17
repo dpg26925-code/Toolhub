@@ -224,7 +224,14 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "overtime-calculator-philippines": lazy(() => import("./ph/overtime-calculator-philippines")),
   "holiday-pay-calculator-ph": lazy(() => import("./ph/holiday-pay-calculator-ph")),
   "night-shift-differential-calculator": lazy(() => import("./ph/night-shift-differential-calculator")),
-  "tiktok-shop-fee-calculator": lazy(() => import("./tiktok-shop-fee-calculator")),
+  "tiktok-shop-fee-calculator": lazy(() => import("./br/tiktok-shop-fee-calculator")),
+  "calculadora-margem-lucro": lazy(() => import("./br/calculadora-margem-lucro")),
+  "calculadora-frete-gratis": lazy(() => import("./br/calculadora-frete-gratis")),
+  "calculadora-cupom-desconto": lazy(() => import("./br/calculadora-cupom-desconto")),
+  "calculadora-ponto-equilibrio": lazy(() => import("./br/calculadora-ponto-equilibrio")),
+  "calculadora-roi-marketing": lazy(() => import("./br/calculadora-roi-marketing")),
+  "calculadora-estoque-minimo": lazy(() => import("./br/calculadora-estoque-minimo")),
+  "calculadora-preco-venda": lazy(() => import("./br/calculadora-preco-venda")),
 };
 
 
@@ -338,7 +345,7 @@ Object.assign(TOOL_REGISTRY, import.meta.env.SSR ? {} : {
   "tiktok-affiliate-roi-calculator": lazy(() => import("./tiktok-affiliate-roi-calculator")),
   "tiktok-hashtag-finder": lazy(() => import("./tiktok-hashtag-finder")),
   "tiktok-video-hook-generator": lazy(() => import("./tiktok-video-hook-generator")),
-  "tiktok-shop-fee-calculator": lazy(() => import("./tiktok-shop-fee-calculator")),
+  
   "tiktok-commission-calculator": lazy(() => import("./tiktok-commission-calculator")),
   // Shopee
   "shopee-fee-calculator": lazy(() => import("./shopee-fee-calculator")),
