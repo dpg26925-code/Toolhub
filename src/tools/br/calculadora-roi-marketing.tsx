@@ -28,7 +28,14 @@ export default function CalculadoraROIMarketing() {
     const roas = inv > 0 ? (rev / inv) : 0;
     const cpa = conv > 0 ? (inv / conv) : 0;
 
-    return { netProfit, roi, roas, cpa };
+    const chartData = [
+      { name: "Lucro Líquido", value: Math.max(0, netProfit), fill: "#10b981" },
+      { name: "Investimento Ads", value: inv, fill: "#3b82f6" },
+      { name: "Custo Produtos", value: cost, fill: "#f59e0b" },
+      { name: "Outros Custos", value: other, fill: "#94a3b8" }
+    ];
+
+    return { netProfit, roi, roas, cpa, chartData };
   }, [investment, revenue, productCost, otherCosts, conversions]);
 
   const copyResults = () => {
@@ -108,7 +115,6 @@ export default function CalculadoraROIMarketing() {
                   <p className="text-sm text-muted-foreground mb-1">CPA (Custo por Aquisição)</p>
                   <p className="text-xl font-bold">{formatBRL(results.cpa)}</p>
                 </div>
-              </div>
               </div>
               
               <div className="h-[250px] w-full">
