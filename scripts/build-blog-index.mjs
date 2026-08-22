@@ -44,8 +44,23 @@ function keepExisting(reason) {
   return false;
 }
 
+const MANUAL_POSTS = [
+  {
+    "slug": "tiktok-shop-philippines-labor-costs",
+    "title": "The Complete Guide to Philippines Labor Costs for TikTok Shop Sellers",
+    "excerpt": "Calculate 13th month pay, SSS, Pag-IBIG, PhilHealth, and BIR withholding tax for your Philippines-based TikTok Shop team. Free calculators included.",
+    "content": "**TL;DR:** Running a TikTok Shop in the Philippines means hiring local staff — whether it's a virtual assistant for order processing, a creative for content, or a full operations team. But Philippines labor costs are more complex than just salary. Mandatory contributions, 13th month pay, taxes, and overtime premiums add 20-40% to your labor budget.\n\nIn this guide, we'll break down every component of Philippines labor costs and show you how to calculate them accurately.\n\n---\n\n## The True Cost of Hiring in the Philippines\n\nWhen you offer a PHP 25,000 monthly salary, your actual cost is higher:\n\n| Component | Employee Share | Employer Share | Total |\n|---|---|---|---|\n| Basic Salary | 25,000 | - | 25,000 |\n| SSS | 1,125 | 1,125 | 2,250 |\n| Pag-IBIG | 250 | 500 | 750 |\n| PhilHealth | 687.50 | 687.50 | 1,375 |\n| 13th Month Pay | - | 2,083 | 2,083 |\n| **Total** | **27,062.50** | **4,395** | **31,457.50** |\n\nYour actual cost is 26% above the base salary.\n\n---\n\n## 13th Month Pay\n\n13th month pay is a mandatory benefit under Presidential Decree 851. It equals monthly basic salary × months worked ÷ 12, prorated for partial years.\n\n**Key rules:**\n- Must be paid before December 24\n- PHP 300,000 tax-exempt threshold\n- Includes basic salary + regular allowances\n- Excludes bonuses, gifts, overtime\n\nUse the [13th Month Pay Calculator](/tools/13th-month-pay-calculator) to compute exact amounts.\n\n---\n\n## SSS Contributions\n\nSSS provides retirement, disability, and health benefits. Contribution rates vary by salary bracket:\n\n| Salary Bracket | Employer | Employee | Total |\n|---|---|---|---|\n| PHP 5,000 | 500 | 200 | 700 |\n| PHP 15,000 | 1,125 | 562.50 | 1,687.50 |\n| PHP 25,000 | 1,125 | 1,125 | 2,250 |\n| PHP 35,000 | 1,125 | 1,125 | 2,250 |\n\nUse the [SSS Contribution Calculator](/tools/sss-calculator) for exact amounts.\n\n---\n\n## Pag-IBIG\n\nPag-IBIG provides housing loans and savings. Contributions are capped at PHP 200 each for employee and employer.\n\n| Monthly Salary | Employee (1-2%) | Employer (2-3%) | Total |\n|---|---|---|---|\n| PHP 10,000 | 100 | 200 | 300 |\n| PHP 20,000 | 200 | 200 | 400 |\n| PHP 35,000 | 200 | 200 | 400 |\n\nUse the [Pag-IBIG Calculator](/tools/pag-ibig-calculator) for details.\n\n---\n\n## PhilHealth\n\nPhilHealth provides health insurance. Both employee and employer contribute 2.75% each, with a floor of PHP 275 and ceiling of PHP 5,500.\n\n| Monthly Salary | Employee | Employer | Total |\n|---|---|---|---|\n| PHP 10,000 | 275 | 275 | 550 |\n| PHP 25,000 | 687.50 | 687.50 | 1,375 |\n| PHP 100,000 | 2,750 | 2,750 | 5,500 |\n\n---\n\n## BIR Withholding Tax\n\nIncome tax is progressive. The first PHP 250,000 is exempt:\n\n| Annual Taxable Income | Rate |\n|---|---|\n| Below PHP 250,000 | 0% |\n| PHP 250,001 - 400,000 | 15% of excess |\n| PHP 400,001 - 800,000 | PHP 22,500 + 20% |\n| PHP 800,001 - 2,000,000 | PHP 102,500 + 25% |\n\nUse the [BIR Withholding Tax Calculator](/tools/bir-tax-calculator) for monthly tax estimates.\n\n---\n\n## Overtime and Premium Pay\n\nPhilippine labor law mandates premium pay for:\n- **Rest days:** +30%\n- **Special holidays:** +30% (if worked)\n- **Regular holidays:** +100%\n- **Night shift (10PM-6AM):** +10%\n\nUse the [Overtime Calculator PH](/tools/overtime-calculator-ph) for exact computations.\n\n---\n\n## Total Labor Cost Calculator\n\nTo estimate your total labor cost:\n1. Start with base salary\n2. Add employee contributions (SSS, Pag-IBIG, PhilHealth)\n3. Add employer contributions (same as above)\n4. Add 13th month pay (monthly salary ÷ 12)\n5. Add estimated tax withholding\n6. Add overtime/holiday premiums if applicable\n\n---\n\n## Case Study: TikTok Shop Operations Manager\n\n**Scenario:** Hire an operations manager at PHP 35,000/month.\n\n**Cost breakdown:**\n- Base salary: PHP 35,000\n- SSS: PHP 2,250 (employer)\n- Pag-IBIG: PHP 200 (employer)\n- PhilHealth: PHP 962.50 (employer)\n- 13th month: PHP 2,917/month equivalent\n- **Total monthly cost: PHP 41,330**\n- **Markup:** 18% above base salary\n\n---\n\n## FAQ\n\n**Q: Is 13th month pay taxable?**\nA: The first PHP 300,000 is tax-exempt. Amounts above are subject to withholding tax.\n\n**Q: What if I hire someone mid-year?**\nA: 13th month pay is prorated based on months worked.\n\n**Q: Do I need to register for SSS, Pag-IBIG, and PhilHealth?**\nA: Yes, as an employer, you must register and contribute for all regular employees.\n\n**Q: How do I compute overtime for holidays?**\nA: Regular holidays pay 200% of daily rate. If the holiday falls on a rest day, it's 260%.\n\n**Q: What's the minimum wage in the Philippines?**\nA: It varies by region. Check DOLE's current rates for your area.\n\n---\n\n## Related Tools\n\n- [13th Month Pay Calculator](/tools/13th-month-pay-calculator)\n- [SSS Contribution Calculator](/tools/sss-calculator)\n- [Pag-IBIG Calculator](/tools/pag-ibig-calculator)\n- [BIR Withholding Tax Calculator](/tools/bir-tax-calculator)\n- [Overtime Calculator PH](/tools/overtime-calculator-ph)\n",
+    "cover_image": null,
+    "meta_title": "The Complete Guide to Philippines Labor Costs for TikTok Shop Sellers",
+    "meta_description": "Calculate 13th month pay, SSS, Pag-IBIG, PhilHealth, and BIR withholding tax for your Philippines-based TikTok Shop team. Free calculators included.",
+    "published_at": "2026-08-22T15:10:02.000Z",
+    "created_at": "2026-08-22T15:10:02.000Z",
+    "updated_at": "2026-08-22T15:10:02.000Z"
+  }
+];
+
 if (!url || !key) {
-  if (!keepExisting("Supabase env vars missing")) emit([]);
+  if (!keepExisting("Supabase env vars missing")) emit(MANUAL_POSTS);
   process.exit(0);
 }
 
@@ -55,15 +70,18 @@ const endpoint = `${url}/rest/v1/blog_posts?select=${encodeURIComponent(select)}
 try {
   const res = await fetch(endpoint, { headers: { apikey: key, Accept: "application/json" } });
   if (!res.ok) {
-    if (!keepExisting(`Supabase ${res.status}`)) emit([]);
+    if (!keepExisting(`Supabase ${res.status}`)) emit(MANUAL_POSTS);
     process.exit(0);
   }
   const posts = await res.json();
-  if (Array.isArray(posts) && posts.length > 0) {
-    emit(posts);
-  } else if (!keepExisting("Supabase returned no posts")) {
-    emit([]);
+  if (Array.isArray(posts)) {
+    // Combine fetched posts with manual posts, ensuring no duplicates by slug
+    const manualSlugs = new Set(MANUAL_POSTS.map(p => p.slug));
+    const combined = [...MANUAL_POSTS, ...posts.filter(p => !manualSlugs.has(p.slug))];
+    emit(combined);
+  } else if (!keepExisting("Supabase returned invalid format")) {
+    emit(MANUAL_POSTS);
   }
 } catch (err) {
-  if (!keepExisting(`fetch failed: ${err?.message || err}`)) emit([]);
+  if (!keepExisting(`fetch failed: ${err?.message || err}`)) emit(MANUAL_POSTS);
 }

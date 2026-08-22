@@ -2,7 +2,7 @@
 // Regenerated on every build via the `prebuild` npm script.
 import type { StaticBlogPost } from "./blog-index";
 
-export const GENERATED_AT = "2026-08-22T15:11:14.927Z";
+export const GENERATED_AT = "2026-08-22T15:12:42.195Z";
 export const STATIC_BLOG_POSTS: StaticBlogPost[] = [
   {
     "slug": "how-to-resize-an-image-online",
