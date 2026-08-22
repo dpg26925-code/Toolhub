@@ -484,12 +484,53 @@ Use this tool for embedding small assets like SVGs into CSS, creating data URLs 
       { q: "Which algorithms are supported for reading?", a: "Any JWT with a standard three-segment structure — HS256, RS256, ES256 and others. Only the payload is decoded; the signature is displayed but not verified." },
     ],
   },
-  "password-generator": {
-    longDescription: "Password strength depends on two factors: entropy from the random source and length from the user. This tool uses crypto.getRandomValues() instead of Math.random() because the latter is predictable under certain browser states.\n\nEach generated password is derived from cryptographically secure random bytes, then filtered for ambiguous characters if requested — confusing l and 1, O and 0. Typical outputs exceed 60 bits of entropy at 16 characters, which meets NIST SP 800-63B guidelines for memorized secrets.\n\nUse it for API keys, database passwords, and temporary access codes, but pair generated passwords with a password manager for long-term storage.",
+  "word-counter": {
+    metaDescription: "Count words, characters, and reading time online for free. Track word frequency and density for SEO optimization. Real-time text analysis.",
+    longDescription: `Precision in writing starts with understanding the scale and structure of your content. The Word Counter is a comprehensive text analysis engine designed for content creators, students, and SEO professionals. Unlike basic word counts in word processors, this tool provides a real-time breakdown of character counts (with and without spaces), sentence counts, and estimated reading time at different speeds.
+
+For SEO enthusiasts, we go a step further by calculating keyword frequency and density. This allows you to identify if you're overusing certain terms or missing out on key phrases needed for search engine ranking. The tool also provides insights into text readability and average word length, helping you tailor your voice to your target audience.
+
+Whether you're writing a meta description within a 160-character limit, drafting a blog post to meet a 2,000-word goal, or analyzing a competitors' content, this utility provides the data you need instantly. Everything happens in your browser, keeping your drafts completely private and secure.`,
+    useCases: [
+      "For copywriters: Ensure your social media captions and meta descriptions fit within character limits.",
+      "For SEO specialists: Analyze keyword density to avoid keyword stuffing and optimize for ranking.",
+      "For students: Track essay length to meet specific word count requirements for assignments.",
+      "For public speakers: Estimate speech duration based on average speaking speeds.",
+    ],
     howToUse: [
-      "Set the desired length (12–64 characters recommended).",
-      "Toggle character classes — uppercase, digits, symbols — to match the site's requirements.",
-      "Click Generate and copy the password directly into your password manager.",
+      "Paste your text into the analysis box or start typing directly.",
+      "Review the word, character, and sentence counts displayed at the top.",
+      "Check the 'Keyword Density' panel to see your most frequently used terms.",
+      "Use the 'Reading Time' estimate to gauge the length of your content for users.",
+      "Click 'Clear' to start fresh with a new piece of text.",
+    ],
+    faqs: [
+      { q: "How is reading time calculated?", a: "We assume an average reading speed of 225 words per minute. For technical content, you may want to adjust your estimate downward to around 180 words per minute." },
+      { q: "Does it count spaces as characters?", a: "Yes. The tool provides two character counts: one including spaces and one excluding them, so you can meet any specific requirement." },
+      { q: "Is keyword density important for SEO?", a: "Yes. While there's no 'perfect' percentage, keeping your primary keywords between 1-2% density is generally considered safe and effective for modern SEO." },
+      { q: "Can I analyze text in different languages?", a: "Absolutely. Our word counter works by identifying whitespace and punctuation boundaries, which is compatible with most Latin-based and many non-Latin languages." },
+    ],
+    relatedTools: ["case-converter", "lorem-ipsum-generator", "slug-generator"],
+  },
+  "password-generator": {
+    metaDescription: "Generate secure, random passwords online for free. Cryptographically strong, customizable, and 100% private in-browser generator.",
+    longDescription: `In an era of increasing data breaches, a weak password is the single largest security risk for any user. Our Password Generator uses the Web Crypto API (crypto.getRandomValues()) to ensure that every character is chosen using a cryptographically strong random source, making them immune to the predictability issues of standard pseudo-random number generators.
+
+The tool provides granular control over password complexity. You can toggle uppercase letters, lowercase letters, numbers, and special symbols to meet the specific requirements of any website. We also include a 'Exclude Ambiguous Characters' option, which removes confusing characters like 'l' and '1', or 'O' and '0', ensuring you never misread a generated secret.
+
+Use these passwords for new accounts, API keys, or securing local database instances. Because the generation happens entirely in your browser, the passwords never traverse the internet and are never logged on our servers. For maximum security, we recommend using these generated passwords in conjunction with a dedicated password manager.`,
+    useCases: [
+      "For new accounts: Generate unique, complex passwords for every website you visit.",
+      "For developers: Create high-entropy API keys and secret tokens for your applications.",
+      "For IT admins: Generate temporary, secure passwords for user onboarding.",
+      "For home users: Secure your Wi-Fi router and IoT devices with strong, random credentials.",
+    ],
+    howToUse: [
+      "Select the desired password length (16+ characters is recommended for high security).",
+      "Toggle the character types (Uppercase, Numbers, Symbols) you wish to include.",
+      "Enable 'Exclude Ambiguous' if you plan to type the password manually.",
+      "Click 'Generate' to create a new unique password string.",
+      "Click the 'Copy' button to save it to your clipboard for instant use.",
     ],
     faqs: [
       { q: "Is this password truly random?", a: "Yes. It uses the Web Crypto API (crypto.getRandomValues), which is cryptographically secure and not pseudo-random like Math.random." },
@@ -497,6 +538,7 @@ Use this tool for embedding small assets like SVGs into CSS, creating data URLs 
       { q: "What length is secure enough?", a: "12+ characters for general use, 16+ for admin or root accounts. This tool's default is 16 characters." },
       { q: "Can I generate pronounceable passwords?", a: "This version generates random strings only. For memorable passphrases, use a diceware-style word list in future updates." },
     ],
+    relatedTools: ["jwt-decoder", "base64", "hash-generator"],
   },
   "image-resizer": {
     longDescription: "Resizing images for the web is not just about changing width and height — it is about preserving visual quality while reducing file size for faster page loads. This tool uses the Canvas API to resample images with bilinear interpolation, maintaining aspect ratio by default and supporting exact pixel dimensions, percentage scaling, and preset sizes for common use cases: social media posts (1080×1080), blog thumbnails (1200×630), and favicons.\n\nExport options include PNG for lossless graphics, JPG for photos with adjustable quality, and WebP for modern browsers seeking better compression ratios than both PNG and JPG.\n\nEverything runs on your device, so unreleased product shots and client work under NDA stay private. Pair it with Image Compressor and Remove Background for a full browser-based asset pipeline.",
