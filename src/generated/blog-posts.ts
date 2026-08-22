@@ -2,7 +2,7 @@
 // Regenerated on every build via the `prebuild` npm script.
 import type { StaticBlogPost } from "./blog-index";
 
-export const GENERATED_AT = "2026-08-22T15:13:43.171Z";
+export const GENERATED_AT = "2026-08-22T15:15:01.782Z";
 export const STATIC_BLOG_POSTS: StaticBlogPost[] = [
   {
     "slug": "tiktok-shop-philippines-labor-costs",
