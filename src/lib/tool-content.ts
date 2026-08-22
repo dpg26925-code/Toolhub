@@ -446,18 +446,30 @@ Pair it with our JSON Validator to catch both syntax errors and schema violation
     relatedTools: ["csv-to-json", "xml-to-json", "jwt-decoder"],
   },
   "base64": {
-    longDescription: "Base64 encoding often gets misused as encryption or used for the wrong binary types. This tool handles both text-to-Base64 and Base64-to-text conversions with proper UTF-8 handling, meaning emoji, Chinese characters, and Vietnamese diacritics round-trip correctly — something naive implementations break by assuming ASCII-only input.\n\nIt also supports Base64 URL-safe encoding, which replaces + and / with - and _ for use in JWTs, data URLs, and URL parameters.\n\nCommon use cases include embedding SVG icons in CSS, constructing data: URLs for images, and decoding Base64 payloads from API logs or email attachments. Pair it with JWT Decoder for auth tokens and JSON Formatter for decoded payloads.",
+    metaDescription: "Encode and decode Base64 text online for free. Support for UTF-8 and URL-safe formats. Secure, fast, and private in-browser tool.",
+    longDescription: `Base64 encoding is an essential method for converting binary data into an ASCII string format, allowing it to be safely transmitted over media that only support text. However, many tools fail when dealing with non-ASCII characters. Our Base64 tool handles both text-to-Base64 and Base64-to-text conversions with full UTF-8 support, ensuring that emojis, international characters, and specialized symbols round-trip correctly every time.
+
+Beyond standard encoding, we support Base64 URL-safe mode, which is critical for developers building JWTs, OAuth implementations, or embedding data in URL parameters without needing additional URL encoding. 
+
+Use this tool for embedding small assets like SVGs into CSS, creating data URLs for images, or inspecting encoded payloads from server logs and email headers. Everything runs client-side, so your sensitive API tokens and encoded secrets never leave your browser.`,
+    useCases: [
+      "For developers: Decode Base64-encoded strings from logs or API responses instantly.",
+      "For designers: Convert small SVG icons to Data URLs for embedding directly into CSS files.",
+      "For security researchers: Inspect encoded payloads in JWTs or web requests safely.",
+    ],
     howToUse: [
-      "Paste your text (to encode) or Base64 string (to decode) into the input box.",
-      "Choose Encode or Decode — UTF-8 is handled automatically.",
-      "Copy the result or download it as a text file.",
+      "Paste the text or Base64 string you want to convert into the input box.",
+      "Choose 'Encode' to generate Base64 or 'Decode' to get the original text back.",
+      "Toggle 'URL Safe' if you need the result to be compatible with URL paths.",
+      "Copy the output to your clipboard for use in your code or documentation.",
     ],
     faqs: [
-      { q: "Is Base64 encryption?", a: "No. Base64 is an encoding format, not encryption. Anyone can decode it. For sensitive data, encrypt first using AES or RSA, then encode if needed." },
-      { q: "What's the difference between standard and URL-safe Base64?", a: "Standard Base64 uses + and /; URL-safe replaces them with - and _. Use URL-safe for URLs, JWTs, and filenames." },
-      { q: "Can I encode images with this tool?", a: "This tool encodes text. For images, use the Image to Base64 tool which accepts file uploads and outputs data URLs." },
-      { q: "Why does my decoded text have weird characters?", a: "Most likely the original was not UTF-8. Try selecting UTF-16 or ISO-8859-1 as input encoding if you know the source format." },
+      { q: "Is Base64 a form of encryption?", a: "No. Base64 is an encoding scheme, not encryption. Anyone who sees a Base64 string can decode it instantly. Never use it to secure sensitive information without actual encryption." },
+      { q: "Does this tool support emojis and special characters?", a: "Yes. We use UTF-8 encoding/decoding, which ensures that all Unicode characters, including emojis and non-Latin scripts, are preserved correctly." },
+      { q: "What is 'URL-safe' Base64?", a: "Standard Base64 uses '+' and '/' characters, which have special meanings in URLs. URL-safe Base64 replaces them with '-' and '_' and often omits the '=' padding." },
+      { q: "Can I encode large files?", a: "This tool is optimized for text and small assets (up to 5 MB). For very large files, a dedicated binary encoder is recommended to avoid browser memory issues." },
     ],
+    relatedTools: ["jwt-decoder", "json-formatter", "url-encoder"],
   },
   "jwt-decoder": {
     longDescription: "JWT Decoder inspects the header, payload and signature of any JSON Web Token so you can see exactly what a client or backend is sending. Paste a token and the tool splits it, Base64URL-decodes each segment, pretty-prints the JSON and highlights standard claims like iss, sub, aud, exp and iat with human-readable expiry dates.\n\nThis is the fastest way to debug auth issues — expired tokens, wrong audience, missing scopes, misconfigured issuer — without spinning up a debugger or writing a script. Everything happens in your browser, so production tokens stay on your machine and are never logged.\n\nJWT Decoder does not verify signatures against a secret or JWKS — for that, wire your library of choice into your test environment. It's designed for quick inspection, not authentication.",
