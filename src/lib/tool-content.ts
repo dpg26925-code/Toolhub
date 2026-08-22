@@ -736,11 +736,23 @@ Use this tool for embedding small assets like SVGs into CSS, creating data URLs 
     ],
   },
   "utm-builder": {
-    longDescription: "UTM parameters are how Google Analytics, Mixpanel, Amplitude and every other web analytics tool attribute a visit to a specific campaign, ad set or channel. This builder assembles a properly-encoded URL from the five standard fields — source, medium, campaign, term and content — and validates each one against common mistakes: spaces (converted to underscores or hyphens), uppercase inconsistencies, and reserved characters.\n\nA campaign templates panel gives you a starting point for the most common playbooks: paid social (Meta, TikTok, LinkedIn), Google Ads, email newsletters, influencer partnerships and QR-code print campaigns. Saved presets keep your team's naming convention consistent, so reports don't fragment into 'facebook', 'Facebook', and 'FB'.\n\nEverything runs locally and links can be shortened via an integration with your preferred URL shortener. Pair it with the QR Code Generator for print or with the Link Checker before launching a paid campaign.",
+    metaDescription: "Build UTM tracking URLs online for free. Support for Google Analytics, Meta, and social campaigns. Consistent, URL-safe, and secure builder.",
+    longDescription: `UTM parameters are the backbone of digital marketing attribution, allowing platforms like Google Analytics, Mixpanel, and Amplitude to identify exactly which campaign, ad, or link drove a user to your site. Without consistent UTM tagging, your marketing data becomes fragmented and unreliable. Our UTM Builder is designed to enforce consistency across your entire team.
+
+The tool automatically normalizes your inputs, converting spaces to underscores and forcing lowercase by default to prevent 'Facebook' and 'facebook' from appearing as separate sources in your reports. It supports all five standard parameters — Source, Medium, Campaign, Term, and Content — providing real-time URL previews so you can catch encoding errors before you go live.
+
+Whether you're managing complex paid social campaigns on Meta and TikTok, tracking clicks from email newsletters, or measuring the impact of influencer partnerships, this builder ensures every link is correctly formatted. For print and offline campaigns, you can instantly generate a QR code for your tagged URL directly within the interface.`,
+    useCases: [
+      "For marketers: Create consistent tracking links for multi-channel social media campaigns.",
+      "For email managers: Tag newsletter links to see which content drives the most engagement.",
+      "For business owners: Use UTM-tagged URLs in QR codes to track offline-to-online conversions.",
+    ],
     howToUse: [
-      "Paste the destination URL you want to track.",
-      "Fill in source, medium and campaign — the tool encodes and normalises each field.",
-      "Copy the tagged URL, or generate a QR code for print and offline campaigns.",
+      "Paste the destination URL you want to track into the 'Website URL' field.",
+      "Enter the Source (e.g., newsletter), Medium (e.g., email), and Campaign Name.",
+      "Optionally add Term and Content fields for more granular A/B testing data.",
+      "Review the generated URL and click 'Copy' to use it in your campaign.",
+      "Generate a QR code if you need to use the link on physical marketing materials.",
     ],
     faqs: [
       { q: "What's the difference between utm_source and utm_medium?", a: "Source identifies WHERE the visit came from (facebook, newsletter, partner_x). Medium identifies HOW (cpc, email, referral, social). Keep both consistent across campaigns for clean reporting." },
@@ -748,6 +760,7 @@ Use this tool for embedding small assets like SVGs into CSS, creating data URLs 
       { q: "Do UTM parameters affect SEO?", a: "No — search engines ignore UTM parameters when consolidating link equity, and Google Search Console de-duplicates them in performance reports. Just avoid using them on internal links, which would overwrite the original attribution." },
       { q: "How long can a UTM-tagged URL be?", a: "Practical limit is around 2,000 characters (browser and server URL limits). Keep individual UTM values under 50 characters for readability in reports." },
     ],
+    relatedTools: ["qr-code-generator", "slug-generator", "word-counter"],
   },
   "13th-month-pay-calculator": {
     categoryLabel: "Accounting Tool",
