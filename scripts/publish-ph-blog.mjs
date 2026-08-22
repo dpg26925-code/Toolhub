@@ -17,10 +17,10 @@ if (fs.existsSync(envPath)) {
 }
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  console.error("Missing Supabase URL or Key");
+  console.error("Missing Supabase URL or Service Role Key in .env");
   process.exit(1);
 }
 
@@ -201,7 +201,7 @@ Use our suite of [Philippines HR Tools](/category/philippines) to simplify your 
     meta_title: 'The Complete Guide to Philippines Labor Costs for TikTok Shop Sellers',
     meta_description: 'Calculate 13th month pay, SSS, Pag-IBIG, PhilHealth, and BIR withholding tax for your Philippines-based TikTok Shop team. Free calculators included.',
     published: true,
-    published_at: '2026-08-22T15:10:02.000Z',
+    published_at: new Date('2026-08-22T15:10:02.000Z').toISOString(),
     category: 'Business'
   };
 
