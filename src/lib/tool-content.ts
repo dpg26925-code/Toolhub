@@ -344,7 +344,17 @@ function defaultFaqs(tool: Tool): Faq[] {
 /** Per-tool overrides. Add entries here to give featured tools bespoke copy. */
 const OVERRIDES: Record<string, Partial<ToolContent>> = {
   "pdf-compressor": {
-    longDescription: "PDF compression is not one-size-fits-all: a scanned image-heavy PDF needs a different approach than a text-heavy form document. This tool analyzes the PDF structure first — counting vector objects, image resolutions, and embedded fonts — then applies the appropriate optimization path. Image-heavy PDFs go through downsampling and recompression; text-heavy PDFs keep text as text and remove redundant font subsets.\n\nThe result is a smaller file that remains searchable and selectable, rather than a flat rasterized blob. Common use cases include reducing file size for email attachments, meeting upload limits on government portals, and speeding up document previews on mobile.\n\nEverything runs in your browser, so sensitive contracts, medical records and internal reports never leave your device — pair it with PDF Split or PDF Unlock when you need to prep a document before compressing.",
+    metaDescription: "Compress PDF files online for free. Reduce PDF size in-browser without uploading. Keep text selectable. High-quality compression for any document.",
+    longDescription: `PDF compression is not one-size-fits-all: a scanned image-heavy PDF needs a different approach than a text-heavy form document. This tool analyzes the PDF structure first — counting vector objects, image resolutions, and embedded fonts — then applies the appropriate optimization path. Image-heavy PDFs go through downsampling and recompression; text-heavy PDFs keep text as text and remove redundant font subsets.
+
+The result is a smaller file that remains searchable and selectable, rather than a flat rasterized blob. Common use cases include reducing file size for email attachments, meeting upload limits on government portals, and speeding up document previews on mobile.
+
+Everything runs in your browser, so sensitive contracts, medical records and internal reports never leave your device — pair it with PDF Split or PDF Unlock when you need to prep a document before compressing.`,
+    useCases: [
+      "For email: Send large reports as smaller attachments without losing clarity.",
+      "For portals: Meet strict upload file-size limits on government or bank websites.",
+      "For mobile: Speed up mobile previews of long manuals and research papers.",
+    ],
     howToUse: [
       "Click the file picker and select the PDF you want to compress.",
       "Choose a compression preset — Low keeps images crisp, High squeezes hardest.",
@@ -356,6 +366,7 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Does compression remove the password?", a: "No. If the PDF is protected, unlock it first using the PDF Unlock tool." },
       { q: "Can I compress multiple PDFs at once?", a: "Batch compression is coming soon. Currently, compress one PDF at a time." },
     ],
+    relatedTools: ["pdf-merge", "pdf-split", "pdf-unlock"],
   },
   "remove-background": {
     longDescription: "Remove Image Background erases the background from any photo automatically, leaving you with a clean transparent PNG in seconds. Whether you're preparing product shots for an online store, cutting out a headshot for a resume or building a design collage, this tool skips the tedious manual masking in Photoshop and does the work in one click.\n\nUnder the hood, a neural network runs directly inside your browser using WebAssembly — no files are uploaded to any server, and processing works even when you're offline once the model has loaded. That means your photos stay completely private, which matters for personal photos, unreleased product imagery and anything under NDA.\n\nThe output is a transparent PNG that drops cleanly onto any background — solid color, gradient, another photo or a web page. Use the built-in before/after slider to preview the cut-out and re-run it if the edges need a second pass.",
