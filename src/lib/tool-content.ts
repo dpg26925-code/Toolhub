@@ -4,11 +4,17 @@ export type Faq = { q: string; a: string };
 export type ToolContent = {
   /** SEO title category label, e.g. "PDF Tool" */
   categoryLabel: string;
-  /** 300-500 word body copy shown below the tool UI */
+  /** Meta description for SEO (150-160 chars) */
+  metaDescription?: string;
+  /** 400-600 word body copy shown below the tool UI */
   longDescription: string;
-  /** Step-by-step instructions */
+  /** Specific real-world scenarios for the tool */
+  useCases?: string[];
+  /** Step-by-step instructions (5-7 steps) */
   howToUse: string[];
   faqs: Faq[];
+  /** Manually curated related tool slugs */
+  relatedTools?: string[];
 };
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -291,13 +297,23 @@ function defaultLongDescription(tool: Tool): string {
     : `${tool.name} runs on Nexatools' secure server infrastructure with per-session isolation and no long-term storage`;
   const action = toolAction(tool);
 
-  const p1 = `${tool.name} is a purpose-built online tool that helps you ${action}. Instead of stitching together a spreadsheet, a CLI or a heavyweight desktop app, you get a focused single-page workflow that takes ${c.input} and returns ${c.output} in seconds.`;
+  const p1 = `${tool.name} is a professional-grade online tool designed to help you ${action} with precision and ease. Whether you are a developer, business owner, or student, this utility streamlines your workflow by taking ${c.input} and returning ${c.output} in seconds. No more complex software installations or manual calculations.`;
 
-  const p2 = `${c.audience} reach for ${tool.name} when they need a reliable answer fast — inside a support ticket, before a meeting, while shipping a release or between takes on a video shoot. ${runtime}, so the workflow stays private and portable across desktop, tablet and mobile browsers.`;
+  const p2 = `### Key Features of ${tool.name}:
+- **Instant Processing**: Get results in real-time as you type or upload.
+- **Privacy First**: ${runtime}, ensuring your sensitive data stays secure.
+- **Mobile Friendly**: Access the full power of ${tool.name} on any device, from desktop to smartphone.
+- **Commercial Use**: Every result is yours to use in professional, client, or personal projects.`;
 
-  const p3 = `${tool.name} is one of 130+ tools in the Nexatools directory. Pair it with ${c.companions} to build a full ${c.audience.toLowerCase().split(",")[0]} toolkit that lives in a single tab. Sign in for a free account to save history and favourites, or upgrade to Pro for API access, batch processing and higher daily quotas.`;
+  const p3 = `### How it works:
+Behind the scenes, ${tool.name} uses advanced algorithms to process your input. For developer tools, we use standard libraries to ensure compliance with modern protocols. For calculators, we implement the latest formulas (like the 2024 tax rules or financial interest equations) to give you accurate results every time.`;
 
-  return [p1, p2, p3].join("\n\n");
+  const p4 = `### Why this tool matters:
+In today's fast-paced environment, ${c.audience} need tools that just work. ${tool.name} eliminates the friction of switching between heavy applications. For example, a developer can use it to quickly debug a payload before a stand-up meeting, or a small business owner can calculate margins on the fly while negotiating with a supplier.
+
+${tool.name} is one of 130+ tools in the Nexatools directory. Pair it with ${c.companions} to build a full ${c.audience.toLowerCase().split(",")[0]} toolkit that lives in a single tab. Sign in for a free account to save history and favourites, or upgrade to Pro for API access and batch processing.`;
+
+  return [p1, p2, p3, p4].join("\n\n");
 }
 
 function defaultHowToUse(tool: Tool): string[] {
@@ -338,7 +354,17 @@ function defaultFaqs(tool: Tool): Faq[] {
 /** Per-tool overrides. Add entries here to give featured tools bespoke copy. */
 const OVERRIDES: Record<string, Partial<ToolContent>> = {
   "pdf-compressor": {
-    longDescription: "PDF compression is not one-size-fits-all: a scanned image-heavy PDF needs a different approach than a text-heavy form document. This tool analyzes the PDF structure first — counting vector objects, image resolutions, and embedded fonts — then applies the appropriate optimization path. Image-heavy PDFs go through downsampling and recompression; text-heavy PDFs keep text as text and remove redundant font subsets.\n\nThe result is a smaller file that remains searchable and selectable, rather than a flat rasterized blob. Common use cases include reducing file size for email attachments, meeting upload limits on government portals, and speeding up document previews on mobile.\n\nEverything runs in your browser, so sensitive contracts, medical records and internal reports never leave your device — pair it with PDF Split or PDF Unlock when you need to prep a document before compressing.",
+    metaDescription: "Compress PDF files online for free. Reduce PDF size in-browser without uploading. Keep text selectable. High-quality compression for any document.",
+    longDescription: `PDF compression is not one-size-fits-all: a scanned image-heavy PDF needs a different approach than a text-heavy form document. This tool analyzes the PDF structure first — counting vector objects, image resolutions, and embedded fonts — then applies the appropriate optimization path. Image-heavy PDFs go through downsampling and recompression; text-heavy PDFs keep text as text and remove redundant font subsets.
+
+The result is a smaller file that remains searchable and selectable, rather than a flat rasterized blob. Common use cases include reducing file size for email attachments, meeting upload limits on government portals, and speeding up document previews on mobile.
+
+Everything runs in your browser, so sensitive contracts, medical records and internal reports never leave your device — pair it with PDF Split or PDF Unlock when you need to prep a document before compressing.`,
+    useCases: [
+      "For email: Send large reports as smaller attachments without losing clarity.",
+      "For portals: Meet strict upload file-size limits on government or bank websites.",
+      "For mobile: Speed up mobile previews of long manuals and research papers.",
+    ],
     howToUse: [
       "Click the file picker and select the PDF you want to compress.",
       "Choose a compression preset — Low keeps images crisp, High squeezes hardest.",
@@ -350,6 +376,7 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Does compression remove the password?", a: "No. If the PDF is protected, unlock it first using the PDF Unlock tool." },
       { q: "Can I compress multiple PDFs at once?", a: "Batch compression is coming soon. Currently, compress one PDF at a time." },
     ],
+    relatedTools: ["pdf-merge", "pdf-split", "pdf-unlock"],
   },
   "remove-background": {
     longDescription: "Remove Image Background erases the background from any photo automatically, leaving you with a clean transparent PNG in seconds. Whether you're preparing product shots for an online store, cutting out a headshot for a resume or building a design collage, this tool skips the tedious manual masking in Photoshop and does the work in one click.\n\nUnder the hood, a neural network runs directly inside your browser using WebAssembly — no files are uploaded to any server, and processing works even when you're offline once the model has loaded. That means your photos stay completely private, which matters for personal photos, unreleased product imagery and anything under NDA.\n\nThe output is a transparent PNG that drops cleanly onto any background — solid color, gradient, another photo or a web page. Use the built-in before/after slider to preview the cut-out and re-run it if the edges need a second pass.",
@@ -391,11 +418,23 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
     ],
   },
   "json-formatter": {
-    longDescription: "A broken JSON config that reaches production is one of the most avoidable outages in modern web development. Unlike generic formatters, this tool validates against the ECMAScript standard while preserving your original data types — numbers stay numbers, booleans stay booleans, and nested objects maintain their structure.\n\nIt also flags common pitfalls: trailing commas, unquoted keys in JS mode, mixed quote styles, and deeply nested objects that exceed safe character limits. Use it before committing .json configs, API payloads, or environment variables.\n\nPair it with our JSON Validator to catch both syntax errors and schema violations before they hit CI/CD, and with JWT Decoder or Base64 when the JSON is wrapped inside an auth token or encoded field.",
+    metaDescription: "Format and validate JSON online for free. Beautify, minify, and fix JSON syntax errors instantly in your browser. Secure and private.",
+    longDescription: `A broken JSON config that reaches production is one of the most avoidable outages in modern web development. Unlike generic formatters, this tool validates against the ECMAScript standard while preserving your original data types — numbers stay numbers, booleans stay booleans, and nested objects maintain their structure.
+
+It also flags common pitfalls: trailing commas, unquoted keys in JS mode, mixed quote styles, and deeply nested objects that exceed safe character limits. Use it before committing .json configs, API payloads, or environment variables.
+
+Pair it with our JSON Validator to catch both syntax errors and schema violations before they hit CI/CD, and with JWT Decoder or Base64 when the JSON is wrapped inside an auth token or encoded field.`,
+    useCases: [
+      "For developers: Beautify messy API responses for easier debugging and readability.",
+      "For DevOps: Minify configuration files to reduce payload size in production environments.",
+      "For QA: Validate JSON syntax and catch trailing commas or missing quotes before testing.",
+    ],
     howToUse: [
-      "Paste your raw JSON into the input box.",
-      "Click Beautify to pretty-print, or Minify to collapse to a single line.",
-      "Copy the result with the Copy button, or download it as a .json file.",
+      "Paste your raw JSON into the input box or upload a .json file.",
+      "Click 'Beautify' to pretty-print or 'Minify' to compress the text.",
+      "Fix any highlighted syntax errors reported by the real-time validator.",
+      "Use 'Sort Keys' if you need a deterministic object structure for git diffs.",
+      "Copy the result or download it as a new JSON file.",
     ],
     faqs: [
       { q: "Does this tool handle JSON with comments or trailing commas?", a: "Yes. If your payload is JSON5 or includes comments, the formatter can auto-clean it to valid JSON. Trailing commas are removed automatically unless you explicitly enable JSON5 mode." },
@@ -404,20 +443,33 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "What's the difference between this and Prettier?", a: "Prettier is a code formatter for source files; this tool focuses on data payload validation and preservation of data types, making it safer for API debugging and config files." },
       { q: "Does it work with large JSON files?", a: "Files up to 10 MB parse smoothly in-browser. For larger payloads, consider splitting or using the streaming JSON extractor." },
     ],
+    relatedTools: ["csv-to-json", "xml-to-json", "jwt-decoder"],
   },
   "base64": {
-    longDescription: "Base64 encoding often gets misused as encryption or used for the wrong binary types. This tool handles both text-to-Base64 and Base64-to-text conversions with proper UTF-8 handling, meaning emoji, Chinese characters, and Vietnamese diacritics round-trip correctly — something naive implementations break by assuming ASCII-only input.\n\nIt also supports Base64 URL-safe encoding, which replaces + and / with - and _ for use in JWTs, data URLs, and URL parameters.\n\nCommon use cases include embedding SVG icons in CSS, constructing data: URLs for images, and decoding Base64 payloads from API logs or email attachments. Pair it with JWT Decoder for auth tokens and JSON Formatter for decoded payloads.",
+    metaDescription: "Encode and decode Base64 text online for free. Support for UTF-8 and URL-safe formats. Secure, fast, and private in-browser tool.",
+    longDescription: `Base64 encoding is an essential method for converting binary data into an ASCII string format, allowing it to be safely transmitted over media that only support text. However, many tools fail when dealing with non-ASCII characters. Our Base64 tool handles both text-to-Base64 and Base64-to-text conversions with full UTF-8 support, ensuring that emojis, international characters, and specialized symbols round-trip correctly every time.
+
+Beyond standard encoding, we support Base64 URL-safe mode, which is critical for developers building JWTs, OAuth implementations, or embedding data in URL parameters without needing additional URL encoding. 
+
+Use this tool for embedding small assets like SVGs into CSS, creating data URLs for images, or inspecting encoded payloads from server logs and email headers. Everything runs client-side, so your sensitive API tokens and encoded secrets never leave your browser.`,
+    useCases: [
+      "For developers: Decode Base64-encoded strings from logs or API responses instantly.",
+      "For designers: Convert small SVG icons to Data URLs for embedding directly into CSS files.",
+      "For security researchers: Inspect encoded payloads in JWTs or web requests safely.",
+    ],
     howToUse: [
-      "Paste your text (to encode) or Base64 string (to decode) into the input box.",
-      "Choose Encode or Decode — UTF-8 is handled automatically.",
-      "Copy the result or download it as a text file.",
+      "Paste the text or Base64 string you want to convert into the input box.",
+      "Choose 'Encode' to generate Base64 or 'Decode' to get the original text back.",
+      "Toggle 'URL Safe' if you need the result to be compatible with URL paths.",
+      "Copy the output to your clipboard for use in your code or documentation.",
     ],
     faqs: [
-      { q: "Is Base64 encryption?", a: "No. Base64 is an encoding format, not encryption. Anyone can decode it. For sensitive data, encrypt first using AES or RSA, then encode if needed." },
-      { q: "What's the difference between standard and URL-safe Base64?", a: "Standard Base64 uses + and /; URL-safe replaces them with - and _. Use URL-safe for URLs, JWTs, and filenames." },
-      { q: "Can I encode images with this tool?", a: "This tool encodes text. For images, use the Image to Base64 tool which accepts file uploads and outputs data URLs." },
-      { q: "Why does my decoded text have weird characters?", a: "Most likely the original was not UTF-8. Try selecting UTF-16 or ISO-8859-1 as input encoding if you know the source format." },
+      { q: "Is Base64 a form of encryption?", a: "No. Base64 is an encoding scheme, not encryption. Anyone who sees a Base64 string can decode it instantly. Never use it to secure sensitive information without actual encryption." },
+      { q: "Does this tool support emojis and special characters?", a: "Yes. We use UTF-8 encoding/decoding, which ensures that all Unicode characters, including emojis and non-Latin scripts, are preserved correctly." },
+      { q: "What is 'URL-safe' Base64?", a: "Standard Base64 uses '+' and '/' characters, which have special meanings in URLs. URL-safe Base64 replaces them with '-' and '_' and often omits the '=' padding." },
+      { q: "Can I encode large files?", a: "This tool is optimized for text and small assets (up to 5 MB). For very large files, a dedicated binary encoder is recommended to avoid browser memory issues." },
     ],
+    relatedTools: ["jwt-decoder", "json-formatter", "url-encoder"],
   },
   "jwt-decoder": {
     longDescription: "JWT Decoder inspects the header, payload and signature of any JSON Web Token so you can see exactly what a client or backend is sending. Paste a token and the tool splits it, Base64URL-decodes each segment, pretty-prints the JSON and highlights standard claims like iss, sub, aud, exp and iat with human-readable expiry dates.\n\nThis is the fastest way to debug auth issues — expired tokens, wrong audience, missing scopes, misconfigured issuer — without spinning up a debugger or writing a script. Everything happens in your browser, so production tokens stay on your machine and are never logged.\n\nJWT Decoder does not verify signatures against a secret or JWKS — for that, wire your library of choice into your test environment. It's designed for quick inspection, not authentication.",
@@ -432,12 +484,53 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Which algorithms are supported for reading?", a: "Any JWT with a standard three-segment structure — HS256, RS256, ES256 and others. Only the payload is decoded; the signature is displayed but not verified." },
     ],
   },
-  "password-generator": {
-    longDescription: "Password strength depends on two factors: entropy from the random source and length from the user. This tool uses crypto.getRandomValues() instead of Math.random() because the latter is predictable under certain browser states.\n\nEach generated password is derived from cryptographically secure random bytes, then filtered for ambiguous characters if requested — confusing l and 1, O and 0. Typical outputs exceed 60 bits of entropy at 16 characters, which meets NIST SP 800-63B guidelines for memorized secrets.\n\nUse it for API keys, database passwords, and temporary access codes, but pair generated passwords with a password manager for long-term storage.",
+  "word-counter": {
+    metaDescription: "Count words, characters, and reading time online for free. Track word frequency and density for SEO optimization. Real-time text analysis.",
+    longDescription: `Precision in writing starts with understanding the scale and structure of your content. The Word Counter is a comprehensive text analysis engine designed for content creators, students, and SEO professionals. Unlike basic word counts in word processors, this tool provides a real-time breakdown of character counts (with and without spaces), sentence counts, and estimated reading time at different speeds.
+
+For SEO enthusiasts, we go a step further by calculating keyword frequency and density. This allows you to identify if you're overusing certain terms or missing out on key phrases needed for search engine ranking. The tool also provides insights into text readability and average word length, helping you tailor your voice to your target audience.
+
+Whether you're writing a meta description within a 160-character limit, drafting a blog post to meet a 2,000-word goal, or analyzing a competitors' content, this utility provides the data you need instantly. Everything happens in your browser, keeping your drafts completely private and secure.`,
+    useCases: [
+      "For copywriters: Ensure your social media captions and meta descriptions fit within character limits.",
+      "For SEO specialists: Analyze keyword density to avoid keyword stuffing and optimize for ranking.",
+      "For students: Track essay length to meet specific word count requirements for assignments.",
+      "For public speakers: Estimate speech duration based on average speaking speeds.",
+    ],
     howToUse: [
-      "Set the desired length (12–64 characters recommended).",
-      "Toggle character classes — uppercase, digits, symbols — to match the site's requirements.",
-      "Click Generate and copy the password directly into your password manager.",
+      "Paste your text into the analysis box or start typing directly.",
+      "Review the word, character, and sentence counts displayed at the top.",
+      "Check the 'Keyword Density' panel to see your most frequently used terms.",
+      "Use the 'Reading Time' estimate to gauge the length of your content for users.",
+      "Click 'Clear' to start fresh with a new piece of text.",
+    ],
+    faqs: [
+      { q: "How is reading time calculated?", a: "We assume an average reading speed of 225 words per minute. For technical content, you may want to adjust your estimate downward to around 180 words per minute." },
+      { q: "Does it count spaces as characters?", a: "Yes. The tool provides two character counts: one including spaces and one excluding them, so you can meet any specific requirement." },
+      { q: "Is keyword density important for SEO?", a: "Yes. While there's no 'perfect' percentage, keeping your primary keywords between 1-2% density is generally considered safe and effective for modern SEO." },
+      { q: "Can I analyze text in different languages?", a: "Absolutely. Our word counter works by identifying whitespace and punctuation boundaries, which is compatible with most Latin-based and many non-Latin languages." },
+    ],
+    relatedTools: ["case-converter", "lorem-ipsum-generator", "slug-generator"],
+  },
+  "password-generator": {
+    metaDescription: "Generate secure, random passwords online for free. Cryptographically strong, customizable, and 100% private in-browser generator.",
+    longDescription: `In an era of increasing data breaches, a weak password is the single largest security risk for any user. Our Password Generator uses the Web Crypto API (crypto.getRandomValues()) to ensure that every character is chosen using a cryptographically strong random source, making them immune to the predictability issues of standard pseudo-random number generators.
+
+The tool provides granular control over password complexity. You can toggle uppercase letters, lowercase letters, numbers, and special symbols to meet the specific requirements of any website. We also include a 'Exclude Ambiguous Characters' option, which removes confusing characters like 'l' and '1', or 'O' and '0', ensuring you never misread a generated secret.
+
+Use these passwords for new accounts, API keys, or securing local database instances. Because the generation happens entirely in your browser, the passwords never traverse the internet and are never logged on our servers. For maximum security, we recommend using these generated passwords in conjunction with a dedicated password manager.`,
+    useCases: [
+      "For new accounts: Generate unique, complex passwords for every website you visit.",
+      "For developers: Create high-entropy API keys and secret tokens for your applications.",
+      "For IT admins: Generate temporary, secure passwords for user onboarding.",
+      "For home users: Secure your Wi-Fi router and IoT devices with strong, random credentials.",
+    ],
+    howToUse: [
+      "Select the desired password length (16+ characters is recommended for high security).",
+      "Toggle the character types (Uppercase, Numbers, Symbols) you wish to include.",
+      "Enable 'Exclude Ambiguous' if you plan to type the password manually.",
+      "Click 'Generate' to create a new unique password string.",
+      "Click the 'Copy' button to save it to your clipboard for instant use.",
     ],
     faqs: [
       { q: "Is this password truly random?", a: "Yes. It uses the Web Crypto API (crypto.getRandomValues), which is cryptographically secure and not pseudo-random like Math.random." },
@@ -445,6 +538,7 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "What length is secure enough?", a: "12+ characters for general use, 16+ for admin or root accounts. This tool's default is 16 characters." },
       { q: "Can I generate pronounceable passwords?", a: "This version generates random strings only. For memorable passphrases, use a diceware-style word list in future updates." },
     ],
+    relatedTools: ["jwt-decoder", "base64", "hash-generator"],
   },
   "image-resizer": {
     longDescription: "Resizing images for the web is not just about changing width and height — it is about preserving visual quality while reducing file size for faster page loads. This tool uses the Canvas API to resample images with bilinear interpolation, maintaining aspect ratio by default and supporting exact pixel dimensions, percentage scaling, and preset sizes for common use cases: social media posts (1080×1080), blog thumbnails (1200×630), and favicons.\n\nExport options include PNG for lossless graphics, JPG for photos with adjustable quality, and WebP for modern browsers seeking better compression ratios than both PNG and JPG.\n\nEverything runs on your device, so unreleased product shots and client work under NDA stay private. Pair it with Image Compressor and Remove Background for a full browser-based asset pipeline.",
@@ -475,11 +569,24 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
     ],
   },
   "pdf-merge": {
-    longDescription: "Merging PDFs client-side avoids upload delays and keeps sensitive documents off third-party servers, but browser-based merging has limits: page count, image resolution, and font embedding must be handled carefully to avoid corrupting the output. This tool uses pdf-lib to concatenate page streams while preserving embedded fonts, images, and annotations.\n\nIt supports drag-and-drop reordering before merge, so you can preview page thumbnails and swap sequence without re-uploading files.\n\nTypical use cases include combining split contract chapters, assembling multi-page invoices, and merging scanned documents into a single submission package.",
+    metaDescription: "Merge PDF files online for free. Combine multiple PDFs into one document securely in your browser. Reorder pages and files instantly.",
+    longDescription: `Combining multiple documents into a single, cohesive PDF is a frequent requirement for legal submissions, academic projects, and business reporting. However, uploading sensitive contracts to cloud-based mergers poses a significant privacy risk. Our PDF Merge tool solves this by performing the entire operation client-side using WebAssembly and the pdf-lib library. 
+
+The tool doesn't just stick files together; it intelligently merges page streams while preserving embedded fonts, high-resolution images, and interactive annotations. You can drag and drop files to reorder them before merging, ensuring your table of contents or cover page is exactly where it needs to be.
+
+Whether you're assembling a multi-part contract from different departments, combining scanned receipts for an expense report, or merging chapters for an ebook, this tool delivers professional results without the wait time of traditional server-side processing. Your documents never leave your device, ensuring total privacy.`,
+    useCases: [
+      "For legal professionals: Combine multiple contract chapters and exhibits into a single submission file.",
+      "For students: Merge individual assignment pages and research citations into one final project PDF.",
+      "For HR managers: Compile employee onboarding documents, IDs, and signed forms into a single digital folder.",
+      "For business owners: Aggregate monthly invoices and project reports into one comprehensive client update.",
+    ],
     howToUse: [
-      "Drop in two or more PDF files from your device.",
-      "Reorder the files by dragging them into the sequence you want.",
-      "Click Merge and download the combined PDF.",
+      "Select two or more PDF files from your computer or mobile device.",
+      "Drag the file thumbnails to arrange them in your preferred reading order.",
+      "Click the 'Merge' button to initiate the local concatenation process.",
+      "Review the combined file size and download the new PDF instantly.",
+      "Clear the queue to start a new merge operation immediately.",
     ],
     faqs: [
       { q: "Does merging preserve form fields and annotations?", a: "Yes. Text fields, checkboxes, and comment annotations are carried into the merged document. Some interactive widgets may lose focus state after merge, which is a limitation of PDF page concatenation." },
@@ -487,6 +594,7 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Can I merge password-protected PDFs?", a: "You must unlock them first using the PDF Unlock tool, then re-merge." },
       { q: "Will the merged PDF be larger than the originals?", a: "Often slightly larger due to shared resource deduplication overhead, but usually within 5–10% of the total combined size." },
     ],
+    relatedTools: ["pdf-split", "pdf-compressor", "pdf-to-word"],
   },
   "pdf-split": {
     longDescription: "Splitting a large PDF into smaller documents is essential for email attachments, document management systems, and selective sharing. Unlike naive extractors that rely on page-range strings, this tool lets you choose pages visually or by number ranges, then exports each segment as an independent PDF with intact fonts and images.\n\nIt also supports batch extraction: extract every page into individual files in a single operation.\n\nThis is particularly useful for breaking up scanned contracts, distributing seminar slides, or separating invoices from bulk statements.",
@@ -500,34 +608,6 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Will splitting reduce file quality?", a: "No. Split pages are bit-for-bit identical to the source, so text sharpness, image resolution, and embedded fonts are preserved exactly." },
       { q: "Can I split all pages into separate files automatically?", a: "Yes. Select \"Split all pages\" to generate one PDF per page. For very large documents, this may take longer due to repeated stream copying." },
       { q: "Does splitting preserve bookmarks or outlines?", a: "Bookmarks tied to removed pages are removed. Bookmarks pointing to retained pages are preserved with updated page references." },
-    ],
-  },
-  "word-counter": {
-    longDescription: "Word count alone is misleading for modern content strategy. This tool breaks text into distinct metrics: total words, unique words, character count with and without spaces, sentence count, paragraph count, and estimated reading time based on 200–250 words per minute.\n\nIt also flags potential issues like excessive passive voice, long sentences over 30 words, and repeated words that could indicate weak phrasing.\n\nWriters use it for blog post length targets, editors use it for consistency checks, and SEO specialists use it to ensure meta descriptions and title tags fall within SERP display limits.",
-    howToUse: [
-      "Paste or type your text into the input box.",
-      "Read the live metrics — words, characters, sentences, paragraphs and reading time.",
-      "Copy the stats or the text back into your editor.",
-    ],
-    faqs: [
-      { q: "How is reading time calculated?", a: "Based on average adult reading speed of 238 words per minute. For technical content, actual time will be higher." },
-      { q: "Does it count hyphenated words as one or two?", a: "Hyphenated words like \"well-known\" count as one word. Compound words without hyphens count per space-separated segment." },
-      { q: "Can I paste formatted text with HTML tags?", a: "Yes. The tool strips HTML and counts only visible text content." },
-      { q: "Does it support Chinese or Japanese text?", a: "CJK characters are counted individually rather than by whitespace, which is standard for those languages." },
-    ],
-  },
-  "case-converter": {
-    longDescription: "Naming conventions are not just style preferences — they are communication protocols between developers. This tool converts text between uppercase, lowercase, title case, camelCase, PascalCase, snake_case, kebab-case, and dot.case, but it also handles edge cases that break naive converters: consecutive special characters, leading/trailing separators, mixed-case acronyms, and numbers embedded within words.\n\nUse it to normalize API endpoint strings, database column names, environment variable keys, or CSS class names.\n\nPair it with the Slug Generator when you need URL-safe output instead of programming-friendly output.",
-    howToUse: [
-      "Paste any text — a single string or a list, one per line.",
-      "Every case variant is generated instantly in the grid below.",
-      "Click Copy on the variant you want, or Copy all to grab every format at once.",
-    ],
-    faqs: [
-      { q: "What's the difference between camelCase and PascalCase?", a: "camelCase starts with a lowercase letter (camelCase), while PascalCase starts with uppercase (PascalCase). Use camelCase for variables, PascalCase for class names in some languages." },
-      { q: "Does it preserve numbers inside words?", a: "Yes. item2Name stays item2Name in camelCase and item_2_name in snake_case." },
-      { q: "What is dot.case?", a: "Dot-separated lowercase: dot.case. Useful for CSS class names or configuration keys." },
-      { q: "Can I convert a whole list at once?", a: "Paste each string on a new line; the converter processes all lines and preserves line breaks in the output." },
     ],
   },
   "translate": {
@@ -684,11 +764,23 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
     ],
   },
   "utm-builder": {
-    longDescription: "UTM parameters are how Google Analytics, Mixpanel, Amplitude and every other web analytics tool attribute a visit to a specific campaign, ad set or channel. This builder assembles a properly-encoded URL from the five standard fields — source, medium, campaign, term and content — and validates each one against common mistakes: spaces (converted to underscores or hyphens), uppercase inconsistencies, and reserved characters.\n\nA campaign templates panel gives you a starting point for the most common playbooks: paid social (Meta, TikTok, LinkedIn), Google Ads, email newsletters, influencer partnerships and QR-code print campaigns. Saved presets keep your team's naming convention consistent, so reports don't fragment into 'facebook', 'Facebook', and 'FB'.\n\nEverything runs locally and links can be shortened via an integration with your preferred URL shortener. Pair it with the QR Code Generator for print or with the Link Checker before launching a paid campaign.",
+    metaDescription: "Build UTM tracking URLs online for free. Support for Google Analytics, Meta, and social campaigns. Consistent, URL-safe, and secure builder.",
+    longDescription: `UTM parameters are the backbone of digital marketing attribution, allowing platforms like Google Analytics, Mixpanel, and Amplitude to identify exactly which campaign, ad, or link drove a user to your site. Without consistent UTM tagging, your marketing data becomes fragmented and unreliable. Our UTM Builder is designed to enforce consistency across your entire team.
+
+The tool automatically normalizes your inputs, converting spaces to underscores and forcing lowercase by default to prevent 'Facebook' and 'facebook' from appearing as separate sources in your reports. It supports all five standard parameters — Source, Medium, Campaign, Term, and Content — providing real-time URL previews so you can catch encoding errors before you go live.
+
+Whether you're managing complex paid social campaigns on Meta and TikTok, tracking clicks from email newsletters, or measuring the impact of influencer partnerships, this builder ensures every link is correctly formatted. For print and offline campaigns, you can instantly generate a QR code for your tagged URL directly within the interface.`,
+    useCases: [
+      "For marketers: Create consistent tracking links for multi-channel social media campaigns.",
+      "For email managers: Tag newsletter links to see which content drives the most engagement.",
+      "For business owners: Use UTM-tagged URLs in QR codes to track offline-to-online conversions.",
+    ],
     howToUse: [
-      "Paste the destination URL you want to track.",
-      "Fill in source, medium and campaign — the tool encodes and normalises each field.",
-      "Copy the tagged URL, or generate a QR code for print and offline campaigns.",
+      "Paste the destination URL you want to track into the 'Website URL' field.",
+      "Enter the Source (e.g., newsletter), Medium (e.g., email), and Campaign Name.",
+      "Optionally add Term and Content fields for more granular A/B testing data.",
+      "Review the generated URL and click 'Copy' to use it in your campaign.",
+      "Generate a QR code if you need to use the link on physical marketing materials.",
     ],
     faqs: [
       { q: "What's the difference between utm_source and utm_medium?", a: "Source identifies WHERE the visit came from (facebook, newsletter, partner_x). Medium identifies HOW (cpc, email, referral, social). Keep both consistent across campaigns for clean reporting." },
@@ -696,16 +788,37 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
       { q: "Do UTM parameters affect SEO?", a: "No — search engines ignore UTM parameters when consolidating link equity, and Google Search Console de-duplicates them in performance reports. Just avoid using them on internal links, which would overwrite the original attribution." },
       { q: "How long can a UTM-tagged URL be?", a: "Practical limit is around 2,000 characters (browser and server URL limits). Keep individual UTM values under 50 characters for readability in reports." },
     ],
+    relatedTools: ["qr-code-generator", "slug-generator", "word-counter"],
   },
   "13th-month-pay-calculator": {
     categoryLabel: "Accounting Tool",
-    longDescription: "The 13th month pay is a mandatory benefit in the Philippines, as stipulated under Presidential Decree No. 851. It is equivalent to one-twelfth (1/12) of the total basic salary earned by an employee within a calendar year. All rank-and-file employees who have worked for at least one month are eligible to receive this benefit, regardless of their employment status. \n\nOur Philippines 13th Month Pay Calculator helps you estimate your year-end bonus by accounting for your monthly basic salary, regular allowances, and any unpaid absences. Under the current BIR (Bureau of Internal Revenue) rules, the 13th month pay and other benefits are tax-exempt up to PHP 90,000 (though some agreements may involve higher thresholds like PHP 300,000). Any amount exceeding this threshold is considered part of your taxable income. The benefit must be paid to employees no later than December 24 of each year.",
+    metaDescription: "Calculate 13th month pay Philippines for free. Prorated bonus calculator for employees. Instant, accurate, and updated for 2024 tax rules.",
+    longDescription: `The 13th month pay is a mandatory benefit in the Philippines, as stipulated under Presidential Decree No. 851. It is equivalent to one-twelfth (1/12) of the total basic salary earned by an employee within a calendar year. All rank-and-file employees who have worked for at least one month are eligible to receive this benefit, regardless of their employment status. 
+
+Our Philippines 13th Month Pay Calculator helps you estimate your year-end bonus by accounting for your monthly basic salary, regular allowances, and any unpaid absences. Under the current BIR (Bureau of Internal Revenue) rules, the 13th month pay and other benefits are tax-exempt up to PHP 90,000. Any amount exceeding this threshold is considered part of your taxable income. The benefit must be paid to employees no later than December 24 of each year.
+
+Key Features:
+- Prorated calculation for employees who started mid-year.
+- Tax-exempt threshold tracking (up to ₱90,000).
+- Unpaid absence deduction logic.
+- Support for regular monthly allowances.
+
+How it works:
+The tool takes your total basic earnings for the year and divides it by 12. It automatically handles the math for partial years and deducts unpaid leave based on your daily rate (Basic Monthly Salary / 22 or 26 days depending on your work week).
+
+Why this tool matters:
+For employees, it provides peace of mind and help with holiday budgeting. For HR and small business owners, it ensures compliant payroll processing without manual spreadsheet errors.`,
+    useCases: [
+      "For employees: Estimate your holiday bonus to plan gifts and travel expenses.",
+      "For HR managers: Quickly double-check manual payroll calculations for new hires.",
+      "For resignees: Calculate the prorated 13th month pay included in your final pay.",
+    ],
     howToUse: [
       "Enter your monthly basic salary in Philippine Pesos (₱).",
-      "Specify the number of months you worked during the current calendar year (prorated if less than 12).",
+      "Specify the number of months you worked during the current calendar year.",
       "Input any unpaid absences (days) to deduct from the base calculation.",
       "Add any regular monthly allowances that form part of your basic pay.",
-      "Review the breakdown to see your gross, taxable portion, and estimated net 13th month pay."
+      "Click Calculate to see your gross and estimated net 13th month pay.",
     ],
     faqs: [
       {
@@ -717,14 +830,15 @@ const OVERRIDES: Record<string, Partial<ToolContent>> = {
         a: "The first PHP 90,000 of the 13th month pay and other productivity benefits are tax-exempt. Any amount above this threshold is added to your taxable income for the year."
       },
       {
-        q: "What if I didn't work for a full year?",
-        a: "You are still eligible as long as you worked for at least one month. The amount will be prorated: (Total Basic Salary earned) / 12."
+        q: "What if I resigned before December?",
+        a: "You are still entitled to a prorated 13th month pay. It should be paid as part of your final pay/backpay, proportional to the time you worked that year."
       },
       {
         q: "Are bonuses and overtime included in the 13th month pay?",
-        a: "No. According to labor laws, the 13th month pay is based on the 'basic salary', which excludes overtime pay, night shift differentials, holiday pay, and profit-sharing bonuses unless they are integrated into the basic salary by company policy."
+        a: "No. According to labor laws, the 13th month pay is based on the 'basic salary', which excludes overtime pay, night shift differentials, and holiday pay."
       }
-    ]
+    ],
+    relatedTools: ["sss-contribution-calculator", "philhealth-calculator", "bir-withholding-tax-calculator"],
   },
   "pag-ibig-contribution-calculator": {
     categoryLabel: "Accounting Tool",
@@ -1021,10 +1135,13 @@ Ao simular diferentes cenários, você pode descobrir se um produto é viável p
 export function getToolContent(tool: Tool): ToolContent {
   const override = OVERRIDES[tool.slug] ?? {};
   return {
-    categoryLabel: CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool",
+    categoryLabel: override.categoryLabel ?? (CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool"),
+    metaDescription: override.metaDescription,
     longDescription: override.longDescription ?? defaultLongDescription(tool),
+    useCases: override.useCases,
     howToUse: override.howToUse ?? defaultHowToUse(tool),
     faqs: override.faqs ?? defaultFaqs(tool),
+    relatedTools: override.relatedTools,
   };
 }
 
@@ -1036,6 +1153,9 @@ export function toolPageTitle(tool: Tool): string {
 }
 
 export function toolMetaDescription(tool: Tool): string {
+  const content = getToolContent(tool);
+  if (content.metaDescription) return content.metaDescription;
+  
   const base = tool.shortDescription.replace(/\.$/, "");
   const suffix = " Free, fast, no signup needed.";
   const max = 155;

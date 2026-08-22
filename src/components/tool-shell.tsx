@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import type { Tool, ToolCategory } from "@/lib/tools-data";
-import { toolsInCategory } from "@/lib/tools-data";
+import { TOOLS, toolsInCategory } from "@/lib/tools-data";
 import { getToolContent } from "@/lib/tool-content";
 import { ToolActions } from "@/components/tool-actions";
 
@@ -16,9 +16,9 @@ export function ToolShell({
   children: ReactNode;
 }) {
   const content = getToolContent(tool);
-  const related = category
-    ? toolsInCategory(category.slug).filter((t) => t.slug !== tool.slug).slice(0, 6)
-    : [];
+  const related = content.relatedTools
+    ? content.relatedTools.map(slug => TOOLS.find((t: Tool) => t.slug === slug)).filter((t): t is Tool => !!t)
+    : (category ? toolsInCategory(category.slug).filter((t) => t.slug !== tool.slug).slice(0, 6) : []);
   return (
     <SiteLayout>
       <article className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
@@ -87,6 +87,25 @@ export function ToolShell({
             ))}
           </ol>
         </section>
+
+        {content.useCases && content.useCases.length > 0 && (
+          <section aria-labelledby="use-cases" className="mt-14">
+            <h2 id="use-cases" className="text-2xl font-bold tracking-tight">Common Use Cases</h2>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {content.useCases.map((useCase, i) => {
+                const [title, ...desc] = useCase.split(":");
+                return (
+                  <div key={i} className="rounded-xl border border-border bg-card p-4">
+                    <h3 className="text-sm font-bold text-foreground">{title.trim()}</h3>
+                    <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                      {desc.join(":").trim()}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         <section aria-labelledby="about-tool" className="mt-14">
           <h2 id="about-tool" className="text-2xl font-bold tracking-tight">About {tool.name}</h2>
