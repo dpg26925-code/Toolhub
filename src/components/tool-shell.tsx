@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site-layout";
 import type { Tool, ToolCategory } from "@/lib/tools-data";
-import { toolsInCategory } from "@/lib/tools-data";
+import { TOOLS, toolsInCategory } from "@/lib/tools-data";
 import { getToolContent } from "@/lib/tool-content";
 import { ToolActions } from "@/components/tool-actions";
 
@@ -17,7 +17,7 @@ export function ToolShell({
 }) {
   const content = getToolContent(tool);
   const related = content.relatedTools
-    ? content.relatedTools.map(slug => (TOOLS.find(t => t.slug === slug) as Tool)).filter(Boolean)
+    ? content.relatedTools.map(slug => TOOLS.find((t: Tool) => t.slug === slug)).filter((t): t is Tool => !!t)
     : (category ? toolsInCategory(category.slug).filter((t) => t.slug !== tool.slug).slice(0, 6) : []);
   return (
     <SiteLayout>
