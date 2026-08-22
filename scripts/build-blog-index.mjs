@@ -63,7 +63,6 @@ const MANUAL_POSTS = [
     "published_at": "2026-08-22T15:14:00.000Z",
     "created_at": "2026-08-22T15:14:00.000Z",
     "updated_at": "2026-08-22T15:14:00.000Z"
-  }
   },
   {
     "slug": "complete-guide-to-pdf-optimization",
