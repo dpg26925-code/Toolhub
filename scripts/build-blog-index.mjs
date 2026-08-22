@@ -1,6 +1,3 @@
-// Build-time fetch of published blog posts.
-// Emits src/generated/blog-posts.ts so the runtime (Cloudflare Workers)
-// never has to hit Supabase for blog reads.
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,8 +6,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = resolve(__dirname, "../src/generated/blog-posts.ts");
 const ENV_FILE = resolve(__dirname, "../.env");
 
-// Best-effort .env loader — the standalone node script does not get Vite's
-// env injection, so read .env directly when available.
 if (existsSync(ENV_FILE)) {
   const raw = readFileSync(ENV_FILE, "utf8");
   for (const line of raw.split(/\r?\n/)) {
@@ -59,29 +54,32 @@ const MANUAL_POSTS = [
   }
 ];
 
-if (!url || !key) {
-  if (!keepExisting("Supabase env vars missing")) emit(MANUAL_POSTS);
-  process.exit(0);
-}
-
-const select = "slug,title,excerpt,content,cover_image,meta_title,meta_description,published_at,created_at,updated_at";
-const endpoint = `${url}/rest/v1/blog_posts?select=${encodeURIComponent(select)}&published=eq.true&order=published_at.desc.nullslast`;
-
-try {
-  const res = await fetch(endpoint, { headers: { apikey: key, Accept: "application/json" } });
-  if (!res.ok) {
-    if (!keepExisting(`Supabase ${res.status}`)) emit(MANUAL_POSTS);
+async function run() {
+  if (!url || !key) {
+    if (!keepExisting("Supabase env vars missing")) emit(MANUAL_POSTS);
     process.exit(0);
   }
-  const posts = await res.json();
-  if (Array.isArray(posts)) {
-    // Combine fetched posts with manual posts, ensuring no duplicates by slug
-    const manualSlugs = new Set(MANUAL_POSTS.map(p => p.slug));
-    const combined = [...MANUAL_POSTS, ...posts.filter(p => !manualSlugs.has(p.slug))];
-    emit(combined);
-  } else if (!keepExisting("Supabase returned invalid format")) {
-    emit(MANUAL_POSTS);
+
+  const select = "slug,title,excerpt,content,cover_image,meta_title,meta_description,published_at,created_at,updated_at";
+  const endpoint = `${url}/rest/v1/blog_posts?select=${encodeURIComponent(select)}&published=eq.true&order=published_at.desc.nullslast`;
+
+  try {
+    const res = await fetch(endpoint, { headers: { apikey: key, Accept: "application/json" } });
+    if (!res.ok) {
+      if (!keepExisting(`Supabase ${res.status}`)) emit(MANUAL_POSTS);
+      process.exit(0);
+    }
+    const posts = await res.json();
+    if (Array.isArray(posts)) {
+      const manualSlugs = new Set(MANUAL_POSTS.map(p => p.slug));
+      const combined = [...MANUAL_POSTS, ...posts.filter(p => !manualSlugs.has(p.slug))];
+      emit(combined);
+    } else if (!keepExisting("Supabase returned invalid format")) {
+      emit(MANUAL_POSTS);
+    }
+  } catch (err) {
+    if (!keepExisting(`fetch failed: ${err?.message || err}`)) emit(MANUAL_POSTS);
   }
-} catch (err) {
-  if (!keepExisting(`fetch failed: ${err?.message || err}`)) emit(MANUAL_POSTS);
 }
+
+run();
