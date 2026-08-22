@@ -610,34 +610,6 @@ Whether you're assembling a multi-part contract from different departments, comb
       { q: "Does splitting preserve bookmarks or outlines?", a: "Bookmarks tied to removed pages are removed. Bookmarks pointing to retained pages are preserved with updated page references." },
     ],
   },
-  "word-counter": {
-    longDescription: "Word count alone is misleading for modern content strategy. This tool breaks text into distinct metrics: total words, unique words, character count with and without spaces, sentence count, paragraph count, and estimated reading time based on 200–250 words per minute.\n\nIt also flags potential issues like excessive passive voice, long sentences over 30 words, and repeated words that could indicate weak phrasing.\n\nWriters use it for blog post length targets, editors use it for consistency checks, and SEO specialists use it to ensure meta descriptions and title tags fall within SERP display limits.",
-    howToUse: [
-      "Paste or type your text into the input box.",
-      "Read the live metrics — words, characters, sentences, paragraphs and reading time.",
-      "Copy the stats or the text back into your editor.",
-    ],
-    faqs: [
-      { q: "How is reading time calculated?", a: "Based on average adult reading speed of 238 words per minute. For technical content, actual time will be higher." },
-      { q: "Does it count hyphenated words as one or two?", a: "Hyphenated words like \"well-known\" count as one word. Compound words without hyphens count per space-separated segment." },
-      { q: "Can I paste formatted text with HTML tags?", a: "Yes. The tool strips HTML and counts only visible text content." },
-      { q: "Does it support Chinese or Japanese text?", a: "CJK characters are counted individually rather than by whitespace, which is standard for those languages." },
-    ],
-  },
-  "case-converter": {
-    longDescription: "Naming conventions are not just style preferences — they are communication protocols between developers. This tool converts text between uppercase, lowercase, title case, camelCase, PascalCase, snake_case, kebab-case, and dot.case, but it also handles edge cases that break naive converters: consecutive special characters, leading/trailing separators, mixed-case acronyms, and numbers embedded within words.\n\nUse it to normalize API endpoint strings, database column names, environment variable keys, or CSS class names.\n\nPair it with the Slug Generator when you need URL-safe output instead of programming-friendly output.",
-    howToUse: [
-      "Paste any text — a single string or a list, one per line.",
-      "Every case variant is generated instantly in the grid below.",
-      "Click Copy on the variant you want, or Copy all to grab every format at once.",
-    ],
-    faqs: [
-      { q: "What's the difference between camelCase and PascalCase?", a: "camelCase starts with a lowercase letter (camelCase), while PascalCase starts with uppercase (PascalCase). Use camelCase for variables, PascalCase for class names in some languages." },
-      { q: "Does it preserve numbers inside words?", a: "Yes. item2Name stays item2Name in camelCase and item_2_name in snake_case." },
-      { q: "What is dot.case?", a: "Dot-separated lowercase: dot.case. Useful for CSS class names or configuration keys." },
-      { q: "Can I convert a whole list at once?", a: "Paste each string on a new line; the converter processes all lines and preserves line breaks in the output." },
-    ],
-  },
   "translate": {
     longDescription: "AI Translator converts text between 100+ languages while preserving tone, idiom and technical vocabulary far better than word-for-word tools. Paste up to 10,000 characters, pick the source and target languages (or leave source on Auto-detect), and get a translation that reads naturally to a native speaker.\n\nPowered by Google Gemini, this translator handles nuance that classic MT engines miss: idioms are localised rather than translated literally, honorifics adapt to the target culture, and code snippets or product names are preserved verbatim. It's ideal for translating marketing copy, support emails, documentation and short-form content that will be read by humans, not just crawled by search engines.\n\nEvery translation costs 1 credit. Free accounts get 10 credits on signup; Pro accounts get 500 credits per month plus API access to embed translation directly into your product.",
     howToUse: [
