@@ -297,13 +297,23 @@ function defaultLongDescription(tool: Tool): string {
     : `${tool.name} runs on Nexatools' secure server infrastructure with per-session isolation and no long-term storage`;
   const action = toolAction(tool);
 
-  const p1 = `${tool.name} is a purpose-built online tool that helps you ${action}. Instead of stitching together a spreadsheet, a CLI or a heavyweight desktop app, you get a focused single-page workflow that takes ${c.input} and returns ${c.output} in seconds.`;
+  const p1 = `${tool.name} is a professional-grade online tool designed to help you ${action} with precision and ease. Whether you are a developer, business owner, or student, this utility streamlines your workflow by taking ${c.input} and returning ${c.output} in seconds. No more complex software installations or manual calculations.`;
 
-  const p2 = `${c.audience} reach for ${tool.name} when they need a reliable answer fast — inside a support ticket, before a meeting, while shipping a release or between takes on a video shoot. ${runtime}, so the workflow stays private and portable across desktop, tablet and mobile browsers.`;
+  const p2 = `### Key Features of ${tool.name}:
+- **Instant Processing**: Get results in real-time as you type or upload.
+- **Privacy First**: ${runtime}, ensuring your sensitive data stays secure.
+- **Mobile Friendly**: Access the full power of ${tool.name} on any device, from desktop to smartphone.
+- **Commercial Use**: Every result is yours to use in professional, client, or personal projects.`;
 
-  const p3 = `${tool.name} is one of 130+ tools in the Nexatools directory. Pair it with ${c.companions} to build a full ${c.audience.toLowerCase().split(",")[0]} toolkit that lives in a single tab. Sign in for a free account to save history and favourites, or upgrade to Pro for API access, batch processing and higher daily quotas.`;
+  const p3 = `### How it works:
+Behind the scenes, ${tool.name} uses advanced algorithms to process your input. For developer tools, we use standard libraries to ensure compliance with modern protocols. For calculators, we implement the latest formulas (like the 2024 tax rules or financial interest equations) to give you accurate results every time.`;
 
-  return [p1, p2, p3].join("\n\n");
+  const p4 = `### Why this tool matters:
+In today's fast-paced environment, ${c.audience} need tools that just work. ${tool.name} eliminates the friction of switching between heavy applications. For example, a developer can use it to quickly debug a payload before a stand-up meeting, or a small business owner can calculate margins on the fly while negotiating with a supplier.
+
+${tool.name} is one of 130+ tools in the Nexatools directory. Pair it with ${c.companions} to build a full ${c.audience.toLowerCase().split(",")[0]} toolkit that lives in a single tab. Sign in for a free account to save history and favourites, or upgrade to Pro for API access and batch processing.`;
+
+  return [p1, p2, p3, p4].join("\n\n");
 }
 
 function defaultHowToUse(tool: Tool): string[] {
@@ -408,11 +418,23 @@ Everything runs in your browser, so sensitive contracts, medical records and int
     ],
   },
   "json-formatter": {
-    longDescription: "A broken JSON config that reaches production is one of the most avoidable outages in modern web development. Unlike generic formatters, this tool validates against the ECMAScript standard while preserving your original data types — numbers stay numbers, booleans stay booleans, and nested objects maintain their structure.\n\nIt also flags common pitfalls: trailing commas, unquoted keys in JS mode, mixed quote styles, and deeply nested objects that exceed safe character limits. Use it before committing .json configs, API payloads, or environment variables.\n\nPair it with our JSON Validator to catch both syntax errors and schema violations before they hit CI/CD, and with JWT Decoder or Base64 when the JSON is wrapped inside an auth token or encoded field.",
+    metaDescription: "Format and validate JSON online for free. Beautify, minify, and fix JSON syntax errors instantly in your browser. Secure and private.",
+    longDescription: `A broken JSON config that reaches production is one of the most avoidable outages in modern web development. Unlike generic formatters, this tool validates against the ECMAScript standard while preserving your original data types — numbers stay numbers, booleans stay booleans, and nested objects maintain their structure.
+
+It also flags common pitfalls: trailing commas, unquoted keys in JS mode, mixed quote styles, and deeply nested objects that exceed safe character limits. Use it before committing .json configs, API payloads, or environment variables.
+
+Pair it with our JSON Validator to catch both syntax errors and schema violations before they hit CI/CD, and with JWT Decoder or Base64 when the JSON is wrapped inside an auth token or encoded field.`,
+    useCases: [
+      "For developers: Beautify messy API responses for easier debugging and readability.",
+      "For DevOps: Minify configuration files to reduce payload size in production environments.",
+      "For QA: Validate JSON syntax and catch trailing commas or missing quotes before testing.",
+    ],
     howToUse: [
-      "Paste your raw JSON into the input box.",
-      "Click Beautify to pretty-print, or Minify to collapse to a single line.",
-      "Copy the result with the Copy button, or download it as a .json file.",
+      "Paste your raw JSON into the input box or upload a .json file.",
+      "Click 'Beautify' to pretty-print or 'Minify' to compress the text.",
+      "Fix any highlighted syntax errors reported by the real-time validator.",
+      "Use 'Sort Keys' if you need a deterministic object structure for git diffs.",
+      "Copy the result or download it as a new JSON file.",
     ],
     faqs: [
       { q: "Does this tool handle JSON with comments or trailing commas?", a: "Yes. If your payload is JSON5 or includes comments, the formatter can auto-clean it to valid JSON. Trailing commas are removed automatically unless you explicitly enable JSON5 mode." },
@@ -421,6 +443,7 @@ Everything runs in your browser, so sensitive contracts, medical records and int
       { q: "What's the difference between this and Prettier?", a: "Prettier is a code formatter for source files; this tool focuses on data payload validation and preservation of data types, making it safer for API debugging and config files." },
       { q: "Does it work with large JSON files?", a: "Files up to 10 MB parse smoothly in-browser. For larger payloads, consider splitting or using the streaming JSON extractor." },
     ],
+    relatedTools: ["csv-to-json", "xml-to-json", "jwt-decoder"],
   },
   "base64": {
     longDescription: "Base64 encoding often gets misused as encryption or used for the wrong binary types. This tool handles both text-to-Base64 and Base64-to-text conversions with proper UTF-8 handling, meaning emoji, Chinese characters, and Vietnamese diacritics round-trip correctly — something naive implementations break by assuming ASCII-only input.\n\nIt also supports Base64 URL-safe encoding, which replaces + and / with - and _ for use in JWTs, data URLs, and URL parameters.\n\nCommon use cases include embedding SVG icons in CSS, constructing data: URLs for images, and decoding Base64 payloads from API logs or email attachments. Pair it with JWT Decoder for auth tokens and JSON Formatter for decoded payloads.",
@@ -716,13 +739,33 @@ Everything runs in your browser, so sensitive contracts, medical records and int
   },
   "13th-month-pay-calculator": {
     categoryLabel: "Accounting Tool",
-    longDescription: "The 13th month pay is a mandatory benefit in the Philippines, as stipulated under Presidential Decree No. 851. It is equivalent to one-twelfth (1/12) of the total basic salary earned by an employee within a calendar year. All rank-and-file employees who have worked for at least one month are eligible to receive this benefit, regardless of their employment status. \n\nOur Philippines 13th Month Pay Calculator helps you estimate your year-end bonus by accounting for your monthly basic salary, regular allowances, and any unpaid absences. Under the current BIR (Bureau of Internal Revenue) rules, the 13th month pay and other benefits are tax-exempt up to PHP 90,000 (though some agreements may involve higher thresholds like PHP 300,000). Any amount exceeding this threshold is considered part of your taxable income. The benefit must be paid to employees no later than December 24 of each year.",
+    metaDescription: "Calculate 13th month pay Philippines for free. Prorated bonus calculator for employees. Instant, accurate, and updated for 2024 tax rules.",
+    longDescription: `The 13th month pay is a mandatory benefit in the Philippines, as stipulated under Presidential Decree No. 851. It is equivalent to one-twelfth (1/12) of the total basic salary earned by an employee within a calendar year. All rank-and-file employees who have worked for at least one month are eligible to receive this benefit, regardless of their employment status. 
+
+Our Philippines 13th Month Pay Calculator helps you estimate your year-end bonus by accounting for your monthly basic salary, regular allowances, and any unpaid absences. Under the current BIR (Bureau of Internal Revenue) rules, the 13th month pay and other benefits are tax-exempt up to PHP 90,000. Any amount exceeding this threshold is considered part of your taxable income. The benefit must be paid to employees no later than December 24 of each year.
+
+Key Features:
+- Prorated calculation for employees who started mid-year.
+- Tax-exempt threshold tracking (up to ₱90,000).
+- Unpaid absence deduction logic.
+- Support for regular monthly allowances.
+
+How it works:
+The tool takes your total basic earnings for the year and divides it by 12. It automatically handles the math for partial years and deducts unpaid leave based on your daily rate (Basic Monthly Salary / 22 or 26 days depending on your work week).
+
+Why this tool matters:
+For employees, it provides peace of mind and help with holiday budgeting. For HR and small business owners, it ensures compliant payroll processing without manual spreadsheet errors.`,
+    useCases: [
+      "For employees: Estimate your holiday bonus to plan gifts and travel expenses.",
+      "For HR managers: Quickly double-check manual payroll calculations for new hires.",
+      "For resignees: Calculate the prorated 13th month pay included in your final pay.",
+    ],
     howToUse: [
       "Enter your monthly basic salary in Philippine Pesos (₱).",
-      "Specify the number of months you worked during the current calendar year (prorated if less than 12).",
+      "Specify the number of months you worked during the current calendar year.",
       "Input any unpaid absences (days) to deduct from the base calculation.",
       "Add any regular monthly allowances that form part of your basic pay.",
-      "Review the breakdown to see your gross, taxable portion, and estimated net 13th month pay."
+      "Click Calculate to see your gross and estimated net 13th month pay.",
     ],
     faqs: [
       {
@@ -734,14 +777,15 @@ Everything runs in your browser, so sensitive contracts, medical records and int
         a: "The first PHP 90,000 of the 13th month pay and other productivity benefits are tax-exempt. Any amount above this threshold is added to your taxable income for the year."
       },
       {
-        q: "What if I didn't work for a full year?",
-        a: "You are still eligible as long as you worked for at least one month. The amount will be prorated: (Total Basic Salary earned) / 12."
+        q: "What if I resigned before December?",
+        a: "You are still entitled to a prorated 13th month pay. It should be paid as part of your final pay/backpay, proportional to the time you worked that year."
       },
       {
         q: "Are bonuses and overtime included in the 13th month pay?",
-        a: "No. According to labor laws, the 13th month pay is based on the 'basic salary', which excludes overtime pay, night shift differentials, holiday pay, and profit-sharing bonuses unless they are integrated into the basic salary by company policy."
+        a: "No. According to labor laws, the 13th month pay is based on the 'basic salary', which excludes overtime pay, night shift differentials, and holiday pay."
       }
-    ]
+    ],
+    relatedTools: ["sss-contribution-calculator", "philhealth-calculator", "bir-withholding-tax-calculator"],
   },
   "pag-ibig-contribution-calculator": {
     categoryLabel: "Accounting Tool",
