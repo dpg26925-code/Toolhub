@@ -527,11 +527,24 @@ Use this tool for embedding small assets like SVGs into CSS, creating data URLs 
     ],
   },
   "pdf-merge": {
-    longDescription: "Merging PDFs client-side avoids upload delays and keeps sensitive documents off third-party servers, but browser-based merging has limits: page count, image resolution, and font embedding must be handled carefully to avoid corrupting the output. This tool uses pdf-lib to concatenate page streams while preserving embedded fonts, images, and annotations.\n\nIt supports drag-and-drop reordering before merge, so you can preview page thumbnails and swap sequence without re-uploading files.\n\nTypical use cases include combining split contract chapters, assembling multi-page invoices, and merging scanned documents into a single submission package.",
+    metaDescription: "Merge PDF files online for free. Combine multiple PDFs into one document securely in your browser. Reorder pages and files instantly.",
+    longDescription: `Combining multiple documents into a single, cohesive PDF is a frequent requirement for legal submissions, academic projects, and business reporting. However, uploading sensitive contracts to cloud-based mergers poses a significant privacy risk. Our PDF Merge tool solves this by performing the entire operation client-side using WebAssembly and the pdf-lib library. 
+
+The tool doesn't just stick files together; it intelligently merges page streams while preserving embedded fonts, high-resolution images, and interactive annotations. You can drag and drop files to reorder them before merging, ensuring your table of contents or cover page is exactly where it needs to be.
+
+Whether you're assembling a multi-part contract from different departments, combining scanned receipts for an expense report, or merging chapters for an ebook, this tool delivers professional results without the wait time of traditional server-side processing. Your documents never leave your device, ensuring total privacy.`,
+    useCases: [
+      "For legal professionals: Combine multiple contract chapters and exhibits into a single submission file.",
+      "For students: Merge individual assignment pages and research citations into one final project PDF.",
+      "For HR managers: Compile employee onboarding documents, IDs, and signed forms into a single digital folder.",
+      "For business owners: Aggregate monthly invoices and project reports into one comprehensive client update.",
+    ],
     howToUse: [
-      "Drop in two or more PDF files from your device.",
-      "Reorder the files by dragging them into the sequence you want.",
-      "Click Merge and download the combined PDF.",
+      "Select two or more PDF files from your computer or mobile device.",
+      "Drag the file thumbnails to arrange them in your preferred reading order.",
+      "Click the 'Merge' button to initiate the local concatenation process.",
+      "Review the combined file size and download the new PDF instantly.",
+      "Clear the queue to start a new merge operation immediately.",
     ],
     faqs: [
       { q: "Does merging preserve form fields and annotations?", a: "Yes. Text fields, checkboxes, and comment annotations are carried into the merged document. Some interactive widgets may lose focus state after merge, which is a limitation of PDF page concatenation." },
@@ -539,6 +552,7 @@ Use this tool for embedding small assets like SVGs into CSS, creating data URLs 
       { q: "Can I merge password-protected PDFs?", a: "You must unlock them first using the PDF Unlock tool, then re-merge." },
       { q: "Will the merged PDF be larger than the originals?", a: "Often slightly larger due to shared resource deduplication overhead, but usually within 5–10% of the total combined size." },
     ],
+    relatedTools: ["pdf-split", "pdf-compressor", "pdf-to-word"],
   },
   "pdf-split": {
     longDescription: "Splitting a large PDF into smaller documents is essential for email attachments, document management systems, and selective sharing. Unlike naive extractors that rely on page-range strings, this tool lets you choose pages visually or by number ranges, then exports each segment as an independent PDF with intact fonts and images.\n\nIt also supports batch extraction: extract every page into individual files in a single operation.\n\nThis is particularly useful for breaking up scanned contracts, distributing seminar slides, or separating invoices from bulk statements.",
