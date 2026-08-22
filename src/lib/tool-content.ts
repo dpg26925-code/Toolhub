@@ -4,11 +4,17 @@ export type Faq = { q: string; a: string };
 export type ToolContent = {
   /** SEO title category label, e.g. "PDF Tool" */
   categoryLabel: string;
-  /** 300-500 word body copy shown below the tool UI */
+  /** Meta description for SEO (150-160 chars) */
+  metaDescription?: string;
+  /** 400-600 word body copy shown below the tool UI */
   longDescription: string;
-  /** Step-by-step instructions */
+  /** Specific real-world scenarios for the tool */
+  useCases?: string[];
+  /** Step-by-step instructions (5-7 steps) */
   howToUse: string[];
   faqs: Faq[];
+  /** Manually curated related tool slugs */
+  relatedTools?: string[];
 };
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -1021,10 +1027,13 @@ Ao simular diferentes cenários, você pode descobrir se um produto é viável p
 export function getToolContent(tool: Tool): ToolContent {
   const override = OVERRIDES[tool.slug] ?? {};
   return {
-    categoryLabel: CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool",
+    categoryLabel: override.categoryLabel ?? (CATEGORY_LABEL[tool.categorySlug] ?? "Online Tool"),
+    metaDescription: override.metaDescription,
     longDescription: override.longDescription ?? defaultLongDescription(tool),
+    useCases: override.useCases,
     howToUse: override.howToUse ?? defaultHowToUse(tool),
     faqs: override.faqs ?? defaultFaqs(tool),
+    relatedTools: override.relatedTools,
   };
 }
 
@@ -1036,6 +1045,9 @@ export function toolPageTitle(tool: Tool): string {
 }
 
 export function toolMetaDescription(tool: Tool): string {
+  const content = getToolContent(tool);
+  if (content.metaDescription) return content.metaDescription;
+  
   const base = tool.shortDescription.replace(/\.$/, "");
   const suffix = " Free, fast, no signup needed.";
   const max = 155;
