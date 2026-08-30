@@ -391,6 +391,48 @@ Everything runs in your browser, so sensitive contracts, medical records and int
       { q: "Is my photo uploaded?", a: "No. The entire model runs in your browser via WebAssembly, so your image never leaves your device." },
     ],
   },
+  "passport-photo-maker": {
+    metaDescription: "Tự động tách nền, đổi nền trắng, căn mặt vào khung 2x3 và xuất ảnh hộ chiếu 4x6 đạt chuẩn chỉ trong vài giây. Hoạt động ngay trong trình duyệt, không cần cài thêm app.",
+    longDescription: `Tạo và chỉnh sửa ảnh hộ chiếu online chuẩn kích thước 4x6 cm, 3x4 cm, 35x45 mm (Visa Schengen) và 5x5 cm (Visa Mỹ) đạt chuẩn quy định hành chính của Cục Quản lý Xuất nhập cảnh - Bộ Công An và tiêu chuẩn quốc tế ICAO Doc 9303.
+
+Công cụ tự động ứng dụng trí tuệ nhân tạo (AI) chạy trực tiếp trong trình duyệt để tách nền thông minh, đổi phông nền trắng hoặc xanh đồng nhất, hiển thị khung định vị khuôn mặt tỷ lệ 2x3 (chiếm 70–80% chiều cao ảnh) và trục mắt chuẩn xác.
+
+Toàn bộ quy trình diễn ra 100% trên thiết bị của bạn qua WebAssembly, đảm bảo bảo mật thông tin cá nhân tối đa không bao giờ tải dữ liệu ảnh lên máy chủ. Bạn có thể xuất 1 ảnh đơn chuẩn 300 DPI nộp hồ sơ Cổng Dịch vụ công Quốc gia hoặc tải bảng in nhiều ảnh (Grid sheet khổ 10x15cm / A4) để in ảnh tiết kiệm tại nhà hoặc tiệm in.`,
+    howToUse: [
+      "Tải ảnh chân dung chụp thẳng từ điện thoại hoặc máy tính lên (ảnh rõ nét, đủ ánh sáng).",
+      "Bấm nút 'Tự động tách nền AI' để loại bỏ nền cũ và chuyển sang phông nền trắng hoặc xanh chuẩn.",
+      "Sử dụng các thanh trượt phóng to (Zoom), xoay góc (Rotate) và kéo thả chuột để căn khuôn mặt khớp với khung 2x3 và đường kẻ mắt.",
+      "Kiểm tra danh sách Checklist đạt chuẩn tự động và bấm Tải 1 ảnh chuẩn 300 DPI hoặc Bản in nhiều ảnh.",
+    ],
+    faqs: [
+      {
+        q: "Ảnh làm bằng công cụ này có đủ tiêu chuẩn nộp hộ chiếu online trên Cổng Dịch vụ công Quốc gia không?",
+        a: "Có. Công cụ xuất file ảnh tỷ lệ chuẩn 4x6 (2:3), nền trắng tinh khiết, độ phân giải 300 DPI và hỗ trợ định dạng JPG chuẩn theo đúng hướng dẫn kỹ thuật của Cổng Dịch vụ công Bộ Công An.",
+      },
+      {
+        q: "Ảnh hộ chiếu có bắt buộc phải dùng nền trắng không?",
+        a: "Đúng vậy. Theo quy định của Việt Nam và Tổ chức Hàng không Dân dụng Quốc tế (ICAO), ảnh hộ chiếu và thị thực (Visa) bắt buộc phải có phông nền trắng trơn đồng nhất, không có bóng đổ hay hoa văn.",
+      },
+      {
+        q: "Ảnh của tôi có bị tải lên máy chủ hoặc lưu trữ lại không?",
+        a: "Hoàn toàn không. Công cụ xử lý ảnh và thuật toán AI chạy 100% trên trình duyệt cục bộ của bạn bằng WebAssembly. Dữ liệu hình ảnh không bao giờ gửi đi bất kỳ đâu.",
+      },
+      {
+        q: "Nên in ảnh hộ chiếu trên loại giấy nào và kích thước bao nhiêu?",
+        a: "Nên in trên giấy ảnh bóng (Glossy Photo Paper) ở độ phân giải 300 DPI. Bạn có thể dùng tính năng 'Bản in nhiều ảnh' để in 4–6 ảnh 4x6 trên khổ giấy 10x15cm tại tiệm ảnh chỉ với chi phí rất nhỏ.",
+      },
+      {
+        q: "Làm thế nào để chụp ảnh gốc đẹp và dễ căn chỉnh nhất?",
+        a: "Đứng cách tường sáng màu khoảng 1 mét, đón ánh sáng tự nhiên phía trước mặt, mắt nhìn thẳng vào camera ngang tầm mắt, vén tóc để lộ rõ trán và 2 vành tai, mặc áo có cổ lịch sự.",
+      },
+    ],
+    useCases: [
+      "Làm ảnh nộp hồ sơ cấp hộ chiếu online trên Cổng Dịch vụ công Quốc gia",
+      "Làm ảnh thẻ 3x4 cho Bằng lái xe (GPLX), Thẻ sinh viên, Thẻ Đảng viên, Hồ sơ xin việc",
+      "Làm ảnh thị thực Visa Schengen (35x45mm), Visa Mỹ / Nhật Bản (5x5cm)",
+      "Tự in ảnh thẻ tại nhà tiết kiệm chi phí với bản in khổ 10x15cm và A4 có vạch cắt",
+    ],
+  },
   "chat-pdf": {
     longDescription: "Chat with PDF turns any PDF document into a searchable, conversational knowledge base. Upload a report, textbook, research paper or contract, and ask questions in plain English — the AI reads through the document and answers with quotes and context, saving you hours of manual skimming.\n\nThis is perfect for students summarizing long readings, professionals reviewing lengthy contracts, researchers navigating dense papers and analysts pulling numbers from financial filings. Instead of Ctrl+F guessing at keywords, you ask questions the way you'd ask a colleague: 'What are the payment terms?' or 'Summarize section 3 in bullet points.'\n\nWe extract the PDF's text in your browser and send only the relevant portions to our AI provider (Google Gemini) alongside your question. Your document isn't stored on our servers and isn't used to train any models. Uploads are limited to 25 MB for now.",
     howToUse: [

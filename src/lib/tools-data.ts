@@ -348,6 +348,17 @@ export const TOOLS: Tool[] = [
     clientSide: true,
   },
   {
+    slug: "passport-photo-maker",
+    name: "Làm ảnh hộ chiếu chuẩn 4x6 BG — Passport Photo Maker",
+    shortDescription: "Tự động tách nền, đổi nền trắng/xanh, căn mặt vào khung 2x3 và xuất ảnh hộ chiếu 4x6 đạt chuẩn 300 DPI.",
+    categorySlug: "image",
+    icon: "📸",
+    isFeatured: true,
+    isFree: true,
+    creditCost: 0,
+    clientSide: true,
+  },
+  {
     slug: "13th-month-pay-calculator",
     name: "13th Month Pay Calculator Philippines",
     shortDescription: "Calculate your 13th month pay online. Free, instant, and accurate for Philippine employees.",

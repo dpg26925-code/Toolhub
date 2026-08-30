@@ -15,6 +15,9 @@ export const Route = createFileRoute("/tools/$slug")({
         "ut-builder": "utm-builder",
         "salary-to-hourly": "salary-to-hourly-converter",
         "hourly-to-salary": "hourly-to-salary-converter",
+        "passport-photo": "passport-photo-maker",
+        "prepare-passport-photo": "passport-photo-maker",
+        "preparePassportPhoto": "passport-photo-maker",
       };
       const target = redirects[params.slug];
       if (target) throw redirect({ to: "/tools/$slug", params: { slug: target } });
