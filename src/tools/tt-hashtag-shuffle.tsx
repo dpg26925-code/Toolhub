@@ -60,8 +60,10 @@ async function copyToClipboard(text: string): Promise<boolean> {
 }
 
 export default function TtHashtagShuffle() {
-  const [inputText, setInputText] = useState("");
-  const [shuffledOutput, setShuffledOutput] = useState("");
+  const [inputText, setInputText] = useState(SAMPLES.tiktok_viral);
+  const [shuffledOutput, setShuffledOutput] = useState(
+    "#viral #foryou #fyp #trending #foryoupage #trend #tiktokmademebuyit #relatable #explore #challenge #dailyvlog #lifehacks"
+  );
   const [autoHashPrefix, setAutoHashPrefix] = useState(true);
   const [deduplicate, setDeduplicate] = useState(true);
   const [toLowerCase, setToLowerCase] = useState(false);

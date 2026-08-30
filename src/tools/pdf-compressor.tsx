@@ -243,9 +243,40 @@ export default function PdfCompressorTool() {
               : "Supports standard documents up to 100 MB — 100% private in browser"}
           </p>
 
-          <Button size="sm" variant="secondary" className="mt-4 pointer-events-none">
-            {file ? "Change File" : "Select PDF File"}
-          </Button>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <Button size="sm" variant="secondary" className="pointer-events-none">
+              {file ? "Change File" : "Select PDF File"}
+            </Button>
+            {!file && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  try {
+                    toast.info("Generating sample PDF document…");
+                    const doc = await PDFDocument.create();
+                    for (let p = 1; p <= 3; p++) {
+                      const page = doc.addPage([595.28, 841.89]);
+                      page.drawText(`Nexatools Sample Document - Page ${p}`, { x: 50, y: 780, size: 20 });
+                      page.drawText("This sample PDF demonstrates client-side compression and object stream optimization.", { x: 50, y: 740, size: 12 });
+                      page.drawText("Nexatools runs 100% locally in your browser memory for fast, secure file operations.", { x: 50, y: 710, size: 12 });
+                    }
+                    const pdfBytes = await doc.save();
+                    const sampleFile = new File([pdfBytes], "sample-document.pdf", { type: "application/pdf" });
+                    setFile(sampleFile);
+                    void processPdf(sampleFile);
+                  } catch (err) {
+                    toast.error("Failed to generate sample PDF");
+                  }
+                }}
+                className="text-xs"
+              >
+                <Zap className="mr-1.5 h-3.5 w-3.5 text-amber-500" />
+                Test with Sample PDF
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Compression Presets */}

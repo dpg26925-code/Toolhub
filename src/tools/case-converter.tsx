@@ -209,7 +209,7 @@ async function copyToClipboard(text: string): Promise<boolean> {
 }
 
 export default function CaseConverterTool() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(SAMPLE_TEXT);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [lineByLine, setLineByLine] = useState(true);
 

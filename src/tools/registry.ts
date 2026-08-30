@@ -6,7 +6,11 @@ import { lazy, ComponentType, LazyExoticComponent } from "react";
 // rendered inside <ClientOnly> in src/routes/tools.$slug.tsx.
 export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> = import.meta.env.SSR ? {} : {
   "json-formatter": lazy(() => import("./json-formatter")),
+  "json-beautifier": lazy(() => import("./json-formatter")),
   "base64": lazy(() => import("./base64")),
+  "base64-encoder-decoder": lazy(() => import("./base64")),
+  "base64-encoder": lazy(() => import("./base64")),
+  "base64-decoder": lazy(() => import("./base64")),
   "url-encoder": lazy(() => import("./url-encoder")),
   "jwt-decoder": lazy(() => import("./jwt-decoder")),
   "regex-tester": lazy(() => import("./regex-tester")),
@@ -14,6 +18,7 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "hash-generator": lazy(() => import("./hash-generator")),
   "color-converter": lazy(() => import("./color-converter")),
   "word-counter": lazy(() => import("./word-counter")),
+  "word-count": lazy(() => import("./word-counter")),
   "case-converter": lazy(() => import("./case-converter")),
   "lorem-ipsum": lazy(() => import("./lorem-ipsum")),
   "text-to-speech": lazy(() => import("./text-to-speech")),

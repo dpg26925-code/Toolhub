@@ -19,6 +19,11 @@ export const Route = createFileRoute("/tools/$slug")({
         "prepare-passport-photo": "passport-photo-maker",
         "preparePassportPhoto": "passport-photo-maker",
         "hashtag-shuffle": "tt-hashtag-shuffle",
+        "base64-encoder-decoder": "base64",
+        "base64-encoder": "base64",
+        "base64-decoder": "base64",
+        "word-count": "word-counter",
+        "json-beautifier": "json-formatter",
       };
       const target = redirects[params.slug];
       if (target) throw redirect({ to: "/tools/$slug", params: { slug: target } });
