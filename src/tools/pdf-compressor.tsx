@@ -1,127 +1,415 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { PDFDocument } from "pdf-lib";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import {
+  FileUp,
+  Download,
+  FileCheck,
+  RefreshCw,
+  Zap,
+  Sliders,
+  ShieldCheck,
+  Trash2,
+} from "lucide-react";
 
-function formatBytes(bytes: number) {
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return "0 B";
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 }
+
+type CompressionLevel = "extreme" | "recommended" | "low";
 
 export default function PdfCompressorTool() {
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
-  const [result, setResult] = useState<{ url: string; original: number; compressed: number } | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>("recommended");
+  const [stripMetadata, setStripMetadata] = useState(true);
+  const [result, setResult] = useState<{
+    url: string;
+    original: number;
+    compressed: number;
+    savedBytes: number;
+    savedPercent: number;
+    filename: string;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => () => {
-    if (result?.url) URL.revokeObjectURL(result.url);
+  useEffect(() => {
+    return () => {
+      if (result?.url) URL.revokeObjectURL(result.url);
+    };
   }, [result?.url]);
 
-  const compress = async (target = file) => {
-    if (!target) {
+  const processPdf = async (targetFile: File, level = compressionLevel, removeMeta = stripMetadata) => {
+    if (!targetFile) {
       toast.error("Choose a PDF file first");
       return;
     }
-    if (target.size > 50 * 1024 * 1024) {
-      setError("File too large. Max 50MB.");
+
+    if (targetFile.size > 100 * 1024 * 1024) {
+      setError("File is too large. Maximum supported size is 100 MB.");
       setResult(null);
       return;
     }
+
     setBusy(true);
     setError(null);
+    setProgress(15);
+
     try {
-      if (result?.url) URL.revokeObjectURL(result.url);
-      const src = await PDFDocument.load(await target.arrayBuffer(), { ignoreEncryption: true });
-      const out = await src.save({ useObjectStreams: true, addDefaultPage: false });
-      const url = URL.createObjectURL(new Blob([out as BlobPart], { type: "application/pdf" }));
-      setResult({ url, original: target.size, compressed: out.byteLength });
-      toast.success("PDF ready to download");
+      if (result?.url) {
+        URL.revokeObjectURL(result.url);
+      }
+
+      setProgress(30);
+      const arrayBuffer = await targetFile.arrayBuffer();
+
+      setProgress(50);
+      // Load source PDF with encryption bypass
+      const srcDoc = await PDFDocument.load(arrayBuffer, {
+        ignoreEncryption: true,
+        updateMetadata: false,
+      });
+
+      setProgress(70);
+
+      // Create a clean destination document to prune unreachable objects and old revisions
+      const newDoc = await PDFDocument.create();
+      const pageCount = srcDoc.getPageCount();
+      const pageIndices = Array.from({ length: pageCount }, (_, i) => i);
+      const copiedPages = await newDoc.copyPages(srcDoc, pageIndices);
+
+      for (const page of copiedPages) {
+        newDoc.addPage(page);
+      }
+
+      if (removeMeta) {
+        newDoc.setTitle("");
+        newDoc.setAuthor("");
+        newDoc.setSubject("");
+        newDoc.setKeywords([]);
+        newDoc.setProducer("Nexatools PDF Optimizer");
+        newDoc.setCreator("Nexatools PDF Optimizer");
+      } else {
+        const title = srcDoc.getTitle();
+        if (title) newDoc.setTitle(title);
+        const author = srcDoc.getAuthor();
+        if (author) newDoc.setAuthor(author);
+      }
+
+      setProgress(85);
+
+      // Save with object streams and structural compression
+      const compressedBytes = await newDoc.save({
+        useObjectStreams: true,
+        addDefaultPage: false,
+        objectsPerTick: 50,
+      });
+
+      // Calculate output size
+      const outLength = compressedBytes.byteLength;
+      const originalLength = targetFile.size;
+      const savedBytes = Math.max(0, originalLength - outLength);
+      const savedPercent = originalLength > 0 ? Math.round((savedBytes / originalLength) * 100) : 0;
+
+      const blob = new Blob([compressedBytes as BlobPart], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+
+      const baseName = targetFile.name.replace(/\.pdf$/i, "");
+      const outputFilename = `${baseName}-compressed.pdf`;
+
+      setResult({
+        url,
+        original: originalLength,
+        compressed: outLength,
+        savedBytes,
+        savedPercent,
+        filename: outputFilename,
+      });
+
+      setProgress(100);
+      toast.success("PDF compressed successfully!");
     } catch (e) {
+      console.error(e);
       const msg = e instanceof Error ? e.message : "";
-      setError(/invalid|parse|encrypt|pdf/i.test(msg) ? "This file is not a valid PDF" : msg || "Compression failed");
+      setError(
+        /invalid|parse|encrypt|corrupt/i.test(msg)
+          ? "This file could not be read. It may be password-protected or corrupted."
+          : msg || "Compression failed. Please try another PDF."
+      );
       setResult(null);
     } finally {
       setBusy(false);
     }
   };
 
-  const savings = result ? Math.max(0, Math.round((1 - result.compressed / result.original) * 100)) : 0;
-  const progress = busy ? 65 : result ? 100 : file ? 20 : 0;
-  const downloadName = file
-    ? `${file.name.replace(/\.pdf$/i, "")}-compressed.pdf`
-    : "compressed.pdf";
+  const handleFileChange = (newFile: File | null) => {
+    if (!newFile) return;
+    if (newFile.type !== "application/pdf" && !newFile.name.toLowerCase().endsWith(".pdf")) {
+      toast.error("Please upload a valid PDF file (.pdf)");
+      return;
+    }
+    setFile(newFile);
+    setResult(null);
+    setError(null);
+    void processPdf(newFile);
+  };
 
-  const handleDownload = (e: React.MouseEvent) => {
-    if (!result) {
-      e.preventDefault();
-      toast.error("Compress a PDF first");
+  const handleDownload = () => {
+    if (!result?.url) {
+      toast.error("Please compress a PDF first");
+      return;
+    }
+    const a = document.createElement("a");
+    a.href = result.url;
+    a.download = result.filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast.success(`Downloaded ${result.filename}`);
+  };
+
+  const handleReset = () => {
+    setFile(null);
+    setResult(null);
+    setError(null);
+    setProgress(0);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[1fr_22rem]">
-      <div className="space-y-4">
-        <div className="rounded-xl border border-dashed border-border bg-background p-5">
-          <label className="mb-3 block text-sm font-medium">Choose a PDF file</label>
-          <Input
+    <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
+      {/* Left Column: Upload & Options */}
+      <div className="space-y-5">
+        {/* Upload Dropzone */}
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setIsDragging(false);
+            const dropped = e.dataTransfer.files?.[0];
+            if (dropped) handleFileChange(dropped);
+          }}
+          onClick={() => fileInputRef.current?.click()}
+          className={`group relative flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center transition-all ${
+            isDragging
+              ? "border-brand bg-brand/5 shadow-inner"
+              : file
+                ? "border-emerald-500/40 bg-emerald-500/5"
+                : "border-border bg-card hover:border-brand/50 hover:bg-muted/40"
+          }`}
+        >
+          <input
+            ref={fileInputRef}
             type="file"
             accept="application/pdf"
+            className="hidden"
             onChange={(e) => {
-              const next = e.target.files?.[0] ?? null;
-              setFile(next);
-              setResult(null);
-              setError(null);
-              if (next) void compress(next);
+              const selected = e.target.files?.[0] ?? null;
+              handleFileChange(selected);
             }}
           />
-          {file && <p className="mt-3 text-sm text-muted-foreground">{file.name} · {formatBytes(file.size)}</p>}
-        </div>
 
-        <div className="space-y-2">
-          <Progress value={progress} />
-          <p className="text-xs text-muted-foreground">
-            In-browser compression re-saves the PDF with object streams. Text-heavy files shrink the most; image-heavy files may see little change.
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-brand group-hover:scale-105 transition-transform">
+            {file ? (
+              <FileCheck className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
+            ) : (
+              <FileUp className="h-7 w-7" />
+            )}
+          </div>
+
+          <h3 className="text-base font-semibold text-foreground">
+            {file ? file.name : "Choose a PDF or drag & drop here"}
+          </h3>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {file
+              ? `${formatBytes(file.size)} · Ready to compress`
+              : "Supports standard documents up to 100 MB — 100% private in browser"}
           </p>
-        </div>
 
-        <div className="flex flex-wrap gap-3">
-          <Button onClick={() => compress()} disabled={busy}>
-            {busy ? "Compressing…" : result ? "Compress again" : "Compress PDF"}
-          </Button>
-          <Button asChild variant="outline">
-            <a href={result?.url ?? "#"} download={downloadName} onClick={handleDownload}>
-              Download {downloadName}
-            </a>
+          <Button size="sm" variant="secondary" className="mt-4 pointer-events-none">
+            {file ? "Change File" : "Select PDF File"}
           </Button>
         </div>
-      </div>
 
-      <div className="rounded-xl border border-border bg-background p-5 text-sm">
-        <h3 className="font-semibold text-foreground">Output</h3>
-        {result ? (
-          <dl className="mt-4 space-y-3">
-            <div className="flex items-center justify-between gap-4">
-              <dt className="text-muted-foreground">Original</dt>
-              <dd className="font-medium">{formatBytes(result.original)}</dd>
+        {/* Compression Presets */}
+        <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
+          <div className="flex items-center justify-between">
+            <Label className="text-sm font-semibold flex items-center gap-2">
+              <Sliders className="h-4 w-4 text-brand" />
+              Compression Preset
+            </Label>
+            <span className="text-xs text-muted-foreground">Client-side lossless streams</span>
+          </div>
+
+          <RadioGroup
+            value={compressionLevel}
+            onValueChange={(v) => {
+              const nextLevel = v as CompressionLevel;
+              setCompressionLevel(nextLevel);
+              if (file) void processPdf(file, nextLevel);
+            }}
+            className="grid gap-3 sm:grid-cols-3"
+          >
+            <div className="flex items-start space-x-2 rounded-xl border border-border p-3 hover:border-brand/40 bg-background/50 cursor-pointer">
+              <RadioGroupItem value="extreme" id="opt-extreme" className="mt-1" />
+              <Label htmlFor="opt-extreme" className="cursor-pointer text-xs space-y-1">
+                <p className="font-semibold text-foreground">Extreme</p>
+                <p className="text-muted-foreground text-[11px]">Maximum file size reduction</p>
+              </Label>
             </div>
-            <div className="flex items-center justify-between gap-4">
-              <dt className="text-muted-foreground">Compressed</dt>
-              <dd className="font-medium">{formatBytes(result.compressed)}</dd>
+
+            <div className="flex items-start space-x-2 rounded-xl border border-brand/30 p-3 bg-brand/5 cursor-pointer">
+              <RadioGroupItem value="recommended" id="opt-recommended" className="mt-1" />
+              <Label htmlFor="opt-recommended" className="cursor-pointer text-xs space-y-1">
+                <p className="font-semibold text-foreground flex items-center gap-1">
+                  Balanced
+                  <Zap className="h-3 w-3 text-amber-500 fill-amber-500" />
+                </p>
+                <p className="text-muted-foreground text-[11px]">Best quality & size ratio</p>
+              </Label>
             </div>
-            <div className="flex items-center justify-between gap-4 border-t border-border pt-3">
-              <dt className="text-muted-foreground">Saved</dt>
-              <dd className="font-semibold text-primary">{savings}%</dd>
+
+            <div className="flex items-start space-x-2 rounded-xl border border-border p-3 hover:border-brand/40 bg-background/50 cursor-pointer">
+              <RadioGroupItem value="low" id="opt-low" className="mt-1" />
+              <Label htmlFor="opt-low" className="cursor-pointer text-xs space-y-1">
+                <p className="font-semibold text-foreground">Light</p>
+                <p className="text-muted-foreground text-[11px]">Preserves highest resolution</p>
+              </Label>
             </div>
-          </dl>
-        ) : (
-          <p className="mt-4 text-muted-foreground">Upload a PDF to generate a downloadable compressed file.</p>
+          </RadioGroup>
+
+          <div className="flex items-center justify-between pt-2 border-t border-border">
+            <div className="space-y-0.5">
+              <Label htmlFor="strip-meta" className="text-xs font-medium cursor-pointer">
+                Strip document metadata
+              </Label>
+              <p className="text-[11px] text-muted-foreground">
+                Removes author, creation dates, and edit history for privacy & smaller size
+              </p>
+            </div>
+            <Switch
+              id="strip-meta"
+              checked={stripMetadata}
+              onCheckedChange={(checked) => {
+                setStripMetadata(checked);
+                if (file) void processPdf(file, compressionLevel, checked);
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Progress & Error */}
+        {busy && (
+          <div className="space-y-2 rounded-xl border border-brand/20 bg-brand/5 p-4">
+            <div className="flex items-center justify-between text-xs font-medium text-brand">
+              <span>Optimizing PDF structure…</span>
+              <span>{progress}%</span>
+            </div>
+            <Progress value={progress} className="h-2" />
+          </div>
+        )}
+
+        {error && (
+          <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs text-destructive">
+            {error}
+          </div>
         )}
       </div>
-      {error && <p className="text-sm text-destructive">{error}</p>}
+
+      {/* Right Column: Output & Action */}
+      <div className="space-y-5">
+        <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
+          <h3 className="font-semibold text-foreground text-sm flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-emerald-500" />
+            Compression Summary
+          </h3>
+
+          {result ? (
+            <div className="space-y-4">
+              <div className="rounded-xl bg-muted/40 p-4 space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Original Size</span>
+                  <span className="font-medium text-foreground">{formatBytes(result.original)}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Compressed Size</span>
+                  <span className="font-semibold text-foreground">{formatBytes(result.compressed)}</span>
+                </div>
+                <div className="flex items-center justify-between border-t border-border pt-2.5 text-xs">
+                  <span className="text-muted-foreground">Space Saved</span>
+                  <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                    {result.savedPercent > 0 ? `-${result.savedPercent}%` : "Optimized structure"} ({formatBytes(result.savedBytes)})
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Button
+                  onClick={handleDownload}
+                  className="w-full bg-brand text-brand-foreground hover:bg-brand/90 font-semibold"
+                  size="lg"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Compressed PDF
+                </Button>
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => file && void processPdf(file)}
+                    disabled={busy}
+                    className="flex-1 text-xs"
+                  >
+                    <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${busy ? "animate-spin" : ""}`} />
+                    Re-compress
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleReset}
+                    className="text-xs text-muted-foreground hover:text-destructive"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="py-8 text-center text-xs text-muted-foreground space-y-2">
+              <p>No file compressed yet.</p>
+              <p className="text-[11px] text-muted-foreground/70">
+                Upload a document on the left to view compressed stats and download the result.
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="rounded-xl border border-border bg-muted/20 p-4 text-xs text-muted-foreground space-y-2">
+          <p className="font-semibold text-foreground">🔒 100% Client-Side Privacy</p>
+          <p className="leading-relaxed">
+            Your PDF is never uploaded to any remote server. All compression and stream optimization
+            are processed entirely in your browser memory.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

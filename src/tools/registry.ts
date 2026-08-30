@@ -83,6 +83,7 @@ export const TOOL_REGISTRY: Record<string, LazyExoticComponent<ComponentType>> =
   "tt-line-break": lazy(() => import("./tt-line-break")),
   "tt-caption-formatter": lazy(() => import("./tt-caption-formatter")),
   "tt-hashtag-shuffle": lazy(() => import("./tt-hashtag-shuffle")),
+  "hashtag-shuffle": lazy(() => import("./tt-hashtag-shuffle")),
   "tt-hashtag-dedupe": lazy(() => import("./tt-hashtag-dedupe")),
   "tt-hashtag-sort": lazy(() => import("./tt-hashtag-sort")),
   "tt-hashtag-merge": lazy(() => import("./tt-hashtag-merge")),

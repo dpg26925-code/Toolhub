@@ -5,9 +5,9 @@ import { CATEGORIES, TOOLS, featuredTools } from "@/lib/tools-data";
 import { SITE_URL, abs } from "@/lib/site";
 import { CategoryIcon } from "@/components/category-icon";
 
-const TITLE = "Nexatools — 30+ Free Online Tools Powered by AI";
+const TITLE = `Nexatools — ${TOOLS.length}+ Free Online Tools Powered by AI`;
 const DESCRIPTION =
-  "Compress PDFs, remove backgrounds, summarize text and 27 more free online tools. No downloads, no sign-ups required.";
+  "Compress PDFs, convert cases, resize images, shuffle hashtags, and hundreds more free online tools. 100% in-browser, no downloads or sign-ups required.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,8 +31,8 @@ export const Route = createFileRoute("/")({
           name: "Nexatools",
           url: SITE_URL,
           description:
-            "Nexatools is a multi-tool SaaS platform offering 30+ free online tools for PDF, image, AI and developer workflows.",
-          slogan: "30+ Free Online Tools Powered by AI",
+            `Nexatools is a multi-tool SaaS platform offering ${TOOLS.length}+ free online tools for PDF, image, AI, social media and developer workflows.`,
+          slogan: `${TOOLS.length}+ Free Online Tools Powered by AI`,
         }),
       },
       {
@@ -109,7 +109,7 @@ function Index() {
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { n: 1, t: "Choose a tool", d: "Browse 30+ tools by category or search by name." },
+            { n: 1, t: "Choose a tool", d: `Browse ${TOOLS.length}+ tools across ${CATEGORIES.length} categories or search by name.` },
             { n: 2, t: "Upload or paste content", d: "Drop in a file, paste text or tweak the options." },
             { n: 3, t: "Get result instantly", d: "Download, copy or share your result in seconds." },
           ].map((s) => (
@@ -126,10 +126,10 @@ function Index() {
         <h2 id="stats" className="sr-only">Platform stats</h2>
         <dl className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-4 text-center sm:grid-cols-4 sm:px-6">
           {[
-            { k: `${TOOLS.length}`, v: "Free tools" },
+            { k: `${TOOLS.length}+`, v: "Free tools" },
             { k: `${CATEGORIES.length}`, v: "Categories" },
             { k: "100%", v: "Runs in your browser" },
-            { k: "$0", v: "Forever free tier" },
+            { k: "Unlimited", v: "Free tier access" },
           ].map((s) => (
             <div key={s.v}>
               <dt className="text-3xl font-bold text-brand sm:text-4xl">{s.k}</dt>
