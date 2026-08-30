@@ -1,0 +1,17 @@
+{
+  "name": "Nexatools — Free Online Tools",
+  "short_name": "Nexatools",
+  "description": "390+ Free and Pro online tools for PDF, image, video, AI, and developer workflows.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
