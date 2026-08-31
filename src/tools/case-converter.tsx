@@ -4,23 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Copy, Check, Trash2, FileText, Download, Sparkles } from "lucide-react";
+import { Copy, Check, Trash2, Download, Sparkles } from "lucide-react";
 
 const SAMPLE_TEXT = `user_account_id
 first_name
 order_total_usd
 is_active_subscriber
 get_latest_notifications`;
-
-const splitWords = (s: string): string[] => {
-  return s
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
-    .replace(/[_\-./\\]+/g, " ")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-};
 
 interface CaseDefinition {
   id: string;
@@ -46,144 +36,58 @@ const CASE_DEFINITIONS: CaseDefinition[] = [
     id: "title",
     label: "Title Case",
     description: "Capitalize The First Letter Of Each Word",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-        .join(" ");
-    },
+    convertSingle: (s) =>
+      s.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()),
   },
   {
     id: "sentence",
     label: "Sentence case",
     description: "Capitalize the first letter of each sentence",
-    convertSingle: (s) => {
-      const lower = s.toLowerCase();
-      return lower.replace(/(^\s*[\p{L}])|([.!?]\s+[\p{L}])/gu, (m) => m.toUpperCase());
-    },
+    convertSingle: (s) =>
+      s.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, (c) => c.toUpperCase()),
   },
   {
     id: "camel",
     label: "camelCase",
     description: "standardJavaScriptVariableFormat",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words
-        .map((w, i) => (i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()))
-        .join("");
-    },
+    convertSingle: (s) =>
+      s.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, ch) => ch.toUpperCase()),
   },
   {
     id: "pascal",
     label: "PascalCase",
     description: "StandardClassAndComponentFormat",
     convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-        .join("");
+      const camel = s.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, ch) => ch.toUpperCase());
+      return camel ? camel.charAt(0).toUpperCase() + camel.slice(1) : "";
     },
   },
   {
     id: "snake",
     label: "snake_case",
     description: "python_and_database_column_format",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words.map((w) => w.toLowerCase()).join("_");
-    },
+    convertSingle: (s) =>
+      s.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, ""),
   },
   {
     id: "kebab",
     label: "kebab-case",
     description: "css-class-and-url-slug-format",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words.map((w) => w.toLowerCase()).join("-");
-    },
+    convertSingle: (s) =>
+      s.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, ""),
   },
   {
     id: "constant",
     label: "CONSTANT_CASE",
     description: "SCREAMING_SNAKE_CASE_FOR_CONSTANTS",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words.map((w) => w.toUpperCase()).join("_");
-    },
-  },
-  {
-    id: "dot",
-    label: "dot.case",
-    description: "property.and.config.format",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words.map((w) => w.toLowerCase()).join(".");
-    },
-  },
-  {
-    id: "path",
-    label: "path/case",
-    description: "folder/file/path/format",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words.map((w) => w.toLowerCase()).join("/");
-    },
-  },
-  {
-    id: "train",
-    label: "Train-Case",
-    description: "Http-Header-Case-Format",
-    convertSingle: (s) => {
-      const words = splitWords(s);
-      if (words.length === 0) return s;
-      return words
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-        .join("-");
-    },
-  },
-  {
-    id: "alternating",
-    label: "aLtErNaTiNg cAsE",
-    description: "sPoNgEbOb mEmE cAsE",
-    convertSingle: (s) => {
-      let isUpper = false;
-      return s
-        .split("")
-        .map((char) => {
-          if (/\p{L}/u.test(char)) {
-            const out = isUpper ? char.toUpperCase() : char.toLowerCase();
-            isUpper = !isUpper;
-            return out;
-          }
-          return char;
-        })
-        .join("");
-    },
-  },
-  {
-    id: "inverse",
-    label: "InVeRsE cAsE",
-    description: "iNVERTS THE CASE OF EACH LETTER",
-    convertSingle: (s) => {
-      return s
-        .split("")
-        .map((c) => (c === c.toUpperCase() ? c.toLowerCase() : c.toUpperCase()))
-        .join("");
-    },
+    convertSingle: (s) =>
+      s.toUpperCase().replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, ""),
   },
 ];
 
 async function copyToClipboard(text: string): Promise<boolean> {
   if (!text) return false;
-  if (navigator?.clipboard?.writeText) {
+  if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
     try {
       await navigator.clipboard.writeText(text);
       return true;
@@ -221,14 +125,16 @@ export default function CaseConverterTool() {
   }, [text]);
 
   const computedOutputs = useMemo(() => {
-    if (!text) return {};
+    if (!text.trim()) return {};
     const res: Record<string, string> = {};
     const isMultiLine = lineByLine && text.includes("\n");
 
     for (const def of CASE_DEFINITIONS) {
       if (isMultiLine) {
         const lines = text.split(/\r\n|\r|\n/);
-        res[def.id] = lines.map((l) => (l.trim() ? def.convertSingle(l) : l)).join("\n");
+        res[def.id] = lines
+          .map((l) => (l.trim() ? def.convertSingle(l) : l))
+          .join("\n");
       } else {
         res[def.id] = def.convertSingle(text);
       }
@@ -252,17 +158,17 @@ export default function CaseConverterTool() {
   };
 
   const handleCopyAll = async () => {
-    if (!text) {
+    if (!text.trim()) {
       toast.error("Enter some text first");
       return;
     }
     const all = CASE_DEFINITIONS.map(
-      (c) => `=== ${c.label} ===\n${computedOutputs[c.id] || ""}\n`
+      (c) => `${computedOutputs[c.id] || ""}`
     ).join("\n");
     const success = await copyToClipboard(all);
     if (success) {
       setCopiedKey("__all");
-      toast.success("Copied all case styles to clipboard");
+      toast.success("Copied all case variants to clipboard");
       setTimeout(() => setCopiedKey((k) => (k === "__all" ? null : k)), 1500);
     } else {
       toast.error("Failed to copy");
@@ -270,7 +176,7 @@ export default function CaseConverterTool() {
   };
 
   const handleDownload = () => {
-    if (!text) {
+    if (!text.trim()) {
       toast.error("Enter some text first");
       return;
     }
@@ -315,12 +221,12 @@ export default function CaseConverterTool() {
                 Line-by-line mode
               </Label>
             </div>
-            <Button size="xs" variant="outline" onClick={handleLoadSample} className="h-7 text-xs">
+            <Button size="sm" variant="outline" onClick={handleLoadSample} className="h-7 text-xs">
               <Sparkles className="mr-1.5 h-3.5 w-3.5 text-brand" />
               Sample
             </Button>
             {text && (
-              <Button size="xs" variant="ghost" onClick={handleClear} className="h-7 text-xs text-muted-foreground hover:text-destructive">
+              <Button size="sm" variant="ghost" onClick={handleClear} className="h-7 text-xs text-muted-foreground hover:text-destructive">
                 <Trash2 className="mr-1.5 h-3.5 w-3.5" />
                 Clear
               </Button>
@@ -343,15 +249,15 @@ export default function CaseConverterTool() {
             <span><strong>{stats.lines}</strong> lines</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button size="xs" variant="secondary" onClick={handleCopyAll} disabled={!text}>
+            <Button size="sm" variant="secondary" onClick={handleCopyAll} disabled={!text.trim()}>
               {copiedKey === "__all" ? (
                 <Check className="mr-1.5 h-3.5 w-3.5 text-emerald-500" />
               ) : (
                 <Copy className="mr-1.5 h-3.5 w-3.5" />
               )}
-              {copiedKey === "__all" ? "Copied All!" : "Copy All Cases"}
+              {copiedKey === "__all" ? "Copied All!" : "Copy all"}
             </Button>
-            <Button size="xs" variant="outline" onClick={handleDownload} disabled={!text}>
+            <Button size="sm" variant="outline" onClick={handleDownload} disabled={!text.trim()}>
               <Download className="mr-1.5 h-3.5 w-3.5" />
               Download .txt
             </Button>
@@ -380,10 +286,10 @@ export default function CaseConverterTool() {
                     </span>
                   </div>
                   <Button
-                    size="xs"
+                    size="sm"
                     variant={isCopied ? "default" : "secondary"}
                     onClick={() => handleCopy(c.label, value)}
-                    disabled={!value}
+                    disabled={!text.trim() || !value}
                     className="h-7 shrink-0 text-xs"
                   >
                     {isCopied ? (
@@ -400,7 +306,7 @@ export default function CaseConverterTool() {
                   </Button>
                 </div>
                 <div className="mt-2.5 max-h-32 overflow-y-auto rounded-lg bg-muted/40 p-2.5 font-mono text-xs leading-relaxed text-foreground select-all">
-                  {value ? (
+                  {text.trim() && value ? (
                     <pre className="whitespace-pre-wrap font-inherit">{value}</pre>
                   ) : (
                     <span className="text-muted-foreground/60 italic">—</span>
