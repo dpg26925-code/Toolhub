@@ -1176,6 +1176,342 @@ Ao simular diferentes cenários, você pode descobrir se um produto é viável p
       { q: "Impostos incidem sobre o lucro ou faturamento?", a: "No e-commerce brasileiro, a maioria dos impostos (como o Simples Nacional) incide sobre o faturamento bruto." },
       { q: "O que é Markup?", a: "É um índice aplicado sobre o custo do produto para formar o preço de venda. Ele deve ser suficiente para cobrir despesas e gerar o lucro desejado." }
     ]
+  },
+  "amazon-affiliate-link-generator": {
+    categoryLabel: "Affiliate Marketing Tool",
+    metaDescription: "Generate clean, compliant Amazon Associates affiliate links with custom tags, channel SubIDs, and instant QR codes.",
+    longDescription: `The Amazon Associates program is one of the world's largest and most accessible affiliate marketing networks. However, ensuring that every product link is correctly formatted with your unique associate tag and compliant with Amazon's strict Operating Agreement is critical to earning referral commissions without risking account suspension.
+
+This Amazon Affiliate Link Generator allows content creators, niche bloggers, review site owners, and social media influencers to instantly create standardized, clean tracking links for any Amazon marketplace. Whether you paste a raw Amazon product URL (with messy tracking parameters), an ASIN directly, or a mobile sharing link, the tool parses and validates the 10-character alphanumeric ASIN code (Amazon Standard Identification Number) automatically.
+
+You can configure your target Amazon marketplace domain (.com, .co.uk, .de, .ca, .co.jp, etc.), add custom campaign SubIDs via the ascsubtag parameter to track traffic source performance (such as email newsletters, YouTube video descriptions, or TikTok bio links), and choose between direct product pages, direct-to-cart URLs, or search keyword results. The built-in QR code generator allows you to download print-ready QR codes for physical marketing materials, presentations, and live streams.`,
+    howToUse: [
+      "Paste any Amazon product URL or type the 10-character ASIN directly into the input box.",
+      "Select your target Amazon marketplace country domain (e.g. amazon.com, amazon.co.uk).",
+      "Enter your unique Amazon Associates tracking tag (e.g., yourstore-20).",
+      "Optionally enter a Channel / SubID (ascsubtag) to track specific marketing campaigns.",
+      "Select your preferred link destination: Direct Product, Add to Cart, or Search.",
+      "Click 'Copy Link' to grab the tracking URL or download the generated QR Code."
+    ],
+    faqs: [
+      { q: "How do I get an Amazon Associate Store Tag?", a: "Sign up at affiliate-program.amazon.com. Once approved, Amazon assigns you an Associate Store ID (ending in -20 for the US, -21 for UK/EU, etc.) which you can find in the top-right corner of your Associates dashboard." },
+      { q: "What is an ASIN and how do I find it?", a: "ASIN stands for Amazon Standard Identification Number. It is a 10-character alphanumeric code unique to every product on Amazon. You can find it in the product URL (after /dp/ or /gp/product/) or in the product details table on any Amazon listing." },
+      { q: "Do Amazon affiliate links expire?", a: "Standard Amazon affiliate links with your store tag do not expire. However, the cookie attribution window is 24 hours: when a customer clicks your link, you earn commissions on eligible items added to their cart within 24 hours." },
+      { q: "Can I use Amazon affiliate links in emails or PDFs?", a: "Amazon's Operating Agreement prohibits placing affiliate links in offline formats, private emails, or downloadable PDFs. Always send email traffic to an intermediate blog post or landing page." },
+      { q: "What is the Amazon affiliate disclosure requirement?", a: "Amazon requires you to clearly and conspicuously state: 'As an Amazon Associate I earn from qualifying purchases' on any page or social bio containing affiliate links." }
+    ]
+  },
+  "commission-calculator-pro": {
+    categoryLabel: "Affiliate & Sales Tool",
+    metaDescription: "Calculate sales commissions, tiered volume brackets, and earnings projections for affiliates, sales reps, and freelancers.",
+    longDescription: `Commission-based compensation is the lifeblood of affiliate marketing, direct sales, real estate, and freelance business development. However, modern commission plans are rarely simple flat percentages—they frequently involve progressive volume tiers, milestone bonuses, recurring residuals, and minimum performance thresholds.
+
+Commission Calculator Pro is designed to model and project earnings across percentage-based, fixed payout-per-sale, and progressive tiered commission structures. By entering your product sale price and testing different volume targets, you can instantly see your gross sales revenue, total commission payout, average earnings per unit, and effective commission rate.
+
+The dynamic tiered bracket builder allows you to simulate realistic compensation plans where higher sales volumes unlock accelerating commission percentages (for example: 5% on the first 10 sales, 8% on sales 11-50, and 12% on sales 51+). The multi-volume scenario table gives sales managers and affiliate partners a clear roadmap of monthly and annual income potential, complete with one-click summary copying and CSV export.`,
+    howToUse: [
+      "Enter the selling price per unit and select your preferred currency (USD, EUR, GBP, PHP, etc.).",
+      "Choose your commission model: Percentage Rate, Fixed Payout per Sale, or Tiered Volume Brackets.",
+      "If using Tiered Brackets, customize the unit ranges and corresponding commission percentage for each tier.",
+      "Input your expected or current number of sales units and any fixed milestone bonus amount.",
+      "Review your real-time total earnings, effective rate percentage, and monthly/annual projections.",
+      "Click 'Export CSV' to download the scenario report or 'Copy Summary' for your records."
+    ],
+    faqs: [
+      { q: "What is a tiered commission structure?", a: "A tiered commission structure increases your commission rate as your sales volume crosses predetermined milestones, rewarding high performers with accelerating earnings." },
+      { q: "How is the effective commission rate calculated?", a: "The effective rate is your total commission payout divided by total gross sales revenue, expressed as a percentage. In tiered models, it represents your weighted blended rate." },
+      { q: "What is the difference between marginal tiers and flat accelerators?", a: "Marginal tiers apply the higher rate only to units sold within that specific bracket, whereas flat accelerators retroactive increase the rate on all units once a threshold is reached." },
+      { q: "Can I calculate affiliate recurring residual commissions?", a: "Yes. Set your sales volume to your active recurring subscriber count and input the monthly subscription price to calculate your monthly recurring affiliate payout." },
+      { q: "Why is tracking effective commission rate important?", a: "Effective rate helps sales reps and affiliates compare different affiliate programs and product offers to determine which yields the highest return on their promotional efforts." }
+    ]
+  },
+  "coupon-code-generator": {
+    categoryLabel: "E-Commerce & Marketing Tool",
+    metaDescription: "Generate cryptographically secure, unique promo and coupon codes in bulk for Shopify, WooCommerce, and marketing campaigns.",
+    longDescription: `Promo codes and digital coupons are among the most effective conversion drivers in e-commerce, customer acquisition, and influencer partnerships. However, utilizing generic, easily shared codes (like 'DISCOUNT10') often leads to coupon scraping site leaks and eroded profit margins. Single-use, uniquely generated codes provide controlled exclusivity, precise attribution, and fraud prevention.
+
+The Coupon Code Generator enables e-commerce store owners, affiliate managers, and growth marketers to generate up to 500 cryptographically random, collision-free promo codes in a single click. Powered by the browser's native Web Cryptography API (crypto.getRandomValues), each code is guaranteed unique and unpredictable.
+
+You can customize custom prefixes (such as VIP, SAVE, or influencer names), suffixes, character sets (uppercase, lowercase, numbers, and an option to exclude ambiguous characters like 0, O, 1, and I), and custom hyphen delimiter formatting (e.g. SAVE-4X8K-9MN2). Generated codes can be instantly copied individually, copied in bulk, or exported as structured CSV and TXT files for seamless upload into Shopify, WooCommerce, Magento, or Klaviyo.`,
+    howToUse: [
+      "Select the discount type: Percentage Discount, Fixed Dollar Amount, or Free Shipping.",
+      "Enter optional brand prefixes (e.g. VIP, WELCOME) or suffixes (e.g. 2026).",
+      "Set your desired random character length and the quantity of codes to generate (1 to 500).",
+      "Select included character sets and toggle 'Exclude Ambiguous' to prevent customer typing errors.",
+      "Click 'Generate Unique Codes' to produce collision-free voucher codes.",
+      "Use the search bar to filter codes, copy individual codes, or click 'CSV' / 'TXT' to download."
+    ],
+    faqs: [
+      { q: "Why should I use unique coupon codes instead of generic codes?", a: "Unique single-use codes prevent browser extensions (like Honey or Capital One Shopping) from scraping and leaking your discounts to non-target shoppers." },
+      { q: "How are these codes made cryptographically unique?", a: "The generator utilizes the browser's crypto.getRandomValues() API combined with set-based deduplication to guarantee high-entropy, collision-free codes." },
+      { q: "Can I import these codes directly into Shopify or WooCommerce?", a: "Yes. Download the CSV export and upload it directly into Shopify Discounts (via CSV import or apps like Bulk Discounts) or WooCommerce Smart Coupons." },
+      { q: "Why is excluding ambiguous characters recommended?", a: "Excluding characters like 0 (zero), O (capital o), 1 (one), and I (capital i) prevents checkout friction when customers manually type codes on mobile devices." },
+      { q: "What is the recommended coupon code length?", a: "A length of 8 to 12 random characters with a brand prefix provides an optimal balance between security against brute-force guessing and customer readability." }
+    ]
+  },
+  "shopify-profit-calculator": {
+    categoryLabel: "E-Commerce Accounting Tool",
+    metaDescription: "Calculate true Shopify net profit margins, payment gateway processing fees, CAC ad spend, and break-even sales volume.",
+    longDescription: `Scaling an e-commerce business on Shopify requires absolute clarity on your unit economics. Many online sellers focus solely on gross revenue, only to discover that hidden costs—such as payment gateway fees, shipping differences, monthly app subscriptions, and paid advertising customer acquisition costs (CAC)—have decimated their net profit.
+
+The Shopify Profit Calculator is built for dropshippers, direct-to-consumer (DTC) brands, and e-commerce entrepreneurs who need an itemized financial audit of their store's profitability. By combining product cost of goods sold (COGS), customer shipping charged versus actual postage paid, Shopify plan rates (Basic, Shopify, Advanced), and payment processing fees, this tool reveals your exact net profit per order.
+
+Furthermore, the calculator computes your monthly gross and net profit, break-even unit sales volume, break-even selling price, and annual financial projections. An interactive visual cost distribution bar illustrates exactly where every dollar of customer revenue goes, making it easy to identify margin leaks and optimize pricing strategies.`,
+    howToUse: [
+      "Enter your product selling price and the cost of goods sold (COGS) from your supplier.",
+      "Input the shipping fee charged to the customer and the actual postage and packaging cost paid.",
+      "Select your Shopify subscription plan (Basic $39, Shopify $105, Advanced $399) or enter custom fees.",
+      "Enter your average payment gateway processing rate (e.g. 2.9% + $0.30 for Shopify Payments).",
+      "Input your expected monthly sales volume and your advertising spend / CAC per unit.",
+      "Review your net profit per unit, break-even sales volume, cost breakdown bar, and export your CSV report."
+    ],
+    faqs: [
+      { q: "What are standard Shopify payment processing fees?", a: "On the Basic plan, Shopify Payments charges 2.9% + $0.30 per online transaction. The Shopify plan reduces this to 2.7% + $0.30, and Advanced drops to 2.5% + $0.30." },
+      { q: "How is net profit margin different from gross margin?", a: "Gross margin only accounts for product COGS and direct shipping. Net margin deducts all operating expenses, including payment fees, ad spend (CAC), and fixed Shopify app subscriptions." },
+      { q: "What is break-even unit sales volume?", a: "Break-even volume is the exact number of units you must sell each month so that your contribution margin covers all fixed monthly overheads (Shopify subscription, apps, and tools)." },
+      { q: "What is considered a healthy profit margin for a Shopify store?", a: "A healthy net profit margin for DTC and e-commerce stores typically ranges between 15% and 25% after factoring in marketing and all overhead costs." },
+      { q: "Why must I account for actual vs charged shipping?", a: "Offering free shipping or undercharging for postage directly reduces product margins. Tracking the difference ensures you price your products to absorb fulfillment costs." }
+    ]
+  },
+  "ebay-fee-calculator": {
+    categoryLabel: "E-Commerce Accounting Tool",
+    metaDescription: "Calculate eBay final value fees, managed payment deductions, promoted listing ad costs, and net seller profit.",
+    longDescription: `Selling on eBay is a proven method for flipping merchandise, vintage collectibles, refurbished electronics, and commercial inventory. However, navigating eBay's Managed Payments fee structure can be complex: final value fee percentages vary significantly across categories, fixed per-order fees apply, and fees are levied on the total buyer payment—including shipping and state sales tax.
+
+The eBay Fee Calculator provides an accurate, transparent breakdown of all platform costs for casual and power sellers alike. Supporting major categories (such as Electronics, Clothing, Books, Musical Instruments, Guitars, Motors, and Athletic Sneakers), the tool calculates category-specific variable rates and tiered threshold rates (where fees drop for high-value sales above $7,500).
+
+The tool also accounts for seller performance levels—including the 10% Final Value Fee discount awarded to Top Rated Plus sellers and the 6% penalty surcharge applied to Below Standard sellers. You can model optional Promoted Listings Standard ad fees, eBay store subscription discounts, and item acquisition costs to calculate your exact net cash payout and Return on Investment (ROI).`,
+    howToUse: [
+      "Enter your item selling price and the shipping amount charged to the buyer.",
+      "Input your inventory acquisition cost (COGS) and actual postage/shipping label cost paid.",
+      "Select the appropriate eBay category from the dropdown to apply accurate fee percentages.",
+      "Choose your Seller Performance Level (Top Rated Plus, Standard, or Below Standard).",
+      "Check whether you have an active eBay Store subscription and enter any Promoted Listing ad percentage.",
+      "Review the itemized fee deduction table, net seller payout, profit margin, and download your CSV audit."
+    ],
+    faqs: [
+      { q: "What is eBay's Final Value Fee (FVF)?", a: "The Final Value Fee is eBay's core selling commission. For most categories, it is 13.25% of the total amount paid by the buyer (including shipping and sales tax) plus a $0.30 or $0.40 fixed per-order fee." },
+      { q: "Why does eBay charge fees on sales tax and shipping?", a: "Since introducing Managed Payments, eBay processes the entire financial transaction and assesses fees on the total buyer charge to prevent sellers from evading fees through inflated shipping costs." },
+      { q: "How much do Top Rated Plus sellers save on eBay fees?", a: "Top Rated Plus sellers receive a 10% discount on their variable Final Value Fees, providing significant savings on high-volume or high-ticket listings." },
+      { q: "What are Promoted Listings Standard fees?", a: "Promoted Listings Standard allows you to select an ad rate percentage (e.g. 5%-10%). You are only charged this fee if a buyer clicks on your promoted ad and purchases your item within 30 days." },
+      { q: "Does having an eBay Store subscription lower my selling fees?", a: "Yes. Basic, Premium, and Anchor store subscribers receive discounted category Final Value Fee rates (often 0.5% to 1.5% lower) and a generous monthly allotment of zero insertion fee listings." }
+    ]
+  },
+  "amazon-fba-calculator": {
+    categoryLabel: "Amazon FBA Tool",
+    metaDescription: "Estimate Amazon FBA pick & pack fees, category referral fees, monthly storage, and net profit margins.",
+    longDescription: `Fulfillment by Amazon (FBA) gives third-party sellers access to Amazon's world-class logistics network and Prime badge. However, accurately forecasting your net profit requires accounting for multiple fee layers: category referral fees, weight- and dimension-based fulfillment fees, dimensional weight rules, and seasonal cubic-foot warehouse storage costs.
+
+The Amazon FBA Calculator simplifies FBA financial modeling by automatically classifying your product into Amazon's official Size Tiers (Small Standard, Large Standard, and Oversize). By entering package dimensions (length, width, height) and unit weight, the tool computes dimensional weight (using the 139 divisor) and applies the precise pick-and-pack fulfillment fee.
+
+You can select from major Amazon product categories (Apparel, Home & Kitchen, Electronics, Beauty, Toys, Books, etc.) to apply accurate referral fee percentages, choose between standard (Jan–Sep) and Q4 peak (Oct–Dec) storage rates, and incorporate inbound ocean/air freight and Amazon PPC advertising costs. The resulting profit breakdown reveals your net profit per unit, monthly net income, profit margin, and ROI.`,
+    howToUse: [
+      "Enter your planned Amazon selling price and manufacturing product cost (COGS).",
+      "Input your packaged product dimensions (Length, Width, Height in inches) and unit weight (lbs).",
+      "Select your Amazon product category to apply category-specific referral fee rates.",
+      "Choose the storage season (Standard $0.87/cu ft vs Q4 Peak $2.40/cu ft) and average months in storage.",
+      "Input your inbound shipping cost per unit and estimated Amazon PPC ad spend per unit.",
+      "Review your FBA size tier classification, total Amazon fees, net margin, and export your CSV report."
+    ],
+    faqs: [
+      { q: "How does Amazon determine FBA product size tiers?", a: "Amazon evaluates dimensions (longest, median, shortest side) and shipping weight. Standard size products must measure 18 x 14 x 8 inches or less and weigh under 20 lbs; larger items are classified as Oversize." },
+      { q: "What is dimensional weight and how does it affect FBA fees?", a: "Dimensional weight is calculated as (Length x Width x Height in inches) / 139. Amazon charges fulfillment fees based on whichever is greater: actual unit weight or dimensional weight." },
+      { q: "What is the Amazon referral fee?", a: "The referral fee is Amazon's marketplace commission, typically 15% for most categories (8% for consumer electronics, 17% for apparel) with a minimum $0.30 fee per item." },
+      { q: "Why are Amazon FBA storage fees higher in Q4?", a: "During the peak holiday shopping season (October through December), Amazon increases monthly storage fees to $2.40 per cubic foot (up from $0.87) to encourage rapid inventory turnover." },
+      { q: "What is a good target ROI for an Amazon FBA private label product?", a: "Successful Amazon FBA sellers typically aim for at least a 100% Return on Investment (ROI) and a 25%–35% net profit margin before PPC advertising expenses." }
+    ]
+  },
+  "youtube-money-calculator": {
+    categoryLabel: "YouTube Creator Tool",
+    metaDescription: "Estimate YouTube channel ad revenue, RPM, and sponsorship earnings based on daily views and niche CPM benchmarks.",
+    longDescription: `Monetizing a YouTube channel through the YouTube Partner Program (YPP) is one of the premier ways digital creators build scalable passive income. However, estimating realistic earnings goes far beyond simply multiplying total views by an arbitrary number—it depends heavily on your content niche, audience geography, monetized playback percentages, video duration (mid-roll ads), and brand sponsorships.
+
+The YouTube Money Calculator provides content creators with realistic earnings forecasts by distinguishing between advertiser CPM (Cost Per Mille) and creator RPM (Revenue Per Mille). While advertisers pay CPM for ad impressions, creators earn RPM based on total video views after accounting for YouTube's 45% revenue split, ad-blockers, non-monetized views, and YouTube Premium viewership.
+
+Featuring built-in CPM presets across major YouTube verticals—including Personal Finance & Crypto ($18+ CPM), Tech & SaaS ($12+ CPM), Education ($8.50 CPM), Gaming ($3.20 CPM), and Vlogging ($5.00 CPM)—the calculator estimates your daily, monthly, and annual income. It also supports video length adjustments (standard vs >8 min mid-roll boost vs Shorts) and supplemental monthly sponsorship revenue.`,
+    howToUse: [
+      "Enter your average daily or monthly channel video views.",
+      "Select your channel's content niche to populate realistic advertiser CPM benchmarks.",
+      "Fine-tune your estimated CPM and monetized playback rate (industry standard is ~50%–70%).",
+      "Choose your primary video format: Standard (<8 min), Long (>8 min with mid-rolls), or YouTube Shorts.",
+      "Optionally add your estimated monthly brand deal / sponsorship revenue.",
+      "Review your net creator RPM, daily/monthly/annual projections, and view milestone benchmarks."
+    ],
+    faqs: [
+      { q: "What is the difference between CPM and RPM on YouTube?", a: "CPM (Cost Per Mille) is the cost advertisers pay for 1,000 ad impressions. RPM (Revenue Per Mille) is what the creator actually earns per 1,000 total video views after YouTube takes its 45% cut." },
+      { q: "How much does YouTube pay per 1,000 views?", a: "On average, long-form YouTube videos pay creators between $2.00 and $12.00 RPM depending on the niche and viewer location. High-value niches like finance can exceed $20 RPM, while gaming averages $2-$4 RPM." },
+      { q: "What percentage of ad revenue does YouTube keep?", a: "For standard long-form videos, YouTube shares 55% of net ad revenue with the creator and keeps 45%. For YouTube Shorts, the creator pool receives 45% of allocated ad revenue." },
+      { q: "Why do videos over 8 minutes make significantly more money?", a: "Videos that exceed 8 minutes allow creators to place manual and automatic mid-roll ad breaks throughout the video, often doubling or tripling the ad impressions per view." },
+      { q: "How does audience geography affect YouTube earnings?", a: "Viewers located in high-purchasing-power countries (Tier 1: US, UK, Canada, Australia, Germany) attract significantly higher advertiser CPM bids compared to global traffic." }
+    ]
+  },
+  "instagram-engagement-rate-calculator": {
+    categoryLabel: "Social Media Creator Tool",
+    metaDescription: "Calculate Instagram engagement rate, quality score, follower benchmarks, and suggested brand deal sponsorship rates.",
+    longDescription: `In the modern creator economy, follower count alone is no longer the primary metric brands look for when booking sponsored campaigns. Marketing agencies and influencer talent managers prioritize Engagement Rate (ER)—the percentage of your audience that actively likes, comments, saves, and shares your content.
+
+The Instagram Engagement Rate Calculator analyzes your account's true audience connection and determines your creator tier (Nano, Micro, Mid-Tier, Macro, or Mega). By calculating total interactions relative to your follower count across a sample of recent posts, the tool provides an immediate quality rating (from 'Below Average' to '🔥 Viral / Exceptional') benchmarked against industry averages for your account size.
+
+Furthermore, the calculator provides a personalized Sponsorship Rate Card tailored to your niche (Fashion & Beauty, Tech & Gaming, Fitness, Finance, Travel, Lifestyle). You get clear pricing ranges for Instagram Reels, static grid posts, multi-slide carousels, and story sets, empowering you to negotiate professional brand partnerships with confidence.`,
+    howToUse: [
+      "Enter your total Instagram follower count.",
+      "Input the average number of Likes, Comments, and Saves/Shares across your last 12 normal feed posts.",
+      "Select your primary creator niche (Fashion, Tech, Fitness, Finance, Travel, Entertainment).",
+      "Review your calculated Engagement Rate percentage and industry benchmark comparison score.",
+      "Examine the suggested sponsorship rate card for Reels, Carousel posts, static photos, and Stories.",
+      "Click 'Copy Pitch Kit' to copy a formatted media kit summary ready to send to prospective sponsors."
+    ],
+    faqs: [
+      { q: "What is considered a good engagement rate on Instagram?", a: "For accounts between 10k and 50k followers, 3.0%–5.0% is considered good and 6.0%+ is exceptional. Larger accounts (500k+) typically average 1.5%–2.5% due to algorithmic distribution changes." },
+      { q: "How is Instagram Engagement Rate calculated?", a: "The standard formula is: [(Average Likes + Comments + Saves + Shares per post) / Total Followers] * 100. This measures the active percentage of your audience." },
+      { q: "Why do smaller (nano and micro) creators have higher engagement rates?", a: "Smaller creators maintain closer community relationships, respond to comments frequently, and have more concentrated niche audiences than broad celebrity accounts." },
+      { q: "Do saves and shares count towards engagement rate?", a: "Yes. In fact, the Instagram algorithm values saves and shares more heavily than simple double-tap likes because they indicate high-value, bookmark-worthy content." },
+      { q: "How does engagement rate impact how much brands will pay me?", a: "Creators with above-average engagement rates command premium sponsorship rates (often 30%–50% above standard follower-based formulas) because their audience actively converts." }
+    ]
+  },
+  "sponsorship-rate-calculator": {
+    categoryLabel: "Creator Economy Tool",
+    metaDescription: "Calculate recommended sponsorship rates and package bundles for YouTube, Instagram, TikTok, podcasts, and newsletters.",
+    longDescription: `Monetizing digital content through direct brand sponsorships is the most lucrative revenue stream for creators across YouTube, Instagram, TikTok, podcasts, and newsletters. However, many creators struggle with pricing—either leaving thousands of dollars on the table by undercharging or pricing themselves out of campaigns due to lack of market data.
+
+The Sponsorship Rate Calculator implements the exact valuation formulas used by leading talent agencies and brand marketing directors. Combining platform reach weights, content niche purchasing power (e.g. B2B Tech, Finance, Fitness, Beauty, Lifestyle), and historical engagement rates, the calculator determines fair market rate ranges for dedicated reviews, 60-second integrated shoutouts, short-form reels/TikToks, and story sequences.
+
+The tool also models critical commercial add-on clauses that boost deal value—such as 30-day paid digital ad whitelisting (+30%), 30-day competitor category exclusivity (+25%), and rush turnaround delivery (+20%). Additionally, it automatically generates 3-piece content bundles and omnichannel multi-format packages with built-in discount incentives, generating a copy-ready pitch proposal quote for prospective sponsors.`,
+    howToUse: [
+      "Select your primary publishing platform: YouTube, Instagram, TikTok, Twitter/X, Podcast, or Newsletter.",
+      "Enter your total audience size (followers/subscribers) and your average view/impression reach per post.",
+      "Input your audience engagement rate percentage and select your content niche category.",
+      "Choose your deliverable format (Dedicated Feature, Integrated Shoutout, Short Video, Static Post, Story).",
+      "Toggle commercial clauses as needed: Paid Usage Rights/Whitelisting, Exclusivity, or Rush Turnaround.",
+      "Review your single deliverable rates, bundle packages, and click 'Copy Proposal Quote' to pitch sponsors."
+    ],
+    faqs: [
+      { q: "How do agencies calculate influencer sponsorship rates?", a: "Agencies evaluate cost per mille (CPM) based on verified average video views, multiplied by niche value multipliers and deliverable format weights, rather than raw vanity follower counts." },
+      { q: "Why are YouTube and newsletter sponsorships priced higher than TikTok?", a: "YouTube long-form videos and newsletters possess long evergreen shelf lives and high search/direct-response intent, commanding $25–$45+ CPMs compared to short-form video's $10–$20 CPMs." },
+      { q: "What are paid ad usage rights (whitelisting) and how should I charge for them?", a: "Usage rights allow the brand to run paid ads through your handle or use your video in their ad campaigns. The industry standard fee is an additional 30% to 50% on top of the base creation fee." },
+      { q: "What is category exclusivity in a creator contract?", a: "Exclusivity prevents you from promoting competing brands within the same product category for a set duration (e.g. 30 to 90 days). Creators should charge a 20%–40% premium for this restriction." },
+      { q: "Why should creators offer bundled packages to brands?", a: "Bundling multiple posts (e.g., 1 YouTube integration + 2 TikToks + 3 Instagram Stories) with a 15%–20% package discount increases your total contract size while providing better campaign reach for the brand." }
+    ]
+  },
+  "freelance-rate-calculator": {
+    categoryLabel: "Freelance & Business Tool",
+    metaDescription: "Calculate target hourly rates, day rates, monthly retainers, and project pricing based on salary goals, taxes, and expenses.",
+    longDescription: `Transitioning into freelance consulting, design, software engineering, or digital marketing offers unprecedented professional freedom. However, the most common pitfall new freelancers face is the 'employee mindset' when setting rates—simply dividing a traditional corporate salary by 2,080 hours (40 hours x 52 weeks) without factoring in unpaid admin time, self-employment taxes, overhead, and vacation.
+
+The Freelance Rate Calculator computes sustainable, profitable pricing for independent contractors and consultants. Starting with your desired annual net take-home salary, the tool accounts for realistic weekly billable capacity (recognizing that 30%–40% of time is spent on marketing, proposals, and client communication), planned vacation/sick leave, monthly software/hardware overhead, estimated self-employment taxes, and a business profit reserve buffer.
+
+The calculator provides a complete rate sheet: Minimum Break-Even Hourly Rate (floor price), Target Hourly Rate, Premium / Advisory Hourly Rate, Full Day Rate (8 hours), Half-Day Rate, Weekly Retainer, Monthly Retainer, and standard 40-hour sprint project estimates. A comprehensive financial breakdown table shows exactly how your gross client billings are allocated between your personal net income, taxes, business expenses, and emergency savings.`,
+    howToUse: [
+      "Enter your desired annual net take-home salary (what you want in your personal bank account).",
+      "Input your realistic billable hours per week (20 to 25 hours is recommended for solo freelancers).",
+      "Specify your planned weeks off per year for vacations, holidays, and sick leave (e.g. 3 to 6 weeks).",
+      "Enter your monthly business operating expenses (software tools, laptop, coworking, insurance, accountant).",
+      "Set your estimated income/self-employment tax rate percentage and business profit reserve buffer.",
+      "Review your rate sheet (Hourly, Day, Retainer, Project) and download your CSV financial plan."
+    ],
+    faqs: [
+      { q: "Why shouldn't I calculate freelance rates based on a 40-hour work week?", a: "Freelancers must handle non-billable business operations (sales calls, marketing, invoicing, bookkeeping, professional development). Most successful freelancers realistically bill 20 to 28 hours per week." },
+      { q: "How much should freelancers set aside for taxes?", a: "Independent contractors must pay both personal income tax and self-employment tax (FICA in the US). A conservative best practice is setting aside 25% to 35% of gross revenue for taxes." },
+      { q: "What is the difference between hourly billing and a monthly retainer?", a: "Hourly billing charges for exact time spent, whereas a monthly retainer reserves a dedicated block of time or guaranteed deliverables for a predictable recurring monthly fee." },
+      { q: "What is a freelance profit buffer margin?", a: "A profit buffer (typically 10%–20%) provides emergency reserves for business slow seasons, equipment upgrades, retirement contributions, and unpaid client invoices." },
+      { q: "When should I transition from hourly rates to value-based project pricing?", a: "As your expertise increases and you work faster, hourly billing penalizes your efficiency. Transitioning to fixed project pricing or retainers allows you to capture the true business value of your solutions." }
+    ]
+  },
+  "tiktok-shop-fee-calculator": {
+    categoryLabel: "TikTok Creator & Seller Tool",
+    metaDescription: "Calculate TikTok Shop marketplace commissions, transaction fees, creator affiliate payouts, and net seller profits across Brazil, Philippines, US, UK, and SE Asia.",
+    longDescription: `TikTok Shop has rapidly emerged as one of the world's fastest-growing social commerce ecosystems, driving explosive sales volumes in key markets including Brazil, the Philippines, the United States, the United Kingdom, Vietnam, and Indonesia. However, succeeding as a TikTok Shop merchant or dropshipper requires navigating a multi-layered fee schedule that differs substantially from traditional marketplaces.
+
+The TikTok Shop Fee Calculator provides sellers with an accurate, country-specific financial audit of every customer order. By selecting your target marketplace region, the tool automatically applies localized category commission rates (typically 5% to 9% depending on fashion, beauty, electronics, or home goods), payment processing gateway fees, and localized payout/withdrawal costs (such as PIX in Brazil, GCash/Maya in the Philippines, or ACH in the US).
+
+In addition to standard platform fees, the calculator factors in critical social commerce dynamics: seller-funded discount vouchers, free shipping subsidies, and creator affiliate commissions (paid to influencers who promote your products via short videos and live streams). An itemized breakdown reveals your exact net deposit payout from TikTok, net profit per unit, margin percentages, and monthly revenue projections at scale.`,
+    howToUse: [
+      "Select your target TikTok Shop country: Brazil (BRL), Philippines (PHP), US (USD), UK (GBP), Vietnam (VND), or Indonesia (IDR).",
+      "Enter your product selling price, supplier unit cost (COGS), and customer shipping cost.",
+      "Select your product category to load localized marketplace commission rates.",
+      "Specify any seller-funded discount vouchers and toggle whether you subsidize free shipping.",
+      "Input your creator affiliate commission percentage if collaborating with TikTok content creators.",
+      "Choose your preferred payout/withdrawal method and review your net seller payout, profit margins, and CSV report."
+    ],
+    faqs: [
+      { q: "How much does TikTok Shop charge sellers per transaction?", a: "TikTok Shop charges a marketplace category commission (typically 5%–9% depending on the country and product category) plus a payment processing transaction fee (typically 2%–3%)." },
+      { q: "What is the difference between Brazil, Philippines, and US TikTok Shop fees?", a: "In Brazil, fashion and beauty incur ~7%–8% commission with free PIX withdrawals. In the Philippines, commission averages 5%–6.5% with 2.24% transaction fees. In the US, standard commission is 6%–8% plus $0.30." },
+      { q: "How do TikTok creator affiliate commissions work?", a: "When TikTok creators link your product in their videos or live streams, TikTok automatically deducts the agreed affiliate commission (typically 10%–20%) from the order total and routes it to the creator." },
+      { q: "Who pays for Free Shipping vouchers on TikTok Shop?", a: "Platform campaign vouchers are funded by TikTok, but if you enable 'Seller Free Shipping', the shipping fee is deducted directly from your payout." },
+      { q: "How quickly does TikTok Shop disburse seller payouts?", a: "TikTok Shop typically releases funds to your balance 1 to 8 days after delivery confirmation, depending on your seller probationary tier and return window." }
+    ]
+  },
+  "crypto-profit-calculator": {
+    categoryLabel: "Crypto & Trading Tool",
+    metaDescription: "Calculate cryptocurrency trading profits, losses, ROI percentages, exchange fees, and capital gains taxes for Bitcoin, Ethereum, and altcoins.",
+    longDescription: `Cryptocurrency markets operate 24/7 with rapid price volatility, making real-time profit and loss (P&L) calculation essential for active spot traders, futures speculators, and long-term HODLers. Whether you are executing swing trades on Bitcoin (BTC), Ethereum (ETH), Solana (SOL), or altcoins, calculating your true net return requires accounting for entry/exit exchange fees, leverage multipliers, and capital gains taxes.
+
+The Crypto Profit Calculator delivers an instant, comprehensive financial audit of any cryptocurrency trade. Supporting both Long (buy low, sell high) and Short (sell high, buy back low) position directions, the tool allows you to input either your fiat investment capital ($) or direct coin quantities.
+
+Featuring built-in exchange fee presets (Binance 0.1%, Bybit 0.06%, Coinbase 0.4%, Kraken 0.16%) and futures leverage options (1x to 20x), the calculator models entry fees, exit fees, gross capital gains, and estimated taxes. A dynamic target exit price matrix illustrates your exact dollar profit and ROI across price moves from -50% to +500%, alongside your precise breakeven exit price.`,
+    howToUse: [
+      "Select your position direction: Long (Bullish / Buy) or Short (Bearish / Sell).",
+      "Choose a quick coin preset (BTC, ETH, SOL, BNB, XRP, DOGE) or enter custom entry/exit prices.",
+      "Input your initial investment amount in USD or the exact coin quantity purchased.",
+      "Set your exchange trading fee percentage (e.g. 0.10% for Binance) and margin leverage multiplier (1x–20x).",
+      "Input your estimated capital gains tax rate percentage.",
+      "Review your net profit/loss, net ROI %, breakeven exit price, and export the scenario matrix as a CSV."
+    ],
+    faqs: [
+      { q: "How is crypto profit and loss (P&L) calculated?", a: "For Long trades: Gross Profit = (Sell Price - Buy Price) * Coin Quantity. Net Profit = Gross Profit - Entry Fee - Exit Fee - Estimated Taxes." },
+      { q: "What is the difference between Maker and Taker fees on crypto exchanges?", a: "Maker orders add liquidity to the order book (limit orders) and usually enjoy lower fees (0.02%–0.1%), while Taker orders remove liquidity (market orders) and incur standard fees (0.05%–0.4%)." },
+      { q: "How do taxes apply to cryptocurrency trading?", a: "In most jurisdictions (including the US, UK, and EU), selling crypto for fiat or swapping one crypto for another triggers a taxable capital gains event based on your holding period." },
+      { q: "What is a breakeven price in crypto trading?", a: "The breakeven price is the exact target exit price required to cover both the entry exchange fee and the exit exchange fee, leaving you with zero net loss." },
+      { q: "How does leverage affect crypto profit and loss?", a: "Leverage multiplies your position size relative to your capital. For example, a 10x leverage position on $1,000 controls $10,000 worth of crypto, amplifying both gains and liquidation risk tenfold." }
+    ]
+  },
+  "dropshipping-calculator": {
+    categoryLabel: "E-Commerce & Dropshipping Tool",
+    metaDescription: "Evaluate dropshipping product viability, calculate profit margins, advertising CAC costs, break-even ROAS, and overall Product Viability Score (1–100).",
+    longDescription: `Finding winning products is the cornerstone of a profitable dropshipping business. However, running paid ads on Meta, TikTok, or Google without rigorously validating unit economics is the number one reason new e-commerce stores fail. Between supplier costs on AliExpress or CJ Dropshipping, international ePacket freight, payment processor fees, and rising ad customer acquisition costs (CAC), gross margins can evaporate quickly.
+
+The Dropshipping Product Research Calculator is a client-side product validation engine designed to audit the financial viability of any product idea before you spend money on ad creatives or Shopify themes. By combining supplier product costs, shipping fees, target retail price, and estimated ad CAC, the calculator determines your net profit per unit, gross/net margins, and price markup multiple.
+
+Most importantly, the tool computes a proprietary Product Viability Score (1–100) based on margin health, 3x markup standards, market competition intensity (low, medium, high, saturated), trend velocity (viral rising vs declining), and problem-solving/wow factor. It also calculates your critical Break-Even ROAS (Return on Ad Spend) and generates multi-tier scaling projections from 50 to 1,000 monthly orders.`,
+    howToUse: [
+      "Enter the product title, target retail selling price, and supplier cost from AliExpress or CJ Dropshipping.",
+      "Input the supplier shipping cost (ePacket / AliExpress Standard Shipping) and estimated ad CAC per order.",
+      "Select the perceived market competition level (Low, Medium, High, Saturated) and trend velocity.",
+      "Rate the product's problem-solving / 'wow factor' appeal on a scale of 1 to 5 stars.",
+      "Review your Product Viability Score (1–100), Target Break-Even ROAS, and net profit per unit.",
+      "Examine the monthly scaling roadmap table and export your product validation audit to CSV."
+    ],
+    faqs: [
+      { q: "What is a good markup multiple for dropshipping products?", a: "A standard rule of thumb is a 3x markup (selling price should be at least 3 times your total supplier cost + shipping) to provide sufficient cushion for paid advertising and transaction fees." },
+      { q: "What is Break-Even ROAS and how do I use it?", a: "Break-Even ROAS (Return on Ad Spend) is the minimum ad performance multiple required to avoid losing money. For example, a 2.0x break-even ROAS means you must generate $2.00 in sales for every $1.00 spent on ads." },
+      { q: "What makes a dropshipping product achieve a 80+ Viability Score?", a: "A winning score requires at least a 25%–35% net margin, 3x+ markup, an active upward search trend, manageable ad competition, and high viral/problem-solving appeal." },
+      { q: "How much should I budget for Customer Acquisition Cost (CAC)?", a: "For products priced under $50, an initial testing CAC typically ranges between $12 and $20 on TikTok and Meta ads during the learning phase." },
+      { q: "Why must I factor in payment processing fees?", a: "Gateways like Shopify Payments and Stripe deduct 2.9% + $0.30 per order, which can consume 2%–4% of your total margin on low-ticket impulse purchases." }
+    ]
+  },
+  "stock-profit-calculator": {
+    categoryLabel: "Stock Trading & Investment Tool",
+    metaDescription: "Calculate stock trading profits, losses, ROI percentage, brokerage commissions, capital gains tax, and margin leverage costs.",
+    longDescription: `Whether day trading volatile tech equities, swing trading breakout stocks, or managing long-term index ETF portfolios, accurately calculating capital gains and net investment returns requires accounting for all transaction friction. Trading commissions, exchange fees, broker margin borrowing interest, and capital gains tax liabilities all directly impact your bottom line.
+
+The Stock Market Profit Calculator provides retail investors, day traders, and financial planners with a comprehensive return-on-investment audit. By entering your stock ticker symbol, purchase price per share, target sell price, and share quantity, the tool calculates gross profits, net proceeds, and effective ROI.
+
+The calculator distinguishes between Short-Term (<1 year, taxed at ordinary income rates) and Long-Term (>1 year, preferential capital gains rates) holding periods. It also features a Margin Trading Leverage simulator (1x cash to 4x day trading margin) with custom annual margin interest rates and holding durations, a precise breakeven price calculation, and a multi-target scenario matrix.`,
+    howToUse: [
+      "Enter your stock ticker symbol (e.g., NVDA, AAPL, TSLA, SPY) and the number of shares traded.",
+      "Input your purchase buy price per share and target sell price per share.",
+      "Specify any buy/sell brokerage commissions (or leave as $0 for zero-commission brokers like Robinhood/Schwab).",
+      "Select your holding period: Short-Term (<1 Year) or Long-Term (>1 Year) to load appropriate tax rates.",
+      "If using a margin account, adjust your leverage multiplier (1x–4x), annual margin rate, and holding days.",
+      "Review your net profit, return on invested capital (ROI %), breakeven price, and export the report to CSV."
+    ],
+    faqs: [
+      { q: "How is stock trading net profit calculated?", a: "Gross Profit = (Sell Price - Buy Price) * Number of Shares. Net Profit = Gross Profit - Buy/Sell Commissions - Margin Interest Cost - Estimated Capital Gains Tax." },
+      { q: "What is the difference between short-term and long-term capital gains tax on stocks?", a: "Assets held for 1 year or less are taxed at ordinary income tax rates (10%–37% in the US), whereas assets held for more than 1 year qualify for lower long-term capital gains rates (0%, 15%, or 20%)." },
+      { q: "How does margin interest affect stock trading returns?", a: "Borrowing money from a broker to buy shares incurs daily margin interest (typically 6.5%–12% annual rate). The longer a leveraged trade remains open, the more interest erodes your net profit." },
+      { q: "What is the breakeven price on a stock trade?", a: "The breakeven price is the exact share price required at exit to cover your original purchase price plus all broker commissions and accumulated margin interest fees." },
+      { q: "Can I use this calculator for ETFs and fractional shares?", a: "Yes. The calculator accepts decimal share quantities (e.g. 12.5 shares) and works for any stock, ETF (such as SPY or QQQ), or closed-end fund." }
+    ]
   }
 };
 
